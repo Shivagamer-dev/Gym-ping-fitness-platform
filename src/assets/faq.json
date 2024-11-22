@@ -1,0 +1,22 @@
+[
+    {
+        "question": "How do I create an account?",
+        "answer": "To create an account, click on the “Sign Up” button on the homepage and follow the steps to enter your information. Once registered, you can start tracking your fitness and accessing our features."
+    },
+    {
+        "question": "Why can’t I see my fitness data on the Dashboard?",
+        "answer": "The Dashboard feature may be under development, as indicated by a 'Coming Soon!' message. In the meantime, check other areas of the app or contact our Support team if you have further questions."
+    },
+    {
+        "question": "How can I locate gyms nearby?",
+        "answer": "Use our Locator page to find gyms based on your search criteria. You can search by gym name, location, or available equipment. We also provide sorting options to help you find exactly what you need."
+    },
+    {
+        "question": "What should I do if I forgot my password?",
+        "answer": "If you forgot your password, click on the 'Forgot Password?' link on the login page. Follow the prompts to reset your password via email. If you encounter issues, contact Support."
+    },
+    {
+        "question": "How do I delete my account or personal data?",
+        "answer": "If you want to delete your account, please go to the Account Settings section and select 'Delete Account.' Deleting your account will permanently remove all your data from our system. For additional questions, contact our Support team."
+    }
+]
