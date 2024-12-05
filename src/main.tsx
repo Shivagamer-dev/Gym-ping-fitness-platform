@@ -12,6 +12,7 @@ import Spotter from './Spotter/index.tsx'
 import About from './FillIn/about.tsx'
 import Privacy from './FillIn/privacyPolicy.tsx'
 import Support from './FillIn/support.tsx'
+import ExerciseDetail from './Spotter/ExerciseDetail.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/spotter",
         element: <Spotter />,
+      },
+      {
+        path: "/spotter/exercise/:id",
+        element: <ExerciseDetail />,
       },
       {
         path: "/about",

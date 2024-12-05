@@ -42,7 +42,7 @@ function Locator() {
 
   return (
     <div className="flex flex-col items-center p-4 space-y-4">
-      <h1 className="text-2xl font-bold text-gray-800">
+      <h1 className="text-2xl font-bold text-gray-800 pt-12">
         Locate Your <span className="highlight-text font-extrabold text-4xl">Muscle-Assistant</span>
       </h1>
 

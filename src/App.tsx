@@ -2,6 +2,9 @@ import Header from "./components/Header";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import Footer from "./components/Footer";
+import { Route, Routes } from "react-router-dom";
+
+import "./App.css";
 
 export default function App() {
   const { user, isLoaded, isSignedIn } = useUser();

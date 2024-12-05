@@ -16,7 +16,6 @@ function Home() {
         className='relative text-white h-screen'
         style={{ backgroundImage: `url(${homebg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-        {/* Gradient Overlay for Fade Effect */}
         <div
           className='absolute inset-0'
           style={{
@@ -30,7 +29,7 @@ function Home() {
             className='font-extrabold pt-9 italic text-[280px] text-center bg-clip-text text-transparent'
             style={{
               backgroundImage: 'linear-gradient(to right, rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.3))',
-              WebkitTextStroke: '8px white', // border weight
+              WebkitTextStroke: '8px white',
             }}
           >
             Gym-Ping
@@ -39,7 +38,7 @@ function Home() {
             className='font-extrabold italic text-[180px] text-center bg-clip-text text-transparent'
             style={{
               backgroundImage: 'linear-gradient(to right, #ffffff, rgba(0, 0, 0, 0.3))',
-              WebkitTextStroke: '6px white', // border weight
+              WebkitTextStroke: '6px white',
             }}
           >
             Find! Fit! Thrive!
@@ -53,7 +52,6 @@ function Home() {
           Explore Our Exclusive Facilities to Elevate Your Fitness Journey
         </h1>
         <div className='flex justify-end gap-32 mr-10 px-7 pt-10'>
-          {/* Facility Cards */}
           {[
             { image: spoh, title: "Spotter", desc: "Your personal AI exercise guide.", link: "/spotter" },
             { image: loch, title: "Locator", desc: "Find the best gyms near you.", link: "/locator" },
@@ -68,17 +66,14 @@ function Home() {
                 backgroundPosition: 'center',
               }}
             >
-              {/* Name with Gradient Before Hover */}
               <div className='absolute inset-0 bg-gradient-to-br from-black/70 to-transparent flex items-end p-4'>
                 <h2 className='text-white text-2xl font-bold'>{facility.title}</h2>
               </div>
 
-              {/* Darken Effect and Hover Content */}
               <div
                 className='absolute inset-0 bg-black opacity-0 group-hover:opacity-60 transition-opacity duration-300'
               ></div>
 
-              {/* Hover Content */}
               <div className='absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 text-white transition-opacity duration-300'>
                 <h2 className='text-3xl font-bold'>{facility.title}</h2>
                 <p className='mt-2 text-lg'>{facility.desc}</p>
