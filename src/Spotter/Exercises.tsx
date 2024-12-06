@@ -19,11 +19,10 @@ interface ExercisesProps {
 }
 
 const Exercises: React.FC<ExercisesProps> = ({ exercises, setExercises, bodyPart }) => {
-  console.log(exercises);
   return (
-    <Box id="exercises" sx={{ mt: { lg: '110px', xs: '50px' }, p: '20px' }}>
+    <Box id="exercises" sx={{ mt: { lg: '30px', xs: '50px' }, p: '20px' }}>
       <Typography fontWeight={700} sx={{ fontSize: { lg: '44px', xs: '30px' } }} mb="49px" textAlign="center">
-        Showing Results for <span style={{ color: '#FF2625' }}>{bodyPart}</span> Exercises
+        Search and the results will be displayed below
       </Typography>
 
       {/* Exercise Cards */}

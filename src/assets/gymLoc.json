@@ -5,70 +5,90 @@
             "rating": "5",
             "price": "1500",
             "equipments": [
-                "lavda, lassan"
+                "Treadmills, Stationary Bikes, Rowing machines, Smith Machine, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Squat Rack, Calf Raise Machine, Abductions, deadlift rack, dip machine, Dumbells, Barbells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, TRX Suspension Trainers, Foam Rollers, Mats"
             ],
             "location": "https://maps.app.goo.gl/FkCkJqcN4EK1eFR68",
             "address": "Near Post Office, Maggie Point side, Bidholi"
         },
-        "The Titans": {
-            "number": "XXXXXXXXXX",
-            "rating": "4",
-            "price": "1000",
+        "Doon Capsicum Fitness Gym": {
+            "number": "9690709456",
+            "rating": "3",
+            "price": "700",
             "equipments": [
-                "list_of_equipments"
+                "Treadmills, Stationary Bikes, Lat Pulldown, Leg Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Bicep curl machine, Dumbells, Barbells, Adjustable Benches, Weighted Plates and Racks, Mats"
             ],
-            "location": "https://g.co/kgs/JLx5a8w",
-            "address": "Near Abuzz Oxfordcaps Agrasen Boys Hostel, Lower Bidholi"
+            "location": "https://maps.app.goo.gl/FkCkJqcN4EK1eFR68",
+            "address": "Behind Ammy's Kitchen, Lower Bidholi"
+        },
+        "Fitness Studio": {
+            "number": "9506030504",
+            "rating": "2",
+            "price": "1200",
+            "equipments": [
+                "Punching Bag, Treadmills, Stationary Bikes, Rowing machines, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Leg Extension and Curl Machine, Dumbells, Barbells, Kettlebells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, TRX Suspension Trainers, Battle Ropes, Medicine Balls, Slam Balls, Stretching Machines, Mats"
+            ],
+            "location": "https://maps.app.goo.gl/FvoTFHG5556dcsuG9",
+            "address": "Near Woodstock hostel, behind I², Floor:1,Upper Bidholi"
         },
         "Sagar Fitness": {
-            "number": "XXXXXXXXXX",
+            "number": "9058335684",
             "rating": "4",
-            "price": "1000",
+            "price": "1500",
             "equipments": [
-                "list_of_equipments"
+                "Treadmills, Stationary Bikes, Rowing machines, Stair Climbers, Cross trainer, Smith Machine, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Squat Rack, Calf Raise Machine, Abductor, Dumbells, Kettlebells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, Battle Ropes, Foam Rollers, Stretching Machines, Mats, Kick band, wrist band,All types belt"
             ],
             "location": "https://maps.app.goo.gl/KGswHwLzQKmY7M2S6",
-            "address": "Near Abuzz Oxfordcaps Agrasen Boys Hostel, Lower Bidholi"
+            "address": "Near Agrasen Boys Hostel, Lower Bidholi"
         },
         "BodyGram Gym": {
-            "number": "XXXXXXXXXX",
+            "number": "9756125423",
             "rating": "3",
-            "price": "1000",
+            "price": "800",
             "equipments": [
-                "list_of_equipments"
+                "Treadmills, Stationary Bikes, Smith Machine, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Calf Raise Machine, Dumbells, Barbells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, Battle Ropes, Medicine Balls, Foam Rollers, Mats"
             ],
             "location": "https://maps.app.goo.gl/k22c9W7JFJ7oZpnk6",
             "address": "Near Kandoli Police Chowki, Kandoli"
         },
         "The Muscle Pump": {
-            "number": "XXXXXXXXXX",
+            "number": "7409659419",
             "rating": "5",
-            "price": "1000",
+            "price": "800",
             "equipments": [
-                "list_of_equipments"
+                "Treadmills, Stationary Bikes, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Abs machine, lower back machine, Dumbells, Barbells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, Mats"
             ],
             "location": "https://maps.app.goo.gl/TXQtUjhjkMbsL6PP9",
             "address": "Near Sai Mandir, Bidholi"
         },
         "Level Up Fitness": {
             "number": "8477814015",
-            "rating": "5",
-            "price": "1000",
-            "equipments": [
-                "list_of_equipments"
-            ],
-            "location": "https://maps.app.goo.gl/k4phhocRwSH7Cbpi7",
-            "address": "Pondha Road, Pondha"
-        },
-        "Pumping Iron Gym": {
-            "number": "XXXXXXXXXX",
-            "rating": "5",
+            "rating": "4",
             "price": "800",
             "equipments": [
-                "list_of_equipments"
+                "Treadmills, Stationary Bikes, Rowing machines, Smith Machine, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Squat Rack, Calf Raise Machine, Shoulder press, Dumbells, Barbells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, Battle RopesFoam Rollers, Stretching Machines, Mats"
+            ],
+            "location": "https://maps.app.goo.gl/E5Tbhesa7YfxBGh89",
+            "address": "Pondha Rd, Dehradun, Majhaun"
+        },
+        "Pumping Iron Gym": {
+            "number": "8126362714",
+            "rating": "3",
+            "price": "700",
+            "equipments": [
+                "Treadmills, Ellipticals, Smith Machine, Lat Pulldown, Leg Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Calf Raise Machine, Dumbells, Barbells, Kettlebells, Adjustable Benches, Weighted Plates and Racks, Resistance Bands, Mats"
             ],
             "location": "https://maps.app.goo.gl/NVvsmzUV7toRCug76",
             "address": "Infront of Sprocket, Bidholi"
+        },
+        "Titans Fitness": {
+            "number": "6395413837",
+            "rating": "5",
+            "price": "1500",
+            "equipments": [
+                "Treadmills, Stationary Bikes, Smith Machine, Lat Pulldown, Leg Press Machine, Chest Press Machine, Cable and Pulley Machine, Pec Deck Machine, Leg Extension and Curl Machine, Hack Squat Machine, Squat Rack, Calf Raise Machine, Dumbells, Barbells, Kettlebells, Adjustable Benches, Weighted Plates and Racks, Battle Ropes, Medicine Balls, Monkey bars, Foam Rollers, Mats, Mudgal"
+            ],
+            "location": "https://maps.app.goo.gl/NVvsmzUV7toRCug76",
+            "address": "Kandholi, above watering hole"
         }
     }
 }
