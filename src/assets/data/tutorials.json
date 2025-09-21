@@ -1,0 +1,148 @@
+{
+  "features": [
+    {
+      "name": "Spotter",
+      "subtitle": "Exercise Library & Form Guide",
+      "description": "Your comprehensive exercise database with detailed form guidance and categorized workout videos. Access thousands of exercises with professional demonstrations and step-by-step instructions to perfect your technique.",
+      "videoId": "dQw4w9WgXcQ",
+      "steps": [
+        {
+          "title": "Browse Exercise Categories",
+          "description": "Navigate through muscle groups, equipment types, or difficulty levels to find the perfect exercises for your workout."
+        },
+        {
+          "title": "Select Your Exercise",
+          "description": "Tap on any exercise to view detailed instructions, proper form demonstrations, and common mistakes to avoid."
+        },
+        {
+          "title": "Watch Form Videos",
+          "description": "Follow along with our professional trainers as they demonstrate perfect form and technique for each movement."
+        },
+        {
+          "title": "Track Your Progress",
+          "description": "Log sets, reps, and weights directly from the exercise page to monitor your strength gains over time."
+        },
+        {
+          "title": "Create Custom Routines",
+          "description": "Build personalized workout routines using your favorite exercises and save them for future training sessions."
+        }
+      ],
+      "benefits": [
+        "Access to 1000+ professional exercise demonstrations",
+        "Detailed form instructions to prevent injuries",
+        "Categorized by muscle groups and equipment",
+        "Progress tracking for all exercises",
+        "Offline access to exercise library",
+        "Beginner to advanced difficulty levels"
+      ]
+    },
+    {
+      "name": "Locator",
+      "subtitle": "Smart Gym Finder",
+      "description": "Discover the perfect gym near you with our intelligent location service. Find gyms based on equipment availability, user reviews, peak hours, and specialized amenities that match your fitness needs.",
+      "videoId": "dQw4w9WgXcQ",
+      "steps": [
+        {
+          "title": "Set Your Location",
+          "description": "Allow location access or manually enter your preferred area to search for nearby fitness facilities."
+        },
+        {
+          "title": "Apply Smart Filters",
+          "description": "Filter gyms by equipment type, ratings, price range, hours of operation, and specific amenities you need."
+        },
+        {
+          "title": "View Detailed Profiles",
+          "description": "Check gym photos, equipment lists, member reviews, and real-time availability before you visit."
+        },
+        {
+          "title": "Check Live Occupancy",
+          "description": "See current gym occupancy levels to avoid crowded times and plan your workouts accordingly."
+        },
+        {
+          "title": "Save Your Favorites",
+          "description": "Bookmark your preferred gyms and get notifications about special offers or schedule changes."
+        }
+      ],
+      "benefits": [
+        "Real-time gym occupancy data",
+        "Comprehensive equipment and amenity filters",
+        "User reviews and ratings from real members",
+        "Photos and virtual tours of facilities",
+        "Price comparison across different gyms",
+        "Integration with maps and navigation apps"
+      ]
+    },
+    {
+      "name": "RepBot",
+      "subtitle": "AI Fitness Partner",
+      "description": "Meet your intelligent fitness companion that provides personalized workout plans, nutrition guidance, and motivation. RepBot learns from your progress and adapts recommendations to help you achieve your goals faster.",
+      "videoId": "dQw4w9WgXcQ",
+      "steps": [
+        {
+          "title": "Start a Conversation",
+          "description": "Simply type or speak your fitness questions, goals, or concerns to begin interacting with RepBot."
+        },
+        {
+          "title": "Share Your Goals",
+          "description": "Tell RepBot about your fitness objectives, current level, and preferences to receive personalized advice."
+        },
+        {
+          "title": "Get Custom Workouts",
+          "description": "Receive tailored workout plans that adapt based on your progress, available time, and equipment access."
+        },
+        {
+          "title": "Track Your Progress",
+          "description": "Log workouts and meals while RepBot analyzes your data to provide insights and adjustments."
+        },
+        {
+          "title": "Stay Motivated",
+          "description": "Receive personalized encouragement, tips, and reminders to help you stay consistent with your routine."
+        }
+      ],
+      "benefits": [
+        "24/7 AI-powered fitness coaching",
+        "Personalized workout and nutrition plans",
+        "Progress tracking with intelligent insights",
+        "Motivation and accountability features",
+        "Answers to common fitness and nutrition questions",
+        "Adapts to your schedule and lifestyle changes"
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "subtitle": "Health Analytics Hub",
+      "description": "Your comprehensive health and fitness analytics center that integrates with wearable devices to provide detailed insights into your performance, recovery, and overall wellness trends.",
+      "videoId": "dQw4w9WgXcQ",
+      "steps": [
+        {
+          "title": "Connect Your Devices",
+          "description": "Sync your fitness trackers, smartwatches, and health apps to automatically import your vital metrics."
+        },
+        {
+          "title": "View Your Overview",
+          "description": "Get a quick snapshot of your daily activity, workout performance, and key health indicators."
+        },
+        {
+          "title": "Analyze Trends",
+          "description": "Explore detailed charts and graphs showing your progress over time across various fitness metrics."
+        },
+        {
+          "title": "Set Smart Goals",
+          "description": "Create achievable targets based on your historical data and receive personalized recommendations."
+        },
+        {
+          "title": "Monitor Recovery",
+          "description": "Track sleep quality, heart rate variability, and other recovery metrics to optimize your training."
+        }
+      ],
+      "benefits": [
+        "Integration with multiple fitness wearables and apps",
+        "Comprehensive health and fitness metrics tracking",
+        "Awesome visualizations and trend analysis",
+        "Goal setting with intelligent recommendations",
+        "Recovery and wellness monitoring"
+        
+      ]
+    }
+  ]
+}

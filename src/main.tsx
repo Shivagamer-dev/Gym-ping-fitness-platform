@@ -2,51 +2,25 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { ClerkProvider } from '@clerk/clerk-react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import SignInPage from './auth/sign-in/index.tsx'
 import Home from './Home/index.tsx'
-import Dashboard from './Dashboard/index.tsx'
-import Locator from './Locator/index.tsx'
-import Spotter from './Spotter/index.tsx'
 import About from './FillIn/about.tsx'
 import Privacy from './FillIn/privacyPolicy.tsx'
 import Support from './FillIn/support.tsx'
-import ExerciseDetail from './Spotter/ExerciseDetail.tsx'
+import Tutorial from './FillIn/tutorial.tsx'
+import Pricing from './FillIn/pricing.tsx'
+import Career from './FillIn/career.tsx'
+import Terms from './FillIn/terms.tsx'
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key")
-}
+import { HelmetProvider } from "react-helmet-async";
 
 const router = createBrowserRouter([
-  {
-    path: "/auth/sign-in",
-    element: <SignInPage />,
-  },
   {
     element: <App />,
     children: [
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/locator",
-        element: <Locator />,
-      },
-      {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "/spotter",
-        element: <Spotter />,
-      },
-      {
-        path: "/spotter/exercise/:id",
-        element: <ExerciseDetail />,
       },
       {
         path: "/about",
@@ -59,6 +33,22 @@ const router = createBrowserRouter([
       {
         path: "/support",
         element: <Support />,
+      },
+      {
+        path: "/tutorial",
+        element: <Tutorial />,
+      },
+      {
+        path: "/pricing",
+        element: <Pricing />,
+      },
+      {
+        path: "/career",
+        element: <Career />,
+      },
+      {
+        path: "/terms",
+        element: <Terms />,
       }
     ],
   },
@@ -66,8 +56,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <HelmetProvider>
       <RouterProvider router={router} />
-    </ClerkProvider>
+    </HelmetProvider>
   </React.StrictMode>,
 )

@@ -1,144 +1,75 @@
-import React from 'react';
-import homebg from "./../assets/Home-1.png";
-import spoh from "./../assets/spoh.jpeg";
-import loch from "./../assets/loch.jpeg";
-import dash from "./../assets/dash.jpeg";
-import amil from "./../assets/Amil.jpg";
-import om from "./../assets/Om.jpg";
-import kataria from "./../assets/Kataria.png";
-import varma from "./../assets/Varma.png";
+import { Suspense, lazy, memo } from 'react';
+import { Helmet } from "react-helmet-async";
+
+const EndToEndEncryptionIcon = memo(() => (
+  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM15.1 8H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+  </svg>
+));
+
+const PrivacyByDesignIcon = memo(() => (
+  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.3C16,16.9 15.4,17.5 14.8,17.5H9.2C8.6,17.5 8,16.9 8,16.3V12.7C8,12.1 8.6,11.5 9.2,11.5V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z" />
+  </svg>
+));
+
+const HowItWorks = lazy(() => import('../components/HowItWorks'));
+const CTA = memo(lazy(() => import('../components/CTA')));
+const BackBoneCover = lazy(() => import('./BackBoneCover'));
+const Security = memo(lazy(() => import('./Security')));
+const Team = memo(lazy(() => import('./Team')));
+const Features = memo(lazy(() => import('./Features')));
 
 function Home() {
   return (
-    <div>
-      {/* Section 1 */}
-      <div
-        className='relative text-white h-screen'
-        style={{ backgroundImage: `url(${homebg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
-        <div
-          className='absolute inset-0'
-          style={{
-            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 1))',
-          }}
-        ></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+      <Helmet>
+        <title>Back&Bone | Home</title>
+        <meta name="description" content="Back&Bone: Your Personal Coach, UPGRADED! Discover AI-powered fitness features like Spotter, RepBot, and personalized training to reach your goals." />
+        <meta name="keywords" content="Back&Bone, fitness app, AI coach, personalized training, Spotter, RepBot, workout tracker, health, fitness technology" />
+        <meta property="og:title" content="Back&Bone | Home" />
+        <meta property="og:description" content="Back&Bone: Your Personal Coach, UPGRADED! Discover AI-powered fitness features like Spotter, RepBot, and personalized training to reach your goals." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://backandbone.com/" />
+        <meta property="og:image" content="https://backandbone.com/assets/preview.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone | Home" />
+        <meta name="twitter:description" content="Back&Bone: Your Personal Coach, UPGRADED! Discover AI-powered fitness features like Spotter, RepBot, and personalized training to reach your goals." />
+        <meta name="twitter:image" content="https://backandbone.com/assets/preview.png" />
+      </Helmet>
 
-        {/* Content */}
-        <div className="relative z-10">
-          <h1
-            className='font-extrabold pt-9 italic text-[280px] text-center bg-clip-text text-transparent'
-            style={{
-              backgroundImage: 'linear-gradient(to right, rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.3))',
-              WebkitTextStroke: '8px white',
-            }}
-          >
-            Gym-Ping
-          </h1>
-          <h2
-            className='font-extrabold italic text-[180px] text-center bg-clip-text text-transparent'
-            style={{
-              backgroundImage: 'linear-gradient(to right, #ffffff, rgba(0, 0, 0, 0.3))',
-              WebkitTextStroke: '6px white',
-            }}
-          >
-            Find! Fit! Thrive!
-          </h2>
-        </div>
-      </div>
+      {/* BackBone Cover Section */}
+      <Suspense fallback={<div>Loading cover...</div>}>
+        <BackBoneCover />
+      </Suspense>
 
-      {/* Section 2 */}
-      <div className='bg-black h-[720px]'>
-        <h1 className='text-white text-[68px] px-7 pt-[50px] font-extrabold'>
-          Explore Our Exclusive Facilities to Elevate Your Fitness Journey
-        </h1>
-        <div className='flex justify-end gap-32 mr-10 px-7 pt-10'>
-          {[
-            { image: spoh, title: "Spotter", desc: "Your personal AI exercise guide.", link: "/spotter" },
-            { image: loch, title: "Locator", desc: "Find the best gyms near you.", link: "/locator" },
-            { image: dash, title: "Dashboard", desc: "Track your fitness journey.", link: "/dashboard" },
-          ].map((facility, index) => (
-            <div
-              key={index}
-              className='group relative h-[320px] w-[320px] rounded-xl text-white text-4xl flex rounded-xl bg-white overflow-hidden transform transition-all duration-300 hover:scale-105'
-              style={{
-                backgroundImage: `url(${facility.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              <div className='absolute inset-0 bg-gradient-to-br from-black/70 to-transparent flex items-end p-4'>
-                <h2 className='text-white text-2xl font-bold'>{facility.title}</h2>
-              </div>
+      {/* Features Section */}
+      <Suspense fallback={<div>Loading features...</div>}>
+        <Features />
+      </Suspense>
 
-              <div
-                className='absolute inset-0 bg-black opacity-0 group-hover:opacity-60 transition-opacity duration-300'
-              ></div>
+      <Suspense fallback={<div>Loading how it works...</div>}>
+        <HowItWorks />
+      </Suspense>
 
-              <div className='absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 text-white transition-opacity duration-300'>
-                <h2 className='text-3xl font-bold'>{facility.title}</h2>
-                <p className='mt-2 text-lg'>{facility.desc}</p>
-                <a
-                  href={facility.link}
-                  className='mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition'
-                >
-                  Explore
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Security Section */}
+      <Suspense fallback={<div>Loading security...</div>}>
+        <Security />
+      </Suspense>
 
-      {/* Section 3 */}
-      <div className='bg-black h-[520px] pt-10 flex pl-8 gap-7 relative'>
-        <div
-          className='relative h-[320px] w-[320px] rounded-xl text-white text-4xl flex items-end bg-white'
-          style={{
-            backgroundImage: `url(${amil})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="absolute bottom-2 left-2 text-xl font-bold">Amil Lal</div>
-        </div>
-        <div
-          className='relative h-[320px] w-[320px] rounded-xl text-white text-4xl flex items-end bg-white'
-          style={{
-            backgroundImage: `url(${om})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="absolute bottom-2 left-2 text-xl font-bold">Om M. Dashasahastra</div>
-        </div>
-        <div
-          className='relative h-[320px] w-[320px] rounded-xl text-white text-4xl flex items-end bg-white'
-          style={{
-            backgroundImage: `url(${kataria})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="absolute bottom-2 left-2 text-xl font-bold">Vansh Kataria</div>
-        </div>
-        <div
-          className='relative h-[320px] w-[320px] rounded-xl text-white text-4xl flex items-end bg-white'
-          style={{
-            backgroundImage: `url(${varma})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="absolute bottom-2 left-2 text-xl font-bold">Aditya P. Varma</div>
-        </div>
-        <h1 className='flex text-white text-[68px] px-7 pt-[50px] justify-end font-extrabold'>
-          Meet The Team
-        </h1>
-      </div>
+      {/* Team Section */}
+      <Suspense fallback={<div>Loading team...</div>}>
+        <Team />
+      </Suspense>
 
-
+      {/* CTA Section */}
+      <Suspense fallback={<div>Loading CTA...</div>}>
+        <CTA />
+      </Suspense>
     </div>
   );
 }
 
 export default Home;
+
+export { EndToEndEncryptionIcon, PrivacyByDesignIcon };

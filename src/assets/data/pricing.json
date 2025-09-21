@@ -1,0 +1,283 @@
+{
+  "plans": [
+    {
+      "id": "plus",
+      "name": "Plus",
+      "tagline": "Great for casual users getting started",
+      "price": {
+        "monthly": 100,
+        "yearly": 900
+      },
+      "originalPrice": 100,
+      "period": "month",
+      "popular": false,
+      "gradient": "from-blue-500 to-purple-500",
+      "buttonText": "Upgrade to Plus",
+      "buttonStyle": "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg hover:shadow-blue-500/25",
+      "features": [
+        {
+          "name": "Spotter - Full Exercise Library",
+          "included": true,
+          "description": "1000+ exercises with detailed form guidance"
+        },
+        {
+          "name": "Locator - Advanced Gym Finder",
+          "included": true,
+          "description": "Real-time occupancy, reviews, and advanced filters"
+        },
+        {
+          "name": "RepBot - Unlimited AI Trainer",
+          "included": true,
+          "description": "Unlimited AI conversations and personalized coaching"
+        },
+        {
+          "name": "Dashboard - Advanced Analytics",
+          "included": true,
+          "description": "Comprehensive health and fitness tracking"
+        },
+        {
+          "name": "Custom Workout Plans",
+          "included": true,
+          "description": "AI-generated plans based on your goals"
+        },
+        {
+          "name": "Advanced AI Coaching",
+          "included": true,
+          "description": "Adaptive training recommendations"
+        },
+        {
+          "name": "Nutrition Tracking",
+          "included": true,
+          "description": "Meal planning and macro tracking"
+        },
+        {
+          "name": "Wearable Device Integration",
+          "included": true,
+          "description": "Sync with 50+ fitness trackers and smartwatches"
+        },
+        {
+          "name": "Progress Analytics & Insights",
+          "included": true,
+          "description": "Detailed progress reports and trend analysis"
+        },
+        {
+          "name": "Priority Support",
+          "included": false
+        },
+        {
+          "name": "Offline Mode",
+          "included": true,
+          "description": "Access workouts without internet connection"
+        },
+        {
+          "name": "1-on-1 Coaching Sessions",
+          "included": false
+        },
+        {
+          "name": "Family Member Support",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "tagline": "Most popular for serious fitness enthusiasts",
+      "price": {
+        "monthly": 165,
+        "yearly": 1500
+      },
+      "originalPrice": 165,
+      "period": "month",
+      "popular": true,
+      "gradient": "from-blue-500 to-purple-500",
+      "buttonText": "Upgrade to Pro",
+      "buttonStyle": "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg hover:shadow-blue-500/25",
+      "features": [
+        {
+          "name": "Spotter - Premium Exercise Library",
+          "included": true,
+          "description": "2000+ exercises with 4K videos and expert commentary"
+        },
+        {
+          "name": "Locator - VIP Gym Access",
+          "included": true,
+          "description": "Exclusive gym partnerships and priority booking"
+        },
+        {
+          "name": "RepBot - Elite AI Trainer",
+          "included": true,
+          "description": "Advanced AI with predictive coaching and injury prevention"
+        },
+        {
+          "name": "Dashboard - Professional Analytics",
+          "included": true,
+          "description": "Professional-grade analytics with recovery insights"
+        },
+        {
+          "name": "Custom Workout Plans",
+          "included": true,
+          "description": "Periodized training plans with automatic adjustments"
+        },
+        {
+          "name": "Advanced AI Coaching",
+          "included": true,
+          "description": "Predictive coaching with injury prevention algorithms"
+        },
+        {
+          "name": "Nutrition Tracking",
+          "included": true,
+          "description": "Complete nutrition coaching with meal delivery integration"
+        },
+        {
+          "name": "Wearable Device Integration",
+          "included": true,
+          "description": "Full integration with all major fitness devices and health apps"
+        },
+        {
+          "name": "Progress Analytics & Insights",
+          "included": true,
+          "description": "Professional sports-level analytics and performance insights"
+        },
+        {
+          "name": "Priority Support",
+          "included": true,
+          "description": "24/7 premium support with dedicated account manager"
+        },
+        {
+          "name": "Offline Mode",
+          "included": true,
+          "description": "Full offline functionality with automatic sync"
+        },
+        {
+          "name": "1-on-1 Coaching Sessions",
+          "included": true,
+          "description": "Monthly video calls with certified fitness professionals"
+        },
+        {
+          "name": "Family Member Support",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": "family",
+      "name": "Family",
+      "tagline": "Perfect for families (3-8 members)",
+      "pricing": {
+        "monthly": {
+          "pricePerMember": 150,
+          "minTotal": 450,
+          "maxTotal": 1200
+        },
+        "yearly": {
+          "pricePerMember": 110,
+          "minTotal": 330,
+          "maxTotal": 880,
+          "yearlyMinTotal": 3960,
+          "yearlyMaxTotal": 10560
+        }
+      },
+      "minMembers": 3,
+      "maxMembers": 8,
+      "period": "month",
+      "popular": false,
+      "gradient": "from-purple-500 to-pink-500",
+      "buttonText": "Go Family",
+      "buttonStyle": "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg hover:shadow-purple-500/25",
+      "features": [
+        {
+          "name": "Spotter - Premium Exercise Library",
+          "included": true,
+          "description": "2000+ exercises with 4K videos for all family members"
+        },
+        {
+          "name": "Locator - VIP Gym Access",
+          "included": true,
+          "description": "Exclusive gym partnerships and priority booking for family"
+        },
+        {
+          "name": "RepBot - Elite AI Trainer",
+          "included": true,
+          "description": "Personalized AI coaching for each family member"
+        },
+        {
+          "name": "Dashboard - Family Analytics",
+          "included": true,
+          "description": "Individual and family progress tracking with parental controls"
+        },
+        {
+          "name": "Custom Workout Plans",
+          "included": true,
+          "description": "Age-appropriate plans for each family member"
+        },
+        {
+          "name": "Advanced AI Coaching",
+          "included": true,
+          "description": "Adaptive coaching for different fitness levels and ages"
+        },
+        {
+          "name": "Nutrition Tracking",
+          "included": true,
+          "description": "Family meal planning and individual macro tracking"
+        },
+        {
+          "name": "Wearable Device Integration",
+          "included": true,
+          "description": "Connect multiple devices for all family members"
+        },
+        {
+          "name": "Progress Analytics & Insights",
+          "included": true,
+          "description": "Family challenges and individual progress insights"
+        },
+        {
+          "name": "Priority Support",
+          "included": true,
+          "description": "24/7 family support with dedicated family account manager"
+        },
+        {
+          "name": "Offline Mode",
+          "included": true,
+          "description": "Full offline functionality for all family members"
+        },
+        {
+          "name": "1-on-1 Coaching Sessions",
+          "included": true,
+          "description": "Monthly family fitness consultations and individual sessions"
+        },
+        {
+          "name": "Family Member Support",
+          "included": true,
+          "description": "3-8 family members with individual profiles and parental controls"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Can I change my plan at any time?",
+      "answer": "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated accordingly."
+    },
+    {
+      "question": "How does the Family plan pricing work?",
+      "answer": "The Family plan costs ₹150 per member per month (₹110 per member for yearly). You can have 3-8 family members, so monthly costs range from ₹450 to ₹1,200. Yearly billing offers 26.6% savings with costs ranging from ₹3,960 to ₹10,560 per year."
+    },
+    {
+      "question": "What devices does Back&Bone support?",
+      "answer": "Back&Bone works on iOS and Android smartphones and tablets. We also integrate with 50+ wearable devices including Apple Watch, Fitbit, Garmin, and more."
+    },
+    {
+      "question": "Do you offer student or military discounts?",
+      "answer": "Yes! We offer 50% off Plus and Pro plans for verified students and active military personnel. Contact support with your credentials to apply."
+    },
+    {
+      "question": "What happens to my data if I cancel?",
+      "answer": "Your workout history and progress data are safely stored for 12 months after cancellation. You can export your data at any time or reactivate your account to restore full access."
+    },
+    {
+      "question": "Can children use the Family plan?",
+      "answer": "Yes! The Family plan includes parental controls and age-appropriate content. Children under 13 require parental supervision, and workout plans are automatically adjusted based on age and fitness level."
+    }
+  ]
+}

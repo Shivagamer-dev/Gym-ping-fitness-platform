@@ -1,8 +1,8 @@
-# Gym-Ping
+# Back&Bone
 
-> **Find! Fit! Thrive!** 
+> **Your Personal Coach, UPGRADED!** 
 
- **Gym-Ping** is a web application designed to help users locate gyms, track their fitness progress, and enhance their workout journey. With features like a gym locator,an exercise helper, a fitness tracker dashboard (coming soon), and a modern responsive design, Gym-Ping aims to be the ultimate companion for fitness enthusiasts.
+ **Back&Bone** is a mobile application designed to help users locate gyms, track their fitness progress, and enhance their workout journey. With features like gym locator, exercise helper, chatbot for workout and diet assist, fitness tracker dashboard (coming soon), and a modern responsive design, Back&Bone aims to be the ultimate companion for fitness enthusiasts.
 
 ## Table of Contents
 
@@ -15,15 +15,10 @@
 
 ## Features
 
-* **Gym Locator** : Easily find nearby gyms with filters for ratings, price, and available equipment.
-* **Spotter** : Discover exercise routines with instructional videos, powered by the Exercisedb API.
-* **Fitness Dashboard (Coming Soon)** : Track your fitness journey with a dedicated dashboard providing insights and visual data on your progress.
-
-## Tech Stack
-
-* **Frontend** : React, TypeScript, Tailwind CSS
-* **Backend** : Strapi CMS for content management
-* **Authentication** : Clerk for secure user authentication
+* **Spotter** : Discover exercise routines with instructional videos, powered by the Exercisedb.
+* **Locator** : Easily find nearby gyms with filters for ratings, price, and available equipment.
+* **RepBot** : Chat with our AI assistant for Diet and Workout Assistance.
+* **Dashboard (Coming Soon)** : Track your fitness journey with a dedicated dashboard providing insights and visual data on your progress.
 
 ## Installation
 
@@ -33,8 +28,8 @@ To set up the project locally, follow these steps:
    
 
 ```bash
-   git clone https://github.com/your-username/Gym-Ping.git
-   cd Gym-Ping
+   git clone https://github.com/your-username/Back&Bone.git
+   cd Back&Bone
    ```
 
 2. **Install Dependencies** :
@@ -45,10 +40,6 @@ To set up the project locally, follow these steps:
 
 3. **Create environment variables** :
    Make a .env file in the root directory and add your environment variable
-
-```bash
-   REACT_APP_CLERK_FRONTEND_API=<your-clerk-frontend-api>
-   ```
 
 4. **Start the development server** :
 ```bash
@@ -61,30 +52,10 @@ To set up the project locally, follow these steps:
    npm run build
    ```
 
-## Usage
-
-* Once the app is up and running, you can explore the following features:
-
-    - **Gym Locator** :
-        Access the gym locator to find gyms near your location.
-        Sort by name, rating, and price to find the best fit.
-        Check available equipment and contact details for each gym.
-
-    - **Dashboard** :
-        The "Coming Soon!" Dashboard will soon feature fitness tracking capabilities, allowing you to monitor your progress.
-
-    - **Spotter** :
-        Explore the "SPOTTER" page to view instructional exercise videos.
-        Videos are sourced from the Exercisedb API, offering insights into proper techniques for various exercises.
-
-
-    - **Authentication** :
-        Sign in securely with Clerk to access personalized features and save preferences.
-
 ## Folder Structure
 
   ```bash
-    Gym-Ping 
+    Back&Bone 
     ├── public
     ├── src 
     │ ├── assets
