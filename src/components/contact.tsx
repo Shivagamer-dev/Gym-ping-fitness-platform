@@ -3,7 +3,7 @@ function Contact() {
     return (
         <section className="mb-12 bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-gray-700/50 rounded-2xl p-8">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent text-center">
-                14. Contact Us
+                Contact Us
             </h2>
 
             <div className="text-center mb-8">

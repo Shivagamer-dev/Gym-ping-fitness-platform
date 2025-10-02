@@ -65,11 +65,10 @@ function Support() {
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`relative rounded-2xl transition-all duration-300 ${
-                  isHovered || isExpanded
+                className={`relative rounded-2xl transition-all duration-300 ${isHovered || isExpanded
                     ? 'bg-gradient-to-b from-blue-600/10 to-purple-600/10 border-2 border-blue-500/30 shadow-xl shadow-blue-500/10'
                     : 'bg-gray-800/50 border border-gray-700/50'
-                } backdrop-blur-sm hover:scale-[1.02] cursor-pointer`}
+                  } backdrop-blur-sm hover:scale-[1.02] cursor-pointer`}
                 onClick={() => toggleExpanded(index)}
               >
                 <div className="p-6">
@@ -78,13 +77,12 @@ function Support() {
                     <h3 className="text-xl font-semibold text-white pr-4 flex-1">
                       {faq.question}
                     </h3>
-                    <div className={`w-8 h-8 rounded-full border-2 border-gray-400 flex items-center justify-center transition-all duration-300 ${
-                      isExpanded ? 'border-blue-400 bg-blue-500/20 rotate-180' : 'hover:border-blue-400'
-                    }`}>
-                      <svg 
-                        className={`w-4 h-4 transition-colors duration-300 ${isExpanded ? 'text-blue-400' : 'text-gray-400'}`} 
-                        fill="none" 
-                        stroke="currentColor" 
+                    <div className={`w-8 h-8 rounded-full border-2 border-gray-400 flex items-center justify-center transition-all duration-300 ${isExpanded ? 'border-blue-400 bg-blue-500/20 rotate-180' : 'hover:border-blue-400'
+                      }`}>
+                      <svg
+                        className={`w-4 h-4 transition-colors duration-300 ${isExpanded ? 'text-blue-400' : 'text-gray-400'}`}
+                        fill="none"
+                        stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -93,9 +91,8 @@ function Support() {
                   </div>
 
                   {/* Answer with smooth expand/collapse */}
-                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    isExpanded ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
-                  }`}>
+                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+                    }`}>
                     <div className="pt-4 border-t border-gray-600/30">
                       <p className="text-gray-300 leading-relaxed">
                         {faq.answer}
@@ -124,37 +121,39 @@ function Support() {
             </p>
           </div>
 
-          <div className="flex justify-center">
-            {/* Email Support */}
-            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 text-center hover:bg-gray-800/50 transition-all duration-300 max-w-md w-full">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+          <div className='flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12'>
+            <div className="flex justify-center">
+              {/* Email Support */}
+              <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 text-center hover:bg-gray-800/50 transition-all duration-300 max-w-md w-full">
+                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-semibold mb-3">Email Support</h3>
+                <p className="text-gray-400 mb-6 text-lg">Get detailed help via email</p>
+                <a
+                  href="mailto:support@backandbone.com"
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold text-lg transition-colors duration-300"
+                >
+                  support@backandbone.com
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
               </div>
-              <h3 className="text-2xl font-semibold mb-3">Email Support</h3>
-              <p className="text-gray-400 mb-6 text-lg">Get detailed help via email</p>
-              <a 
-                href="mailto:support@backandbone.com" 
-                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold text-lg transition-colors duration-300"
-              >
-                support@backandbone.com
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
             </div>
-          </div>
 
-          {/* Response Time Info */}
-          <div className="mt-12 text-center">
-            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 inline-block">
-              <h3 className="text-xl font-semibold mb-2">Response Time</h3>
-              <p className="text-gray-300">
-                We typically respond within 24 hours<br />
-                <span className="text-blue-400">Monday - Friday</span><br />
-                <span className="text-gray-400">Faster response during business hours</span>
-              </p>
+            {/* Response Time Info */}
+            <div className="mt-6 md:mt-12 text-center">
+              <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 inline-block">
+                <h3 className="text-xl font-semibold mb-2">Response Time</h3>
+                <p className="text-gray-300">
+                  We typically respond within 24 hours<br />
+                  <span className="text-blue-400">Monday - Friday</span><br />
+                  <span className="text-gray-400">Faster response during business hours</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

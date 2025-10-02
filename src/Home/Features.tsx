@@ -65,7 +65,7 @@ function Features () {
                     ].map((feature, index) => (
                         <div
                             key={index}
-                            className={`group relative bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:bg-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl`}
+                            className={`group relative bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 h-70 w-full md:w-auto hover:bg-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl`}
                         >
                             <div className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`}></div>
 
@@ -80,9 +80,11 @@ function Features () {
                                 </h3>
                                 <h4 className="text-lg font-semibold text-gray-300 mb-4">{feature.subtitle}</h4>
                                 <p className="text-gray-400 leading-relaxed mb-6">{feature.desc}</p>
-                                <button className={`bg-gradient-to-r ${feature.gradient} px-4 py-2 rounded-lg text-black font-semibold hover:scale-105 transition-transform`}>
+
+                                {/* Explore button removed until we have a link*/}
+                                {/* <button className={`bg-gradient-to-r ${feature.gradient} px-4 py-2 rounded-lg text-black font-semibold hover:scale-105 transition-transform`}>
                                     Explore
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     ))}

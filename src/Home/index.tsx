@@ -1,5 +1,11 @@
-import { Suspense, lazy, memo } from 'react';
+import { memo } from 'react';
 import { Helmet } from "react-helmet-async";
+import HowItWorks from '../components/HowItWorks';
+import CTA from '../components/CTA';
+import BackBoneCover from './BackBoneCover';
+import Security from './Security';
+import Team from './Team';
+import Features from './Features';
 
 const EndToEndEncryptionIcon = memo(() => (
   <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
@@ -12,13 +18,6 @@ const PrivacyByDesignIcon = memo(() => (
     <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.3C16,16.9 15.4,17.5 14.8,17.5H9.2C8.6,17.5 8,16.9 8,16.3V12.7C8,12.1 8.6,11.5 9.2,11.5V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z" />
   </svg>
 ));
-
-const HowItWorks = lazy(() => import('../components/HowItWorks'));
-const CTA = memo(lazy(() => import('../components/CTA')));
-const BackBoneCover = lazy(() => import('./BackBoneCover'));
-const Security = memo(lazy(() => import('./Security')));
-const Team = memo(lazy(() => import('./Team')));
-const Features = memo(lazy(() => import('./Features')));
 
 function Home() {
   return (
@@ -39,33 +38,21 @@ function Home() {
       </Helmet>
 
       {/* BackBone Cover Section */}
-      <Suspense fallback={<div>Loading cover...</div>}>
-        <BackBoneCover />
-      </Suspense>
+      <BackBoneCover />
 
       {/* Features Section */}
-      <Suspense fallback={<div>Loading features...</div>}>
-        <Features />
-      </Suspense>
+      <Features />
 
-      <Suspense fallback={<div>Loading how it works...</div>}>
-        <HowItWorks />
-      </Suspense>
+      <HowItWorks />
 
       {/* Security Section */}
-      <Suspense fallback={<div>Loading security...</div>}>
-        <Security />
-      </Suspense>
+      <Security />
 
       {/* Team Section */}
-      <Suspense fallback={<div>Loading team...</div>}>
-        <Team />
-      </Suspense>
+      <Team />
 
       {/* CTA Section */}
-      <Suspense fallback={<div>Loading CTA...</div>}>
-        <CTA />
-      </Suspense>
+      <CTA />
     </div>
   );
 }

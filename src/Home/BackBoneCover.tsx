@@ -22,7 +22,7 @@ export default function BackBoneCover() {
     const textY = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
 
     return (
-        <div className="relative w-full min-h-screen flex items-center justify-center bg-black overflow-hidden">
+        <div className="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-950 overflow-hidden">
             {/* Background Image */}
             <motion.img
                 src="/src/assets/images/Home-1.png"
@@ -138,6 +138,9 @@ export default function BackBoneCover() {
                         Signup for Beta
                     </motion.button>
                     <motion.button
+                        onClick={() => {
+                            document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
                         className="px-10 py-5 rounded-3xl border border-gray-400 text-gray-200 font-semibold text-2xl hover:bg-gray-800 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

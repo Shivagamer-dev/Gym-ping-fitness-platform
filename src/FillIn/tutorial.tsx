@@ -74,7 +74,7 @@ function Tutorial() {
               Master Your Fitness Journey
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Learn how to unlock the full potential of Back&Bone's powerful features. 
+              Learn how to unlock the full potential of Back&Bone's powerful features.
               From exercise guidance to AI-powered coaching, we've got you covered.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
@@ -156,7 +156,7 @@ function Tutorial() {
                 <div className="grid lg:grid-cols-2 gap-8 items-start">
                   <div className="order-2 lg:order-1">
                     <h4 className="text-2xl font-semibold mb-6 text-white">How to Use {feature.name}</h4>
-                    
+
                     {/* Step by Step Guide */}
                     <div className="space-y-4 mb-8">
                       {feature.steps.map((step, stepIndex) => (
@@ -216,10 +216,10 @@ function Tutorial() {
         <div className="max-w-4xl mx-auto px-6 py-16 text-center">
           <h2 className="text-3xl font-bold mb-6">Need More Help?</h2>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-            Our support team is here to help you get the most out of Back&Bone. 
+            Our support team is here to help you get the most out of Back&Bone.
             Check out our comprehensive FAQ section or get in touch directly.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/support"
@@ -237,7 +237,7 @@ function Tutorial() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              Contact Support
+              Email Us
             </a>
           </div>
         </div>

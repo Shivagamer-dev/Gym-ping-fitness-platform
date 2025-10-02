@@ -1,99 +1,51 @@
 {
   "openings": [
     {
-      "title": "Software Engineer",
-      "role": "AI & Machine Learning",
-      "description": "Join our engineering team to build revolutionary AI-powered fitness solutions that transform how millions of people approach their health and wellness journey. You'll work with cutting-edge ML models and scalable cloud infrastructure.",
-      "type": "Full-time",
+      "title": "React Native Mobile App Developer",
+      "role": "Mobile Development Internship",
+      "description": "Join our mobile team to build and enhance our cross-platform fitness application using React Native. This is a great opportunity for aspiring developers to gain hands-on experience in a real-world product that impacts thousands of users.",
+      "type": "Internship",
       "location": "Remote",
       "exReq": [
-        "3+ years of experience in software development with Python",
-        "Strong proficiency in TensorFlow, PyTorch, or similar ML frameworks",
-        "Hands-on experience with cloud platforms (AWS, GCP, or Azure)",
-        "Experience with RESTful APIs and microservices architecture",
-        "Knowledge of data structures, algorithms, and system design",
-        "Familiarity with containerization (Docker, Kubernetes) is a plus",
-        "Bachelor's degree in Computer Science, Engineering, or related field"
+        "Proficiency in JavaScript, ES6+, and modern front-end principles.",
+        "Familiarity with React and React Native.",
+        "Understanding of mobile app development lifecycle.",
+        "Basic knowledge of RESTful APIs and state management libraries (like Redux or MobX).",
+        "A portfolio of personal projects or coursework demonstrating your skills.",
+        "Currently pursuing or recently completed a degree in Computer Science or a related field.",
+        "Eagerness to learn and a passion for building great mobile experiences."
       ]
     },
     {
-      "title": "Product Manager",
-      "role": "Fitness Technology",
-      "description": "Drive the product vision and strategy for Back&Bone's innovative fitness applications. Shape the future of personalized fitness experiences by translating user needs into breakthrough product features that motivate and inspire.",
-      "type": "Full-time",
-      "location": "Hybrid",
-      "exReq": [
-        "5+ years of experience in product management, preferably in tech or fitness",
-        "Deep understanding of fitness industry trends and user behavior",
-        "Proven track record of launching successful consumer products",
-        "Excellent communication, presentation, and leadership skills",
-        "Experience with agile development methodologies and product analytics",
-        "Strong analytical and problem-solving abilities",
-        "MBA or relevant advanced degree preferred"
-      ]
-    },
-    {
-      "title": "UX/UI Designer",
-      "role": "Mobile Applications",
-      "description": "Create intuitive, beautiful, and engaging user experiences for our mobile fitness applications. Design interfaces that motivate users to achieve their fitness goals while ensuring accessibility and usability across diverse user groups.",
-      "type": "Full-time",
+      "title": "Digital Marketing Associate",
+      "role": "Marketing Internship",
+      "description": "Help us grow our user base and engage our community through creative and data-driven digital marketing campaigns. This role is perfect for students passionate about marketing, social media, and the fitness industry.",
+      "type": "Internship",
       "location": "Remote",
       "exReq": [
-        "3+ years of experience in UX/UI design for mobile applications",
-        "Strong portfolio showcasing mobile app designs and user-centered solutions",
-        "Expert proficiency in design tools (Figma, Sketch, Adobe Creative Suite)",
-        "Experience with user research, usability testing, and design thinking",
-        "Knowledge of iOS and Android design guidelines and best practices",
-        "Understanding of accessibility principles and inclusive design",
-        "Bachelor's degree in Design, HCI, or related field preferred"
+        "Strong understanding of social media platforms (Instagram, TikTok, Twitter, Facebook).",
+        "Excellent written and verbal communication skills.",
+        "Familiarity with content creation, SEO principles, and email marketing is a plus.",
+        "Ability to analyze data and generate insights.",
+        "Creative mindset with a can-do attitude.",
+        "Currently pursuing or recently completed a degree in Marketing, Communications, or a related field.",
+        "A passion for fitness and building online communities."
       ]
     },
     {
-      "title": "Marketing Specialist",
-      "role": "Digital Growth",
-      "description": "Lead creative digital marketing campaigns that inspire and grow our global fitness community. Drive user acquisition and engagement through data-driven strategies across multiple channels while building brand awareness.",
-      "type": "Full-time",
-      "location": "Hybrid",
-      "exReq": [
-        "3+ years of experience in digital marketing with proven growth results",
-        "Expertise in SEO, SEM, social media marketing, and content strategy",
-        "Proficiency with marketing analytics tools (Google Analytics, Facebook Ads)",
-        "Strong copywriting skills and creative campaign development",
-        "Experience with email marketing, conversion optimization, and A/B testing",
-        "Data-driven mindset with ability to analyze and optimize campaign performance",
-        "Bachelor's degree in Marketing, Communications, or related field"
-      ]
-    },
-    {
-      "title": "DevOps Engineer",
-      "role": "Cloud Infrastructure",
-      "description": "Build and maintain scalable, secure, and reliable cloud infrastructure that powers our AI-driven fitness platform. Ensure high availability and performance for millions of users while implementing best practices in automation and monitoring.",
-      "type": "Full-time",
+      "title": "UI/UX Design Intern",
+      "role": "Product Design",
+      "description": "Create intuitive and beautiful user experiences for our web and mobile applications. This internship is a fantastic opportunity to work on a real product, from wireframing and prototyping to high-fidelity design, shaping the look and feel of our fitness platform.",
+      "type": "Internship",
       "location": "Remote",
       "exReq": [
-        "4+ years of experience in DevOps, SRE, or cloud infrastructure roles",
-        "Strong expertise with AWS, GCP, or Azure cloud platforms",
-        "Proficiency in Infrastructure as Code (Terraform, CloudFormation)",
-        "Experience with containerization and orchestration (Docker, Kubernetes)",
-        "Knowledge of CI/CD pipelines, monitoring, and logging solutions",
-        "Scripting skills in Python, Bash, or similar languages",
-        "Experience with security best practices and compliance frameworks"
-      ]
-    },
-    {
-      "title": "Data Scientist",
-      "role": "Personalization",
-      "description": "Leverage advanced analytics and machine learning to create personalized fitness experiences that adapt to each user's unique goals, preferences, and progress. Turn data into insights that drive product innovation and user success.",
-      "type": "Full-time",
-      "location": "Hybrid",
-      "exReq": [
-        "3+ years of experience in data science or machine learning roles",
-        "Strong proficiency in Python, R, and SQL for data analysis",
-        "Experience with ML frameworks (scikit-learn, TensorFlow, PyTorch)",
-        "Knowledge of statistical analysis, A/B testing, and experimental design",
-        "Experience with big data technologies (Spark, Hadoop) is a plus",
-        "Strong communication skills to translate complex findings into actionable insights",
-        "Master's or PhD in Data Science, Statistics, Computer Science, or related field"
+        "A portfolio showcasing your design process and UI/UX projects (coursework, personal projects, etc.).",
+        "Familiarity with design tools like Figma, Sketch, or Adobe XD.",
+        "Basic understanding of user-centered design principles, wireframing, and prototyping.",
+        "Strong visual design skills with an eye for typography, color, and layout.",
+        "Currently pursuing or recently completed a degree in Design, HCI, or a related field.",
+        "Excellent communication skills and a willingness to learn and collaborate.",
+        "A passion for creating user-friendly and engaging digital experiences."
       ]
     }
   ]

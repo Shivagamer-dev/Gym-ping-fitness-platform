@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Thankyou from "./Thankyou";
+import ErrorPopup from "./ErrorPopup";
+import { handleError, StructuredError } from "../lib/errorHandler";
 
 interface ApplyPopupProps {
     isOpen: boolean;
@@ -16,6 +18,7 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
     const [coverLetter, setCoverLetter] = useState("");
     const [resumeLink, setResumeLink] = useState(""); // Changed from File to string for resume link
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<StructuredError | null>(null); // State for error popup
     const [showThankYou, setShowThankYou] = useState(false); // New state for Thankyou popup
     const [links, setLinks] = useState<{ type: string; url: string }[]>([]); // State for additional links
     const [showAddLinkSection, setShowAddLinkSection] = useState(false); // State to toggle add link section
@@ -64,20 +67,20 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
 
         // Basic validation
         if (!fullName || !email || !phone || !coverLetter) {
-            alert("Please fill in all required fields");
+            setError({ type: "ValidationError", message: "Please fill in all required fields." });
             setLoading(false);
             return;
         }
 
         if (!resumeLink) {
-            alert("Please provide your resume link");
+            setError({ type: "ValidationError", message: "Please provide your resume link." });
             setLoading(false);
             return;
         }
 
         // URL validation for resume link
         if (!urlRegex.test(resumeLink)) {
-            alert("Please enter a valid URL for your resume link");
+            setError({ type: "ValidationError", message: "Please enter a valid URL for your resume link." });
             setLoading(false);
             return;
         }
@@ -85,7 +88,7 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
         // Validate additional links
         for (const link of links) {
             if (!urlRegex.test(link.url)) {
-                alert(`Please enter a valid URL for the ${link.type} link`);
+                setError({ type: "ValidationError", message: `Please enter a valid URL for the ${link.type} link.` });
                 setLoading(false);
                 return;
             }
@@ -94,7 +97,7 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address");
+            setError({ type: "ValidationError", message: "Please enter a valid email address." });
             setLoading(false);
             return;
         }
@@ -117,13 +120,15 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
 
             setShowThankYou(true); // Show Thankyou popup on success
         } catch (error) {
-            console.error("Error submitting application:", error);
-            alert("Something went wrong. Please try again later.");
+            const handledError = await handleError(error);
+            setError(handledError);
         } finally {
             setLoading(false);
         }
     };
 
+
+    const handleCloseErrorPopup = () => setError(null);
 
     return (
         <>
@@ -255,6 +260,7 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
                                             <option value="LinkedIn">LinkedIn</option>
                                             <option value="Portfolio">Portfolio</option>
                                             <option value="Figma">Figma</option>
+                                            <option value="Canva">Canva</option>
                                             <option value="Other">Other</option>
                                         </select>
                                         <input
@@ -306,6 +312,15 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
                         </form>
                     </div>
                 </div>
+            )}
+
+            {error && (
+                <ErrorPopup
+                    isOpen={!!error}
+                    onClose={handleCloseErrorPopup}
+                    errorType={error.type}
+                    message={error.message}
+                />
             )}
         </>
     );

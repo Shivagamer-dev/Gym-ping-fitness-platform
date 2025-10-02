@@ -1,6 +1,6 @@
 function Security() {
   return (
-      <section className="relative py-20">
+        <section className="relative py-20 bg-gradient-to-b from-black via-teal-500/25 to-black">
           <div className="max-w-4xl mx-auto px-6 text-center">
               <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-12">
                   <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">

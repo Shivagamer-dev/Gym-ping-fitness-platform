@@ -1,13 +1,28 @@
 import React from "react";
+import { ErrorType } from "../lib/errorHandler"; // Import ErrorType
 
 interface ErrorPopupProps {
     isOpen: boolean;
     onClose: () => void;
-    title?: string;
+    errorType?: ErrorType; // Add errorType prop
     message: string;
 }
 
-const ErrorPopup: React.FC<ErrorPopupProps> = ({ isOpen, onClose, title = "Error", message }) => {
+const ErrorPopup: React.FC<ErrorPopupProps> = ({ isOpen, onClose, errorType, message }) => {
+    const getTitle = (type?: ErrorType) => {
+        switch (type) {
+            case 'NetworkError':
+                return 'Network Issue';
+            case 'ValidationError':
+                return 'Validation Problem';
+            case 'TechnicalError':
+                return 'System Error';
+            default:
+                return 'Error';
+        }
+    };
+
+    const title = getTitle(errorType);
     if (!isOpen) return null;
 
     return (

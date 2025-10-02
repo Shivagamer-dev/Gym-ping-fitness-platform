@@ -1,6 +1,6 @@
 function HowItWorks() {
   return (
-    <section className="relative py-20 bg-gradient-to-b from-black/50 to-gray-900/50">
+    <section className="relative py-20 bg-gradient-to-b from-black via-purple-900/35 to-black">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
