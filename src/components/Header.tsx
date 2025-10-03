@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import NewsletterForm from "./NewsLetterForm";
 import Thankyou from "./Thankyou"; // Import Thankyou component
 import BetaSignupPopup from "../Home/BetaSignupPopup";
+import Logo from '../assets/images/CircLogo.png';
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,9 +42,9 @@ function Header() {
                         href="/"
                         className="text-white text-3xl md:text-4xl font-extrabold italic tracking-wide group flex items-center gap-3"
                     >
-                        <div className="w-10 h-10 bg-gradient-to-br from-red-500 via-orange-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <div className="w-12 h-12 flex items-center justify-center shadow-lg">
                             {/*LogoSVG*/}
-                            <img src="./src/assets/images/LineLogoSVG.svg" className="rounded-2xl"/>
+                            <img src={Logo}/>
                         </div>
                         <span className="relative">
                             Back&Bone

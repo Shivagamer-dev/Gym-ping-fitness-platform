@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import BetaSignupPopup from "./BetaSignupPopup";
+import BG from '../assets/images/Bg.png';
 
 export default function BackBoneCover() {
     const { scrollYProgress } = useScroll();
@@ -25,7 +26,7 @@ export default function BackBoneCover() {
         <div className="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-950 overflow-hidden">
             {/* Background Image */}
             <motion.img
-                src="/src/assets/images/Home-1.png"
+                src={BG}
                 alt="Back&Bone Cover"
                 className="absolute inset-0 w-full h-full object-cover opacity-70"
                 initial={{ scale: 1.2, opacity: 0 }}

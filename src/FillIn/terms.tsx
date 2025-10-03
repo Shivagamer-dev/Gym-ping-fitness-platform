@@ -31,7 +31,7 @@ function Terms() {
                             Your agreement with Back&Bone. Please read these terms carefully before using our services.
                         </p>
                         <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl px-6 py-3 inline-block">
-                            <p className="text-sm text-gray-400">Last Updated: September 08, 2025</p>
+                            <p className="text-sm text-gray-400">Last Updated: October 02, 2025</p>
                         </div>
                     </div>
                 </div>

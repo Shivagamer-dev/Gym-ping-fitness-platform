@@ -192,7 +192,7 @@
           "yearlyMaxTotal": 10560
         }
       },
-      "minMembers": 3,
+      "minMembers": 2,
       "maxMembers": 8,
       "period": "month",
       "popular": false,
@@ -243,7 +243,7 @@
         {
           "name": "Family Member Support",
           "included": true,
-          "description": "3-8 family members with individual profiles and parental controls"
+          "description": "2-8 family members with individual profiles and parental controls"
         }
       ]
     }
@@ -255,15 +255,15 @@
     },
     {
       "question": "How does the Family plan pricing work?",
-      "answer": "The Family plan costs ₹150 per member per month (₹110 per member for yearly). You can have 3-8 family members, so monthly costs range from ₹450 to ₹1,200. Yearly billing offers 26.6% savings with costs ranging from ₹3,960 to ₹10,560 per year."
+      "answer": "The Family plan costs ₹150 per member per month (₹110 per member for yearly). You can have 2-8 family members, so monthly costs range from ₹300 to ₹1,200. Yearly billing offers 26.6% savings with costs ranging from ₹2,640 to ₹10,560 per year."
     },
     {
       "question": "What devices does Back&Bone support?",
       "answer": "Back&Bone works on iOS and Android smartphones and tablets. We also integrate with 50+ wearable devices including Apple Watch, Fitbit, Garmin, and more."
     },
     {
-      "question": "Do you offer student or military discounts?",
-      "answer": "Yes! We offer 50% off Plus and Pro plans for verified students and active military personnel. Contact support with your credentials to apply."
+      "question": "Is there a discount for annual billing?",
+      "answer": "Yes! Choosing yearly billing saves you a minimum of 25% compared to monthly payments. For example, the Plus plan is ₹900/year instead of ₹100/month."
     },
     {
       "question": "What happens to my data if I cancel?",

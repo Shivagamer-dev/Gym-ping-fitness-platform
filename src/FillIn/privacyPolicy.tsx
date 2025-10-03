@@ -30,7 +30,7 @@ function Privacy() {
               Your privacy matters. Here's how we protect your data and respect your trust.
             </p>
             <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl px-6 py-3 inline-block">
-              <p className="text-sm text-gray-400">Last Updated: September 08, 2025</p>
+              <p className="text-sm text-gray-400">Last Updated: October 02, 2025</p>
             </div>
           </div>
         </div>
@@ -38,15 +38,15 @@ function Privacy() {
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 pb-16">
-        
+
         {/* Introduction */}
         <section className="mb-12 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:bg-gray-800/40 transition-colors duration-300">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
             1. Introduction
           </h2>
           <p className="text-gray-300 leading-relaxed text-lg">
-            <span className="text-blue-400 font-semibold">Back&Bone</span> App respects your privacy and is committed to protecting 
-            the personal information you share with us. This Privacy Policy explains how we collect, use, store, and protect 
+            <span className="text-blue-400 font-semibold">Back&Bone</span> App respects your privacy and is committed to protecting
+            the personal information you share with us. This Privacy Policy explains how we collect, use, store, and protect
             information when you use our website and mobile application (together, the "Services").
           </p>
           <div className="mt-6 bg-blue-900/20 border border-blue-500/30 rounded-xl p-4">
@@ -157,7 +157,7 @@ function Privacy() {
           <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
             4. Data Sharing and Disclosure
           </h2>
-          
+
           <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
             <h3 className="text-lg font-semibold mb-3 text-red-300 flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -216,20 +216,20 @@ function Privacy() {
           </h2>
           <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/30">
             <p className="text-gray-300 leading-relaxed text-lg">
-              We implement industry-standard security measures to protect your data. However, no method of transmission or 
+              We implement industry-standard security measures to protect your data. However, no method of transmission or
               storage is 100% secure. You use our Services at your own risk.
             </p>
           </div>
         </section>
 
         {/* Your Rights */}
-{/* Your Rights */}
+        {/* Your Rights */}
         <section className="mb-12 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:bg-gray-800/40 transition-colors duration-300">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             7. Your Privacy Rights & Controls
           </h2>
           <p className="text-gray-300 leading-relaxed text-lg mb-8">
-            Your data belongs to you. We believe in giving you complete transparency and control over your personal information. 
+            Your data belongs to you. We believe in giving you complete transparency and control over your personal information.
             Depending on your location, you may have additional rights under privacy laws like GDPR or CCPA.
           </p>
 
@@ -292,7 +292,7 @@ function Privacy() {
               </h3>
               <div className="space-y-4">
                 <p className="text-gray-300 leading-relaxed">
-                  You have the right to withdraw consent to data processing at any time, especially for location data and health data. 
+                  You have the right to withdraw consent to data processing at any time, especially for location data and health data.
                   This includes the ability to revoke permissions for specific features while continuing to use other parts of the app.
                 </p>
                 <div className="bg-pink-900/20 border border-pink-500/30 rounded-lg p-4">
@@ -306,7 +306,7 @@ function Privacy() {
               </div>
             </div>
           </div>
-        </section>  
+        </section>
 
         {/* Third-Party Services */}
         <section className="mb-12 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:bg-gray-800/40 transition-colors duration-300">
@@ -315,7 +315,7 @@ function Privacy() {
           </h2>
           <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/30">
             <p className="text-gray-300 leading-relaxed text-lg">
-              Our Services may integrate with third-party providers (e.g., Google Maps, analytics, wearable APIs). 
+              Our Services may integrate with third-party providers (e.g., Google Maps, analytics, wearable APIs).
               Their collection and use of data is governed by their own privacy policies.
             </p>
           </div>
@@ -328,7 +328,7 @@ function Privacy() {
           </h2>
           <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
             <p className="text-gray-300 leading-relaxed text-lg">
-              Our Services are not directed to children under 13. We do not knowingly collect data from children. 
+              Our Services are not directed to children under 13. We do not knowingly collect data from children.
               If we discover such a collection, we will delete it immediately.
             </p>
           </div>
@@ -341,7 +341,7 @@ function Privacy() {
           </h2>
           <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/30">
             <p className="text-gray-300 leading-relaxed text-lg">
-              We may update this Privacy Policy from time to time. The revised version will be posted with an 
+              We may update this Privacy Policy from time to time. The revised version will be posted with an
               updated "Last Updated" date.
             </p>
           </div>
