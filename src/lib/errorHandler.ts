@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { apiClient } from './apiClient';
 
 // Define error types
 export type ErrorType = 'NetworkError' | 'ValidationError' | 'TechnicalError';
@@ -10,15 +10,13 @@ export interface StructuredError {
     originalError?: unknown;
 }
 
-// Interface for logging error to Supabase
-import React from 'react'; // Import React for React.ErrorInfo
 
-interface SupabaseErrorLog {
+interface ErrorLog {
     heading: string;
     message: string;
     stack?: string;
     type: ErrorType;
-    // created_at is handled by Supabase default now()
+    timestamp: string;
 }
 // Helper to detect network errors
 const isNetworkError = (error: unknown): boolean => {
@@ -69,19 +67,18 @@ export async function handleError(error: unknown, errorType: ErrorType = 'Techni
     // const componentStack = info?.componentStack || undefined; // Get component stack from info (will not be logged to DB directly)
     // const timestamp = new Date().toISOString(); // created_at is handled by Supabase default now()
 
-    const logEntry: SupabaseErrorLog = {
+    const logEntry: ErrorLog = {
         heading,
         message,
         stack,
-        type: errorType, // Use the passed errorType
-        // component_stack is not in the DB schema, so we don't include it here
+        type: errorType,
+        timestamp: new Date().toISOString(),
     };
 
     try {
-        await supabase.from('error_logs').insert([logEntry]);
+        await apiClient.post('/errors/log', logEntry);
     } catch (logError) {
-        // Logging failure should not block user experience
-        console.error('Failed to log error to Supabase due to a database error:', logError); // Log logging errors
+        console.error('Failed to log error to backend:', logError);
     }
 
     return {

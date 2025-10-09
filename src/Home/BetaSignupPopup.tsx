@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"; // Import useEffect
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import "../phone-input.css";
-import { supabase } from "../lib/supabaseClient";
+import { apiClient } from "../lib/apiClient";
 import Thankyou from "../components/Thankyou"; // Import Thankyou component
 
 interface BetaSignupPopupProps {
@@ -53,15 +53,13 @@ export default function BetaSignupPopup({ onClose }: BetaSignupPopupProps) {
 
         // Save to Supabase
         try {
-            const { error } = await supabase.from("beta_signups").insert([
-                {
-                    name: fullName,
-                    email,
-                    phone: phoneValue,
-                },
-            ]);
+            const { error } = await apiClient.post("/beta/signup", {
+                fullName,
+                email,
+                phone: phoneValue,
+            });
 
-            if (error) throw error;
+            if (error) throw new Error(error.message);
 
             setShowThankYou(true); // Show Thankyou popup on success
         } catch (err) {

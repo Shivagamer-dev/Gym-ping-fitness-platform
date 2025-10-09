@@ -1,0 +1,45 @@
+# API Documentation
+
+This document provides a summary of the available API endpoints.
+
+## Endpoints
+
+### Career Applications
+
+*   **Endpoint:** `POST /api/careers/apply`
+*   **Description:** Submits a job application.
+*   **Request Body:**
+    *   `fullName` (string, required)
+    *   `email` (string, required)
+    *   `phone` (string, required)
+    *   `coverLetter` (string, required)
+    *   `resumeLink` (string, required)
+    *   `links` (array of objects)
+    *   `jobTitle` (string)
+    *   `jobRole` (string)
+
+### Error Logging
+
+*   **Endpoint:** `POST /api/errors/log`
+*   **Description:** Logs an application error.
+*   **Request Body:**
+    *   `heading` (string, required)
+    *   `message` (string, required)
+    *   `stack` (string)
+    *   `type` (string, required)
+
+### Newsletter Subscription
+
+*   **Endpoint:** `POST /api/newsletter/subscribe`
+*   **Description:** Subscribes a user to the newsletter.
+*   **Request Body:**
+    *   `email` (string, required)
+
+### Beta Signup
+
+*   **Endpoint:** `POST /api/beta/signup`
+*   **Description:** Signs a user up for the beta program.
+*   **Request Body:**
+    *   `fullName` (string, required)
+    *   `email` (string, required)
+    *   `phone` (string, required)

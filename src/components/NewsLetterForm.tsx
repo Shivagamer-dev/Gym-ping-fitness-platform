@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { apiClient } from "../lib/apiClient";
 
 interface NewsletterFormProps {
     onSuccess: () => void;
@@ -27,16 +27,16 @@ function NewsletterForm({ onSuccess }: NewsletterFormProps) {
         }
 
         try {
-            const { error } = await supabase.from("newsletter_subscribers").insert([{ email }]);
+            const { error } = await apiClient.post("/newsletter/subscribe", { email });
             if (error) {
-                if (error.code === "23505") {
+                if (error.message.includes("duplicate key")) { // Assuming backend returns a specific message for duplicate emails
                     alert("This email is already subscribed.");
                 } else {
                     alert(`Subscription failed: ${error.message}`);
                 }
             } else {
-                onSuccess(); // Call onSuccess prop on successful subscription
-                setEmail(""); // Reset email field
+                onSuccess();
+                setEmail("");
             }
         } catch (err) {
             console.error("Subscription error:", err);

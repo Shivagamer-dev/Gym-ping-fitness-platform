@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { apiClient } from "../lib/apiClient";
 import Thankyou from "./Thankyou";
 import ErrorPopup from "./ErrorPopup";
 import { handleError, StructuredError } from "../lib/errorHandler";
@@ -103,20 +103,18 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({ isOpen, onClose, jobTitle, jobR
         }
 
         try {
-            const { error } = await supabase
-                .from('career_applications')
-                .insert([{
-                    job_title: jobTitle,
-                    job_role: jobRole,
-                    full_name: fullName,
-                    email: email,
-                    phone: phone,
-                    cover_letter: coverLetter,
-                    resume_link: resumeLink, // Send resume link directly
-                    links: links // Send additional links
-                }]);
+            const { error } = await apiClient.post('/careers/apply', {
+                jobTitle,
+                jobRole,
+                fullName,
+                email,
+                phone,
+                coverLetter,
+                resumeLink,
+                links,
+            });
 
-            if (error) throw error;
+            if (error) throw new Error(error.message);
 
             setShowThankYou(true); // Show Thankyou popup on success
         } catch (error) {
