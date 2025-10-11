@@ -14,11 +14,11 @@ function About() {
         <meta property="og:description" content="Explore how Back&Bone is building a complete fitness ecosystem with AI-driven features and a community-driven approach to help you achieve your wellness goals." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://backandbone.com/about" />
-        <meta property="og:image" content="https://backandbone.com/og-about-image.jpg" />
+        <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="About Back&Bone - Revolutionizing Fitness with AI-Powered Tools" />
         <meta name="twitter:description" content="Learn about Back&Bone's mission to democratize fitness with AI-powered tools and a supportive community." />
-        <meta name="twitter:image" content="https://backandbone.com/twitter-about-image.jpg" />
+        <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
       </Helmet>
 
       {/* Hero Section - Gradient from top */}

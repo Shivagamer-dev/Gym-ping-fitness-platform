@@ -1,11 +1,47 @@
-import careers from "../assets/data/careers.json";
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ApplyPopup from "../components/ApplyPopup";
+
+interface CareerOpening {
+  title: string;
+  role: string;
+  description: string;
+  type: string;
+  location: string;
+  exReq: string[];
+}
+
+interface CareersData {
+  openings: CareerOpening[];
+}
 
 function Career() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<{ title: string, role: string } | null>(null);
+  const [careers, setCareers] = useState<CareersData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCareers = async () => {
+      try {
+        const response = await fetch("https://api.github.com/repos/BUTDRILL1/backnbone-data/contents/careers.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const { content } = await response.json();
+        const decodedContent = atob(content);
+        const data: CareersData = JSON.parse(decodedContent);
+        setCareers(data);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCareers();
+  }, []);
 
   const openPopup = (title: string, role: string) => {
     setSelectedJob({ title, role });
@@ -28,11 +64,11 @@ function Career() {
         <meta property="og:description" content="Discover open positions and be part of a collaborative, innovative team transforming fitness through AI-powered tools and technology." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://backandbone.com/career" />
-        <meta property="og:image" content="https://backandbone.com/og-career-image.jpg" />
+        <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Careers at Back&Bone - Join Our AI-Powered Fitness Revolution" />
         <meta name="twitter:description" content="Join Back&Bone's team and help revolutionize fitness with cutting-edge AI technology and a remote-first culture." />
-        <meta name="twitter:image" content="https://backandbone.com/twitter-career-image.jpg" />
+        <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
       </Helmet>
 
       <ApplyPopup
@@ -122,7 +158,10 @@ function Career() {
           <p className="text-gray-400 text-lg">Find your perfect role and start making an impact today</p>
         </div>
 
-        {careers.openings && careers.openings.length > 0 ? (
+        {loading && <div className="text-center py-16 text-gray-400">Loading career opportunities...</div>}
+        {error && <div className="text-center py-16 text-red-500">Error: {error}</div>}
+
+        {careers && careers.openings && careers.openings.length > 0 ? (
           <div className="space-y-6">
             {careers.openings.map((job, index) => (
               <div
@@ -178,7 +217,7 @@ function Career() {
               </div>
             ))}
           </div>
-        ) : (
+        ) : (!loading && !error && (
           <div className="text-center py-16">
             <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +227,7 @@ function Career() {
             <h3 className="text-xl font-semibold mb-2">No current openings</h3>
             <p className="text-gray-400 mb-6">We're always looking for exceptional talent. Send us your resume and we'll keep you in mind for future opportunities.</p>
           </div>
-        )}
+        ))}
       </div>
 
       {/* Application Section */}

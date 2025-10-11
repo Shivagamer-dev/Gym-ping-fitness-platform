@@ -11,10 +11,12 @@ function Privacy() {
         <meta property="og:title" content="Privacy Policy - Back&Bone Fitness App" />
         <meta property="og:description" content="Understand how Back&Bone collects, uses, and safeguards your personal information in our comprehensive Privacy Policy." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/privacy-policy" />
+        <meta property="og:url" content="https://backandbone.com/privacy-policy" />
+        <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Privacy Policy - Back&Bone Fitness App" />
         <meta name="twitter:description" content="Your privacy is our priority. Read Back&Bone's Privacy Policy to see how we protect your data and respect your rights." />
+        <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
       </Helmet>
 
       {/* Header Section */}

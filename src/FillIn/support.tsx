@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import faqData from './../assets/data/faq.json';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+
 // Type definitions
 interface FAQ {
   question: string;
@@ -11,6 +11,30 @@ interface FAQ {
 function Support() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [faqData, setFaqData] = useState<FAQ[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFaq = async () => {
+      try {
+        const response = await fetch("https://api.github.com/repos/BUTDRILL1/backnbone-data/contents/faq.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const { content } = await response.json();
+        const decodedContent = atob(content);
+        const data: FAQ[] = JSON.parse(decodedContent);
+        setFaqData(data);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFaq();
+  }, []);
 
   const toggleExpanded = (index: number) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -26,10 +50,12 @@ function Support() {
         <meta property="og:title" content="Help Center & FAQ - Back&Bone Fitness App" />
         <meta property="og:description" content="Explore Back&Bone's Help Center and Frequently Asked Questions to get support and make the most of your fitness journey." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/support" />
+        <meta property="og:url" content="https://backandbone.com/support" />
+        <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Help Center & FAQ - Back&Bone Fitness App" />
         <meta name="twitter:description" content="Get support and answers to your questions with Back&Bone's Help Center and FAQ page." />
+        <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
       </Helmet>
 
       {/* Hero Section */}
@@ -55,60 +81,70 @@ function Support() {
         </div>
 
         {/* FAQ Items */}
-        <div className="space-y-6">
-          {faqData.map((faq: FAQ, index: number) => {
-            const isExpanded = expandedIndex === index;
-            const isHovered = hoveredIndex === index;
+        {loading && <div className="text-center py-16 text-gray-400">Loading FAQs...</div>}
+        {error && <div className="text-center py-16 text-red-500">Error: {error}</div>}
 
-            return (
-              <div
-                key={index}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className={`relative rounded-2xl transition-all duration-300 ${isHovered || isExpanded
+        {faqData && faqData.length > 0 ? (
+          <div className="space-y-6">
+            {faqData.map((faq: FAQ, index: number) => {
+              const isExpanded = expandedIndex === index;
+              const isHovered = hoveredIndex === index;
+
+              return (
+                <div
+                  key={index}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  className={`relative rounded-2xl transition-all duration-300 ${isHovered || isExpanded
                     ? 'bg-gradient-to-b from-blue-600/10 to-purple-600/10 border-2 border-blue-500/30 shadow-xl shadow-blue-500/10'
                     : 'bg-gray-800/50 border border-gray-700/50'
-                  } backdrop-blur-sm hover:scale-[1.02] cursor-pointer`}
-                onClick={() => toggleExpanded(index)}
-              >
-                <div className="p-6">
-                  {/* Question Header */}
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-white pr-4 flex-1">
-                      {faq.question}
-                    </h3>
-                    <div className={`w-8 h-8 rounded-full border-2 border-gray-400 flex items-center justify-center transition-all duration-300 ${isExpanded ? 'border-blue-400 bg-blue-500/20 rotate-180' : 'hover:border-blue-400'
+                    } backdrop-blur-sm hover:scale-[1.02] cursor-pointer`}
+                  onClick={() => toggleExpanded(index)}
+                >
+                  <div className="p-6">
+                    {/* Question Header */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-semibold text-white pr-4 flex-1">
+                        {faq.question}
+                      </h3>
+                      <div className={`w-8 h-8 rounded-full border-2 border-gray-400 flex items-center justify-center transition-all duration-300 ${isExpanded ? 'border-blue-400 bg-blue-500/20 rotate-180' : 'hover:border-blue-400'
+                        }`}>
+                        <svg
+                          className={`w-4 h-4 transition-colors duration-300 ${isExpanded ? 'text-blue-400' : 'text-gray-400'}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Answer with smooth expand/collapse */}
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
                       }`}>
-                      <svg
-                        className={`w-4 h-4 transition-colors duration-300 ${isExpanded ? 'text-blue-400' : 'text-gray-400'}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <div className="pt-4 border-t border-gray-600/30">
+                        <p className="text-gray-300 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Answer with smooth expand/collapse */}
-                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
-                    }`}>
-                    <div className="pt-4 border-t border-gray-600/30">
-                      <p className="text-gray-300 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </div>
+                  {/* Subtle gradient overlay for expanded state */}
+                  {isExpanded && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5 rounded-2xl pointer-events-none" />
+                  )}
                 </div>
-
-                {/* Subtle gradient overlay for expanded state */}
-                {isExpanded && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5 rounded-2xl pointer-events-none" />
-                )}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        ) : (!loading && !error && (
+          <div className="text-center py-16">
+            <h3 className="text-xl font-semibold mb-2">No FAQs available</h3>
+            <p className="text-gray-400 mb-6">We couldn't load any frequently asked questions at this time.</p>
+          </div>
+        ))}
       </div>
 
       {/* Contact Section */}

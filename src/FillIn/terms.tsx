@@ -12,10 +12,14 @@ function Terms() {
                 <meta property="og:title" content="Terms & Conditions - Back&Bone Fitness App" />
                 <meta property="og:description" content="Review the legal terms and conditions governing your use of Back&Bone fitness app and services." />
                 <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://yourdomain.com/terms" />
+                <meta property="og:url" content="https://backandbone.com/terms" />
+                <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
+                <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:title" content="Terms & Conditions - Back&Bone Fitness App" />
                 <meta name="twitter:description" content="Understand the terms and conditions for using Back&Bone fitness app to ensure compliance and informed use." />
+                <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
+                <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
             </Helmet>
 
             {/* Header Section */}

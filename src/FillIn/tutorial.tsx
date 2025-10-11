@@ -1,8 +1,50 @@
-import tutorialData from "../assets/data/tutorials.json";
-import HowItWorks from "../components/HowItWorks";
 import { Helmet } from "react-helmet-async";
+import { useState, useEffect } from "react";
+import HowItWorks from "../components/HowItWorks";
+
+interface Step {
+  title: string;
+  description: string;
+}
+
+interface Feature {
+  name: string;
+  subtitle: string;
+  description: string;
+  videoId: string;
+  steps: Step[];
+  benefits: string[];
+}
+
+interface TutorialsData {
+  features: Feature[];
+}
 
 function Tutorial() {
+  const [tutorials, setTutorials] = useState<TutorialsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTutorials = async () => {
+      try {
+        const response = await fetch("https://api.github.com/repos/BUTDRILL1/backnbone-data/contents/tutorials.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const { content } = await response.json();
+        const decodedContent = atob(content);
+        const data: TutorialsData = JSON.parse(decodedContent);
+        setTutorials(data);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTutorials();
+  }, []);
   const getFeatureIcon = (featureName: string) => {
     switch (featureName.toLowerCase()) {
       case 'spotter':
@@ -59,10 +101,12 @@ function Tutorial() {
         <meta property="og:title" content="Back&Bone Tutorial - Master Your Fitness Journey" />
         <meta property="og:description" content="Explore step-by-step guides, video tutorials, and expert tips to master Back&Bone's powerful fitness features." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/tutorial" />
+        <meta property="og:url" content="https://backandbone.com/tutorial" />
+        <meta property="og:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Back&Bone Tutorial - Master Your Fitness Journey" />
         <meta name="twitter:description" content="Explore step-by-step guides, video tutorials, and expert tips to master Back&Bone's powerful fitness features." />
+        <meta name="twitter:image" content="https://backandbone.com/assets/images/LineLogoSVG.svg" />
       </Helmet>
 
       {/* Hero Section */}
@@ -136,7 +180,10 @@ function Tutorial() {
           <p className="text-gray-400 text-lg">Master each powerful feature with our comprehensive guides</p>
         </div>
 
-        {tutorialData.features.map((feature, index) => (
+        {loading && <div className="text-center py-16 text-gray-400">Loading tutorials...</div>}
+        {error && <div className="text-center py-16 text-red-500">Error: {error}</div>}
+
+        {tutorials && tutorials.features.map((feature, index) => (
           <div key={index} className="mb-20 last:mb-0">
             <div className={`bg-gradient-to-r ${getFeatureGradient(index)} p-1 rounded-2xl mb-8`}>
               <div className="bg-gray-900 rounded-2xl p-8">
@@ -191,7 +238,7 @@ function Tutorial() {
                     <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                       <iframe
                         className="absolute top-0 left-0 w-full h-full rounded-xl shadow-2xl"
-                        src={`https://www.youtube.com/embed/${feature.videoId}?rel=0&modestbranding=1`}
+                        src={`https://www.youtube-nocookie.com/embed/${feature.videoId}?rel=0&modestbranding=1`}
                         title={`${feature.name} Tutorial`}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
