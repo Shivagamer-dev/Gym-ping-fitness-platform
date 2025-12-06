@@ -1,0 +1,85 @@
+{
+  "data": [
+    {
+      "gym_id": "BB12XZ",
+      "gym_name": "Iron Temple Fitness",
+      "contact_number": "+91 9812345678",
+      "email_id": "contact@irontemple.in",
+      "address": "Sector 21, Gurgaon, Haryana",
+      "pin_location": "https://maps.google.com/?q=28.4595,77.0266",
+  
+      "personal_trainer": {
+        "available": true,
+        "price": 1800
+      },
+  
+      "membership_price": 999,
+  
+      "equipment_list": [
+        "Treadmill",
+        "Bench Press",
+        "Smith Machine",
+        "Cable Crossover",
+        "Dumbbells"
+      ],
+  
+      "images": [
+        {
+          "file_name": "iron1.jpg",
+          "storage_path": "public/gyms/BB12XZ/iron1.jpg",
+          "public_url": "https://yourprojectid.supabase.co/storage/v1/object/public/gyms/BB12XZ/iron1.jpg"
+        },
+        {
+          "file_name": "iron2.jpg",
+          "storage_path": "public/gyms/BB12XZ/iron2.jpg",
+          "public_url": "https://yourprojectid.supabase.co/storage/v1/object/public/gyms/BB12XZ/iron2.jpg"
+        }
+      ],
+  
+      "days_timings": "Mon–Sat, 5 AM – 11 PM",
+      "avg_monthly_users": 420,
+      "created_at": "2025-11-05T10:00:00Z"
+    },
+  
+    {
+      "gym_id": "BB78LK",
+      "gym_name": "Muscle Factory Gym",
+      "contact_number": "+91 9765432189",
+      "email_id": "info@musclefactory.in",
+      "address": "Andheri West, Mumbai, Maharashtra",
+      "pin_location": "https://maps.google.com/?q=19.1369,72.8277",
+  
+      "personal_trainer": {
+        "available": false,
+        "price": null
+      },
+  
+      "membership_price": 699,
+  
+      "equipment_list": [
+        "Elliptical Trainer",
+        "Leg Press",
+        "Pull-up Bar",
+        "Rope Machine",
+        "Chest Fly"
+      ],
+  
+      "images": [
+        {
+          "file_name": "mf1.jpg",
+          "storage_path": "public/gyms/BB78LK/mf1.jpg",
+          "public_url": "https://yourprojectid.supabase.co/storage/v1/object/public/gyms/BB78LK/mf1.jpg"
+        },
+        {
+          "file_name": "mf2.jpg",
+          "storage_path": "public/gyms/BB78LK/mf2.jpg",
+          "public_url": "https://yourprojectid.supabase.co/storage/v1/object/public/gyms/BB78LK/mf2.jpg"
+        }
+      ],
+  
+      "days_timings": "Mon–Sun, 6 AM – 9 PM",
+      "avg_monthly_users": 610,
+      "created_at": "2025-11-05T10:10:00Z"
+    }
+  ]
+}

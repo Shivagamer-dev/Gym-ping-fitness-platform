@@ -1,155 +1,186 @@
-
-import React, { useState, useEffect } from "react"; // Import useEffect
+// src/Home/BetaSignupPopup.tsx
+import React, { useState, useEffect } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import "../phone-input.css";
 import { apiClient } from "../lib/apiClient";
-import Thankyou from "../components/Thankyou"; // Import Thankyou component
+import Thankyou from "../components/Thankyou";
 
 interface BetaSignupPopupProps {
-    onClose: () => void;
+  onClose: () => void;
 }
 
-export default function BetaSignupPopup({ onClose }: BetaSignupPopupProps) {
-    const [phoneValue, setPhoneValue] = useState<string | undefined>("");
-    const [loading, setLoading] = useState(false);
-    const [showThankYou, setShowThankYou] = useState(false); // New state for Thankyou popup
+export default function BetaSignupPopup({
+  onClose,
+}: BetaSignupPopupProps): JSX.Element {
+  const [phoneValue, setPhoneValue] = useState<string | undefined>("");
+  const [loading, setLoading] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
 
-    // Effect to prevent body scrolling when popup is open
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, []);
-
-    const handleCloseBetaSignup = () => {
-        setShowThankYou(false);
-        onClose(); // Close the BetaSignupPopup itself
+  // Lock body scroll while popup is open
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
     };
+  }, []);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
+  const handleCloseBetaSignup = () => {
+    setShowThankYou(false);
+    onClose();
+  };
 
-        const formData = new FormData(e.target as HTMLFormElement);
-        const fullName = formData.get("fullName")?.toString().trim();
-        const email = formData.get("email")?.toString().trim();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-        // Basic validation
-        if (!fullName || !email || !phoneValue) {
-            alert("Please fill in all required fields");
-            setLoading(false);
-            return;
-        }
+    const formData = new FormData(e.currentTarget);
+    const fullName = formData.get("fullName")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
 
-        // Email regex validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address");
-            setLoading(false);
-            return;
-        }
+    // Basic validation
+    if (!fullName || !email || !phoneValue) {
+      alert("Please fill in all required fields.");
+      setLoading(false);
+      return;
+    }
 
-        // Save to Supabase
-        try {
-            const { error } = await apiClient.post("/beta/signup", {
-                fullName,
-                email,
-                phone: phoneValue,
-            });
+    // Email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
 
-            if (error) throw new Error(error.message);
+    try {
+      const { error } = await apiClient.post("/beta/signup", {
+        fullName,
+        email,
+        phone: phoneValue,
+      });
 
-            setShowThankYou(true); // Show Thankyou popup on success
-        } catch (err) {
-            console.error("Supabase insert error:", err);
-            alert("Something went wrong. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
-    };
+      if (error) throw new Error(error.message);
 
+      setShowThankYou(true);
+    } catch (err) {
+      console.error("Supabase insert error:", err);
+      alert("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (showThankYou) {
     return (
-        <>
-            {showThankYou ? (
-                <Thankyou isOpen={showThankYou} onClose={handleCloseBetaSignup} />
-            ) : (
-                <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center min-h-screen">
-                    <div className="bg-gray-900 rounded-lg p-8 max-w-md w-full relative shadow-lg max-h-[90vh] overflow-y-auto">
-                        {/* Close button */}
-                        <button
-                            className="absolute top-2 right-2 text-white text-3xl font-bold leading-none hover:text-pink-400 transition-colors"
-                            onClick={onClose}
-                        >
-                            &times;
-                        </button>
-
-                        <h2 className="text-2xl font-bold mb-6 text-white">Join Our Beta Program</h2>
-
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-                    {/* Full Name */}
-                    <div>
-                        <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-1">
-                            Full Name *
-                        </label>
-                        <input
-                            id="fullName"
-                            name="fullName"
-                            type="text"
-                            placeholder="Your Full Name"
-                            className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                            required
-                        />
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                            Email Address *
-                        </label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="your.name@example.com"
-                            className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                            required
-                        />
-                    </div>
-
-                    {/* Phone */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                            Phone Number *
-                        </label>
-                        <div className="w-full rounded bg-gray-800 border border-gray-700 focus-within:ring-2 focus-within:ring-pink-500">
-                            <PhoneInput
-                                placeholder="Enter phone number"
-                                value={phoneValue}
-                                onChange={setPhoneValue}
-                                defaultCountry="IN"
-                                className="phone-input-custom-inner"
-                                numberInputProps={{
-                                    className: "w-full p-3 bg-transparent text-white focus:outline-none",
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="text-xs text-gray-400 mt-2">* Required fields</div>
-
-                    <button
-                        type="submit"
-                        className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded transition-colors duration-300 mt-2 disabled:opacity-50"
-                        disabled={loading}
-                    >
-                        {loading ? "Submitting..." : "Join Beta Program"}
-                    </button>
-                </form>
-                    </div>
-                </div>
-            )}
-        </>
+      <Thankyou isOpen={showThankYou} onClose={handleCloseBetaSignup} />
     );
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
+      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl bg-slate-950/95 text-white shadow-2xl">
+        {/* Soft gradient border glow */}
+        <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-pink-500/30 via-purple-600/25 to-blue-500/30 blur-2xl" />
+
+        {/* Close button */}
+        <button
+          type="button"
+          className="absolute right-4 top-4 text-3xl font-bold leading-none text-slate-300 transition-colors hover:text-pink-400"
+          onClick={onClose}
+          aria-label="Close beta signup"
+        >
+          &times;
+        </button>
+
+        <div className="px-7 pb-7 pt-6 sm:px-8 sm:pb-8 sm:pt-7">
+          {/* Header block */}
+          <div className="mb-6 rounded-2xl border border-slate-700/70 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-slate-900/90 px-4 py-4">
+            <h2 className="text-xl font-semibold text-pink-300 sm:text-2xl">
+              Join Our Beta Program
+            </h2>
+            <p className="mt-1 text-sm text-slate-300/80">
+              Get early access to Back&amp;Bone, help us improve the experience,
+              and shape the future of AI-powered fitness.
+            </p>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4"
+            noValidate
+          >
+            {/* Full Name */}
+            <div>
+              <label
+                htmlFor="fullName"
+                className="mb-1 block text-sm font-medium text-slate-200"
+              >
+                Full Name <span className="text-pink-400">*</span>
+              </label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                placeholder="Your Full Name"
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-3 text-sm text-white outline-none transition ring-0 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/60"
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="mb-1 block text-sm font-medium text-slate-200"
+              >
+                Email Address <span className="text-pink-400">*</span>
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="your.name@example.com"
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-3 text-sm text-white outline-none transition ring-0 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/60"
+                required
+              />
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-200">
+                Phone Number <span className="text-pink-400">*</span>
+              </label>
+              <div className="w-full rounded-lg border border-slate-700 bg-slate-900/80 transition focus-within:border-pink-500 focus-within:ring-2 focus-within:ring-pink-500/60">
+                <PhoneInput
+                  placeholder="Enter phone number"
+                  value={phoneValue}
+                  onChange={setPhoneValue}
+                  defaultCountry="IN"
+                  className="phone-input-custom-inner"
+                  numberInputProps={{
+                    className:
+                      "w-full bg-transparent px-3 py-3 text-sm text-white outline-none",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="mt-1 text-xs text-slate-400">
+              * Required fields
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-3 w-full rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(236,72,153,0.55)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-pink-400 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Submitting..." : "Join Beta Program"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }

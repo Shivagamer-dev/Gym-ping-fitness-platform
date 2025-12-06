@@ -31,12 +31,12 @@ function Team() {
 
     const teamMembers = [
         {
-            name: "Amil Lal",
+            name: "-- --",
             role: "Co-Founder, CEO & CTO",
             gradient: "from-blue-400 via-cyan-400 to-purple-400",
             glowColor: "rgba(96, 165, 250, 0.3)",
             image: AmilImage,
-            description: "Amil is the visionary behind Back&Bone's technological innovations and strategic direction. With a strong background in AI and software development, he leads the team in creating cutting-edge fitness solutions.",
+            description: "He is the visionary behind Back&Bone's technological innovations and strategic direction. With a strong background in AI and software development, he leads the team in creating cutting-edge fitness solutions.",
             expertise: ["AI & ML", "Software Architecture", "Product Strategy"]
         },
         {

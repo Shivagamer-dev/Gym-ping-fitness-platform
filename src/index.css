@@ -1,1 +1,6 @@
 @import './App.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global resets or variables are fine here, too */
