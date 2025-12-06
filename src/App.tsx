@@ -254,7 +254,7 @@ export default function App() {
 
             {/* Threads */}
             <a
-              href="https://yourwebsite.com"
+              href="https://threads.net/backnbone"
               target="_blank"
               rel="noreferrer"
               className="bb-social-icon"
