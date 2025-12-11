@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                   color: "var(--bb-muted)",
                 }}
               >
-                At Back&amp;Bone we value your privacy and are committed to
+                At Back&Bone we value your privacy and are committed to
                 protecting your personal information. This Privacy Policy
                 explains how we collect, use, and safeguard data when you visit
                 our website.
@@ -179,7 +179,7 @@ export default function PrivacyPolicyPage() {
 
               <p>
                 This policy covers the marketing website only. If you use the
-                Back&amp;Bone mobile app, certain user profile, analytics and
+                Back&Bone mobile app, certain user profile, analytics and
                 fitness data may be collected in-app — please refer to the
                 in-app Privacy Policy for app-specific details.
               </p>

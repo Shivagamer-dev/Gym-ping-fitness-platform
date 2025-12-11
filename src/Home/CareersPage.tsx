@@ -84,7 +84,7 @@ export default function CareersPage(): JSX.Element {
       }}
     >
       <Helmet>
-        <title>Careers · Back&amp;Bone</title>
+        <title>Careers · Back&Bone</title>
       </Helmet>
 
       {/* Popup form */}
@@ -100,12 +100,12 @@ export default function CareersPage(): JSX.Element {
         <section className="careers-hero">
           <div className="careers-hero-card-shell">
             <header>
-              <p className="careers-hero-kicker">Careers at Back&amp;Bone</p>
+              <p className="careers-hero-kicker">Careers at Back&Bone</p>
               <h1>Shape the Future of Fitness</h1>
               <p className="careers-hero-subtitle">
                 Join a team that&apos;s building the next generation of
                 AI-powered fitness experiences. With people at the center and
-                privacy by design, Back&amp;Bone is where innovation meets
+                privacy by design, Back&Bone is where innovation meets
                 impact.
               </p>
             </header>

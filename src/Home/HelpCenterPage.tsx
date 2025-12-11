@@ -55,7 +55,7 @@ export default function HelpCenterPage(): JSX.Element {
               </h1>
 
               <p className="bb-section-subtitle bb-hc-hero-subtitle">
-                We’re here to help you get the best out of Back&amp;Bone. Explore
+                We’re here to help you get the best out of Back&Bone. Explore
                 quick answers, helpful tips, and expert support in one place.
               </p>
             </div>
@@ -75,7 +75,7 @@ export default function HelpCenterPage(): JSX.Element {
               <div>
                 <h2 className="bb-hc-heading">Frequently Asked Questions</h2>
                 <p className="bb-hc-subheading">
-                  Find quick answers to common questions about Back&amp;Bone.  
+                  Find quick answers to common questions about Back&Bone.  
                   Start here before reaching out to support.
                 </p>
               </div>

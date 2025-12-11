@@ -46,7 +46,7 @@ const AppDownloadPopup: React.FC<AppDownloadPopupProps> = ({
 
           {/* Body text */}
           <p className="mx-auto mb-7 max-w-md text-sm leading-relaxed text-slate-200/85 sm:text-base">
-            We’re polishing the Back&amp;Bone app experience right now.
+            We’re polishing the Back&Bone app experience right now.
             You&apos;ll receive an email with the download link as soon as the
             mobile apps go live.
           </p>

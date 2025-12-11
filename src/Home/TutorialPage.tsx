@@ -153,7 +153,7 @@ export default function TutorialPage(): JSX.Element {
                   color: "#0b1120",
                 }}
               >
-                Back&amp;Bone Tutorials
+                Back&Bone Tutorials
               </h1>
 
               <p
@@ -165,7 +165,7 @@ export default function TutorialPage(): JSX.Element {
                   color: "#111827",
                 }}
               >
-                Learn how every Back&amp;Bone module works, step by step. From
+                Learn how every Back&Bone module works, step by step. From
                 exercise discovery to smart gym tools, this page walks you
                 through the entire experience.
               </p>
@@ -262,7 +262,7 @@ export default function TutorialPage(): JSX.Element {
               color: "var(--bb-muted)",
             }}
           >
-            New to Back&amp;Bone? Follow these basics to get set up before you
+            New to Back&Bone? Follow these basics to get set up before you
             dive into each feature tutorial.
           </p>
 
@@ -344,7 +344,7 @@ export default function TutorialPage(): JSX.Element {
             className="bb-section-title"
             style={{ textAlign: "center", marginBottom: 6 }}
           >
-            Explore Each Back&amp;Bone Module
+            Explore Each Back&Bone Module
           </h2>
 
           <p

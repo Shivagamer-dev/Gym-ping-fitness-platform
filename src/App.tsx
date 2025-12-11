@@ -110,7 +110,7 @@ export default function App() {
         <div className="bb-footer-inner">
           {/* BRAND */}
           <div className="bb-footer-col bb-footer-brand">
-            <h4>Back&amp; Bone</h4>
+            <h4>Back&Bone</h4>
             <p>
               A complete fitness ecosystem <br />
               for every transformation journey.
@@ -156,7 +156,7 @@ export default function App() {
         {/* ---------- SOCIAL + COPYRIGHT ---------- */}
         <div className="bb-footer-bottom">
           <span className="bb-footer-copy">
-            © {new Date().getFullYear()} Back&amp;Bone. All rights reserved.
+            © {new Date().getFullYear()} Back&Bone. All rights reserved.
           </span>
 
           <div className="bb-social-row">

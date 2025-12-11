@@ -71,7 +71,7 @@ export default function TermsPage(): JSX.Element {
                   color: "var(--bb-muted)",
                 }}
               >
-                By accessing or using the Back&amp;Bone website, you agree to
+                By accessing or using the Back&Bone website, you agree to
                 these Terms &amp; Conditions. Please read them carefully before
                 browsing or submitting any information.
               </p>
@@ -113,13 +113,13 @@ export default function TermsPage(): JSX.Element {
                 <h3>Purpose of the Website</h3>
               </header>
               <p>
-                The Back&amp;Bone website serves as an informational and
-                promotional platform for the Back&amp;Bone mobile and web
+                The Back&Bone website serves as an informational and
+                promotional platform for the Back&Bone mobile and web
                 application. The website provides:
               </p>
               <ul>
                 <li>Information about our brand, technology, and features.</li>
-                <li>Links to download or explore the Back&amp;Bone app.</li>
+                <li>Links to download or explore the Back&Bone app.</li>
                 <li>Company-related updates and product information.</li>
               </ul>
               <p>
@@ -137,7 +137,7 @@ export default function TermsPage(): JSX.Element {
               </header>
               <p>
                 All content on this website — logos, visuals, text, and designs
-                — is the property of Back&amp;Bone / Frintt Studio Pvt. Ltd.
+                — is the property of Back&Bone / Frintt Studio Pvt. Ltd.
                 You may not reproduce, distribute, or reuse any content without
                 prior written consent.
               </p>
@@ -196,7 +196,7 @@ export default function TermsPage(): JSX.Element {
                 <h3>Limitation of Liability</h3>
               </header>
               <p>
-                Under no circumstances shall Back&amp;Bone or its affiliates be
+                Under no circumstances shall Back&Bone or its affiliates be
                 liable for any indirect, incidental, or consequential damages
                 arising from your use of this site. Your sole remedy for
                 dissatisfaction is to stop using the site.

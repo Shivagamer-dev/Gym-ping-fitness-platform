@@ -101,7 +101,7 @@ export default function BetaSignupPopup({
               Join Our Beta Program
             </h2>
             <p className="mt-1 text-sm text-slate-300/80">
-              Get early access to Back&amp;Bone, help us improve the experience,
+              Get early access to Back&Bone, help us improve the experience,
               and shape the future of AI-powered fitness.
             </p>
           </div>

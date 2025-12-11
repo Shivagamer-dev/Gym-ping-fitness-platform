@@ -935,7 +935,7 @@ export default function PricingPage(): JSX.Element {
             <div className="bb-faq-item bb-card-hover">
               <h4>What devices are supported?</h4>
               <p>
-                Back&amp;Bone works across iOS and Android, and integrates with
+                Back&Bone works across iOS and Android, and integrates with
                 many popular wearables.
               </p>
             </div>
@@ -951,7 +951,7 @@ export default function PricingPage(): JSX.Element {
             style={{ fontSize: "1.02rem" }}
           >
             <p>
-              Try Back&amp;Bone risk-free · 30-day money-back guarantee · Cancel
+              Try Back&Bone risk-free · 30-day money-back guarantee · Cancel
               anytime, no setup fees.
             </p>
           </div>

@@ -150,7 +150,7 @@ export default function HomePage() {
               margin: "14px auto 0",
             }}
           >
-            Every Back&amp;Bone module focuses on a different part of your
+            Every Back&Bone module focuses on a different part of your
             journey – learning exercises, finding gyms, getting coaching, and
             tracking data.
           </p>
@@ -227,7 +227,7 @@ export default function HomePage() {
               lineHeight: 1.6,
             }}
           >
-            Back&amp;Bone keeps things simple: a clear journey from sign-up to
+            Back&Bone keeps things simple: a clear journey from sign-up to
             long-term progress — with your data always under your control.
           </p>
 
@@ -574,7 +574,7 @@ export default function HomePage() {
         <div className="bb-section-shell bb-cta-panel bb-card-hover">
           <h2 className="bb-section-title">Start Your Fitness Journey Today</h2>
           <p className="bb-section-subtitle" style={{ marginTop: "8px" }}>
-            Join a growing community building consistency with Back&amp;Bone.
+            Join a growing community building consistency with Back&Bone.
           </p>
 
           <div className="bb-cta-actions">
