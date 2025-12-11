@@ -162,7 +162,7 @@ export default function App() {
           <div className="bb-social-row">
             {/* X */}
             <a
-              href="https://x.com/yourprofile"
+              href="https://x.com/BackAndBone"
               target="_blank"
               rel="noreferrer"
               className="bb-social-icon"
@@ -183,7 +183,7 @@ export default function App() {
 
             {/* Instagram */}
             <a
-              href="https://instagram.com/yourprofile"
+              href="https://www.instagram.com/backandboneapp/"
               target="_blank"
               rel="noreferrer"
               className="bb-social-icon"
@@ -217,10 +217,9 @@ export default function App() {
                 <circle cx="17" cy="7" r="1.4" fill="#ffffff" />
               </svg>
             </a>
-
             {/* LinkedIn */}
             <a
-              href="https://linkedin.com/company/yourprofile"
+              href="https://www.linkedin.com/company/back-and-bone/"
               target="_blank"
               rel="noreferrer"
               className="bb-social-icon"
@@ -254,7 +253,7 @@ export default function App() {
 
             {/* Threads */}
             <a
-              href="https://threads.net/backnbone"
+              href="https://www.threads.com/@backandboneapp"
               target="_blank"
               rel="noreferrer"
               className="bb-social-icon"
