@@ -30,54 +30,7 @@ html, body {
     "Segoe UI", sans-serif;
 }
 
-/* NAVBAR */
-
-.bb-nav {
-  background: var(--bb-purple);
-  color: #ffffff;
-  position: sticky;
-  top: 0;
-  z-index: 40;
-}
-
-.bb-nav-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.bb-logo {
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  font-size: 18px;
-  text-decoration: none;
-  color: white;
-  display: inline-flex;
-  gap: 4px;
-}
-
-.bb-logo-accent {
-  font-weight: 700;
-}
-
-.bb-nav-links {
-  display: flex;
-  gap: 24px;
-}
-
-.bb-nav-link {
-  color: #f5f3ff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.bb-nav-link:hover {
-  opacity: 0.85;
-}
+/* Navbar styles now handled by Tailwind CSS */
 
 /* PAGE LAYOUT */
 
@@ -481,13 +434,6 @@ html {
 .bb-about-section p {
   margin-bottom: 18px;
 }
-.bb-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 40;
-}
 .bb-hero-title-strong {
   font-size: 44px;
   line-height: 1.05;
@@ -698,15 +644,6 @@ html {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .bb-nav-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .bb-nav-links {
-    gap: 16px;
-  }
 
   .bb-footer-inner {
     grid-template-columns: minmax(0, 1fr);
@@ -827,20 +764,10 @@ html {
 
 
 
-.bb-nav {
-  background: var(--bb-purple);
-  color: #ffffff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 40;
-}
-
 /* add top-space so content isn't hidden behind the fixed nav */
 .bb-main {
   flex: 1;
-  padding-top: 86px;  /* adjust if your nav is taller */
+  padding-top: 5rem;  /* matches h-20 header height */
 }
 .bb-home {
   padding-top: 0; /* extra breathing room under fixed nav */
@@ -1059,84 +986,7 @@ html {
 
 
 
-.bb-nav {
-  background: var(--bb-purple);
-  color: #ffffff;
-  position: fixed;             /* was sticky */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  height: 86px;                /* bigger navbar */
-  display: flex;
-  align-items: center;
-  box-shadow: 0 10px 30px rgba(31, 10, 86, 0.45);
-}
-
-.bb-nav-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 28px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Logo pill similar to screenshot */
-.bb-logo {
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  font-size: 22px;
-  text-decoration: none;
-  color: #fdfbff;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 16px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #7c3aed, #5b21b6);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-
-.bb-logo-accent {
-  font-weight: 700;
-}
-
-.bb-nav-links {
-  display: flex;
-  gap: 28px;
-}
-
-.bb-nav-link {
-  color: #f5f3ff;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  position: relative;
-  padding-bottom: 4px;
-  transition: color 0.18s ease;
-}
-
-.bb-nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 2px;
-  border-radius: 999px;
-  background: #f9fafb;
-  transition: width 0.2s ease;
-}
-
-.bb-nav-link:hover {
-  color: #ffffff;
-}
-
-.bb-nav-link:hover::after {
-  width: 100%;
-}
+/* Nav styles now handled by Tailwind CSS */
 
 /* general page shell used on multiple sections */
 .bb-section-shell {
@@ -1606,7 +1456,7 @@ html {
 
 /* small responsive tweaks */
 @media (max-width: 880px) {
-  .bb-nav { display: none; } /* adapt to your mobile nav */
+  /* Mobile nav adjustments if needed */
 }
 
 
@@ -2672,4 +2522,3 @@ html.dark .bb-founder-card:nth-child(2) .bb-founder-avatar {
   transform: translateY(-2px);
   box-shadow: 0 14px 38px rgba(0,0,0,0.35);
 }
-

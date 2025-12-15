@@ -12,6 +12,7 @@ import NewsletterForm from "./components/NewsLetterForm";
 export default function App() {
   const [showDownloadPopup, setShowDownloadPopup] = useState(false);
   const [showNewsletterThankyou, setShowNewsletterThankyou] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const openDownloadPopup = () => setShowDownloadPopup(true);
   const closeDownloadPopup = () => setShowDownloadPopup(false);
@@ -41,31 +42,38 @@ export default function App() {
   return (
     <div className="bb-app">
       {/* ---------- NAVBAR ---------- */}
-      <header className="bb-nav">
-        <div className="bb-nav-inner">
+      <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-[#685bc7] shadow-lg flex items-center">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between w-full">
           <NavLink
             to="/"
-            className="bb-logo-img-wrapper"
+            className="cursor-pointer"
             aria-label="Back & Bone Home"
           >
             <img
               src={newLogo}
               alt="Back&Bone"
-              className="bb-logo-img"
-              style={{
-                background: "transparent",
-                boxShadow: "none",
-                borderRadius: 0,
-              }}
+              className="h-16 w-auto"
             />
           </NavLink>
 
-          <nav className="bb-nav-links">
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-8 h-8 cursor-pointer"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            <span className={`bg-white h-0.5 w-6 rounded-sm transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''}`}></span>
+            <span className={`bg-white h-0.5 w-6 rounded-sm transition-all duration-300 mt-1 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`bg-white h-0.5 w-6 rounded-sm transition-all duration-300 mt-1 ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></span>
+          </button>
+
+          <nav className={`md:flex gap-8 ${mobileMenuOpen ? 'absolute top-20 left-0 right-0 bg-[#685bc7] flex flex-col items-center py-4 shadow-lg' : 'hidden'}`}>
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `bb-nav-link${isActive ? " bb-nav-link-active" : ""}`
+                `text-white text-sm font-semibold py-2 px-4 rounded transition-colors ${isActive ? "bg-[#685bc7]" : "hover:bg-[#685bc7]"}`
               }
+              onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </NavLink>
@@ -73,8 +81,9 @@ export default function App() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `bb-nav-link${isActive ? " bb-nav-link-active" : ""}`
+                `text-white text-sm font-semibold py-2 px-4 rounded transition-colors ${isActive ? "bg-[#685bc7]" : "hover:bg-[#685bc7]"}`
               }
+              onClick={() => setMobileMenuOpen(false)}
             >
               About us
             </NavLink>
@@ -82,8 +91,9 @@ export default function App() {
             <NavLink
               to="/pricing"
               className={({ isActive }) =>
-                `bb-nav-link${isActive ? " bb-nav-link-active" : ""}`
+                `text-white text-sm font-semibold py-2 px-4 rounded transition-colors ${isActive ? "bg-[#685bc7]" : "hover:bg-[#685bc7]"}`
               }
+              onClick={() => setMobileMenuOpen(false)}
             >
               Pricing
             </NavLink>
@@ -91,8 +101,9 @@ export default function App() {
             <NavLink
               to="/tutorial"
               className={({ isActive }) =>
-                `bb-nav-link${isActive ? " bb-nav-link-active" : ""}`
+                `text-white text-sm font-semibold py-2 px-4 rounded transition-colors ${isActive ? "bg-[#685bc7]" : "hover:bg-[#685bc7]"}`
               }
+              onClick={() => setMobileMenuOpen(false)}
             >
               Tutorial
             </NavLink>
