@@ -1,5 +1,6 @@
 // src/About/AboutPage.tsx
 import "../App.css";
+import communityImage from '../assets/images/bb-community-gesture.jpg';
 
 export default function AboutPage() {
   return (
@@ -106,12 +107,13 @@ export default function AboutPage() {
             minWidth: 0,
             display: "flex",
             justifyContent: "flex-end",
-            background: "transparent", // let inner card handle the color
+            background: "transparent",
             boxShadow: "none",
           }}
         >
           <div
             style={{
+              position: "relative",
               width: "100%",
               maxWidth: "520px",
               height: "300px",
@@ -119,9 +121,27 @@ export default function AboutPage() {
               background: "linear-gradient(145deg, #ffe4ea, #fdf2f8)",
               boxShadow:
                 "0 40px 90px rgba(148, 27, 128, 0.09), 0 25px 45px rgba(0,0,0,0.06)",
+              overflow: "hidden",
             }}
-          />
+          >
+            {/* Illustration */}
+            <img
+              src={communityImage}
+              alt="Community fitness unity"
+              style={{
+                position: "absolute",
+                top: "0",
+                left: "0",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                pointerEvents: "none",
+                userSelect: "none",
+              }}
+            />
+          </div>
         </div>
+
       </section>
 
       {/* ===== MORE THAN A FITNESS APP ===== */}
@@ -135,7 +155,7 @@ export default function AboutPage() {
         }}
       >
         <h2 style={{ fontSize: "2.6rem", marginBottom: "18px" }}>
-          Back&Bone is More Than a Fitness App
+          Back&Bone Is More Than A Fitness App
         </h2>
 
         <p

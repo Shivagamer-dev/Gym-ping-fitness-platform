@@ -333,7 +333,7 @@ export default function HelpCenterPage(): JSX.Element {
             onClick={() =>
               (window.location.href = "mailto:support@backandbone.com")
             }
-            aria-label="Email Back& Bone support"
+            aria-label="Email Back&Bone support"
           >
             support@backandbone.com
           </button>

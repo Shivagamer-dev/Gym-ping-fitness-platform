@@ -626,7 +626,7 @@ export default function TutorialPage(): JSX.Element {
                 fontSize: "0.98rem",
               }}
             >
-              Stuck anywhere in the app? Reach out and we&apos;ll walk you
+              Stuck anywhere in the app? Reach out and we'll walk you
               through the right module or send a quick loom recording.
             </p>
 

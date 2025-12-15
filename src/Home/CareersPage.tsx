@@ -103,7 +103,7 @@ export default function CareersPage(): JSX.Element {
               <p className="careers-hero-kicker">Careers at Back&Bone</p>
               <h1>Shape the Future of Fitness</h1>
               <p className="careers-hero-subtitle">
-                Join a team that&apos;s building the next generation of
+                Join a team that's building the next generation of
                 AI-powered fitness experiences. With people at the center and
                 privacy by design, Back&Bone is where innovation meets
                 impact.
@@ -208,7 +208,7 @@ export default function CareersPage(): JSX.Element {
 
                     {job.exReq && job.exReq.length > 0 && (
                       <>
-                        <p className="job-label">What we&apos;re looking for</p>
+                        <p className="job-label">What we're looking for</p>
                         <ul className="job-list">
                           {job.exReq.map((req, i) => (
                             <li key={i}>{req}</li>
@@ -226,7 +226,7 @@ export default function CareersPage(): JSX.Element {
                       </button>
 
                       <span className="job-footer-note">
-                        Send your resume and a short note about why you&apos;d
+                        Send your resume and a short note about why you'd
                         be a great fit.
                       </span>
                     </div>
@@ -235,7 +235,7 @@ export default function CareersPage(): JSX.Element {
             </div>
 
             <p className="careers-email-note">
-              Prefer email? Share your resume &amp; cover letter with our talent
+              Prefer email? Share your resume and cover letter with our talent
               team at{" "}
               <span className="careers-email">careers@backandbone.com</span>.
             </p>

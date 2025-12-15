@@ -59,7 +59,7 @@ export default function TermsPage(): JSX.Element {
                   color: "#0f172a",
                 }}
               >
-                Terms &amp; Conditions
+                Terms and Conditions
               </h1>
 
               <p
@@ -72,7 +72,7 @@ export default function TermsPage(): JSX.Element {
                 }}
               >
                 By accessing or using the Back&Bone website, you agree to
-                these Terms &amp; Conditions. Please read them carefully before
+                these Terms and Conditions. Please read them carefully before
                 browsing or submitting any information.
               </p>
             </div>
@@ -253,7 +253,7 @@ export default function TermsPage(): JSX.Element {
           <div className="bb-terms-contact-cta">
             <h3>Contact Us</h3>
             <p>
-              For questions or concerns about these Terms, we&apos;re here to
+              For questions or concerns about these Terms, we're here to
               help.
             </p>
 

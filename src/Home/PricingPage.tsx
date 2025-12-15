@@ -971,7 +971,7 @@ export default function PricingPage(): JSX.Element {
             className="bb-section-subtitle"
             style={{ textAlign: "center", marginBottom: "18px" }}
           >
-            We&apos;re here to help you every step of the way.
+            We're here to help you every step of the way.
           </p>
           <div className="bb-cta-actions">
             <button

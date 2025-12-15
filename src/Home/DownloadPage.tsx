@@ -60,14 +60,14 @@ export default function DownloadPage() {
                 fontSize: "1.02rem",
               }}
             >
-              We&apos;re polishing the Back&Bone mobile experience before
+              We're polishing the Back&Bone mobile experience before
               opening it up to everyone. Check the current status and grab the
               latest app builds when they are ready.
             </p>
 
 
             <a
-  href="mailto:support@backnbone.com"
+  href=""
   className="bb-btn bb-btn-ghost bb-btn-animated"
   style={{
     textDecoration: "none",
@@ -131,7 +131,7 @@ export default function DownloadPage() {
                   lineHeight: 1.6,
                 }}
               >
-                We&apos;re running a closed beta with a small group of users to
+                We're running a closed beta with a small group of users to
                 refine workout flows, performance, and privacy controls. Use the
                 download buttons below once your platform build is available.
               </p>

@@ -54,7 +54,7 @@ function Footer() {
               Newsletter
             </h3>
             <p className="text-xs text-gray-300 mb-3">
-              Tips, updates &amp; exclusive perks straight to your inbox.
+              Tips, updates and exclusive perks straight to your inbox.
             </p>
 
             {/* This component should call onSuccess() when user submits (Enter / button) */}

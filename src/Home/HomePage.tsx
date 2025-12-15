@@ -88,7 +88,7 @@ export default function HomePage() {
               Every Step of the <span>Way.</span>
             </h1>
             <p className="bb-hero-body">
-              Back &amp; Bone helps you stay consistent, track progress, and
+              Back&Bone helps you stay consistent, track progress, and
               overcome every hurdle on your way to achieving your dream fitness
               goals.
             </p>
@@ -341,11 +341,11 @@ export default function HomePage() {
               </p>
             </div>
             <div className="bb-data-card bb-card-hover">
-              <h4>Decentralized &amp; Secure</h4>
+              <h4>Decentralized and Secure</h4>
               <p>No single point of risk – your information stays safely yours.</p>
             </div>
             <div className="bb-data-card bb-card-hover">
-              <h4>You&apos;re in Charge</h4>
+              <h4>You're in Charge</h4>
               <p>Decide what to share, when, and with whom. Total control.</p>
             </div>
           </div>

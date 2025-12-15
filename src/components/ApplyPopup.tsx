@@ -256,7 +256,7 @@ const ApplyPopup: React.FC<ApplyPopupProps> = ({
                   required
                 />
                 <p className="text-xs text-slate-400 mt-1">
-                  A concise, focused note is perfect – it doesn&apos;t need to be
+                  A concise, focused note is perfect – it doesn't need to be
                   a full essay.
                 </p>
               </div>

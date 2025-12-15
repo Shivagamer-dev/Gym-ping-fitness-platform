@@ -130,7 +130,7 @@ export default function PrivacyPolicyPage() {
             <article className="bb-pp-section">
               <header className="bb-pp-section-header">
                 <span className="bb-pp-pill">03</span>
-                <h3>Cookies &amp; Tracking</h3>
+                <h3>Cookies and Tracking</h3>
               </header>
 
               <p>
