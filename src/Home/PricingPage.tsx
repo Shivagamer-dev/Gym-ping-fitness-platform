@@ -1,5 +1,5 @@
 // src/Home/PricingPage.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 
@@ -25,22 +25,24 @@ type Plan = {
   [k: string]: any;
 };
 
+type FAQ = {
+  question: string;
+  answer: string;
+};
+
 const PRICING_JSON_RAW =
   "https://raw.githubusercontent.com/BUTDRILL1/backnbone-data/main/pricing.json";
 
 const renderPricePieces = (p: Plan) => {
   const monthly = p.price?.monthly;
-  if (monthly === null || monthly === undefined) {
-    return { value: "—", suffix: "" };
-  }
-  if (typeof monthly === "number") {
-    return { value: monthly.toString(), suffix: "/month" };
-  }
+  if (monthly === null || monthly === undefined) return { value: "—", suffix: "" };
+  if (typeof monthly === "number") return { value: monthly.toString(), suffix: "/month" };
   return { value: monthly.toString(), suffix: "/month" };
 };
 
 export default function PricingPage(): JSX.Element {
   const [plans, setPlans] = useState<Plan[] | null>(null);
+  const [faqs, setFaqs] = useState<FAQ[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,27 +73,22 @@ export default function PricingPage(): JSX.Element {
         setError(null);
 
         const res = await fetch(PRICING_JSON_RAW);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch pricing (${res.status})`);
-        }
+        if (!res.ok) throw new Error(`Failed to fetch pricing (${res.status})`);
 
         const data = await res.json();
         const rawPlans: Plan[] = Array.isArray(data) ? data : data.plans ?? [];
+        const rawFaqs: FAQ[] = data.faqs ?? [];
 
         // Show Free, Pro, Family
         const filtered = rawPlans.filter((p) => {
           const key = (p.id || p.name || "").toString().toLowerCase();
-          return (
-            key.includes("free") || key.includes("pro") || key.includes("family")
-          );
+          return key.includes("free") || key.includes("pro") || key.includes("family");
         });
 
-        const baseWithIcons = addDefaultIcons(
-          filtered.length ? filtered : rawPlans
-        );
-
+        const baseWithIcons = addDefaultIcons(filtered.length ? filtered : rawPlans);
         if (!mounted) return;
         setPlans(baseWithIcons);
+        setFaqs(rawFaqs);
       } catch (err) {
         if (!mounted) return;
         console.error(err);
@@ -105,32 +102,12 @@ export default function PricingPage(): JSX.Element {
             tagline: "Essential features to get started",
             price: { monthly: 0 },
             features: [
-              {
-                name: "Exercise Library & Form Guide",
-                included: true,
-              },
-              {
-                name: "Spotter, Locator & basic Dashboard",
-                included: true,
-              },
-              {
-                name: "Basic Progress Tracking",
-                included: true,
-              },
-              {
-                name: "Nutrition Tracking (limited)",
-                included: true,
-              },
-              {
-                name: "Custom Workout Plans",
-                included: false,
-                description: "Available in Pro & Family",
-              },
-              {
-                name: "Advanced AI Coaching",
-                included: false,
-                description: "Available in Pro & Family",
-              },
+              { name: "Exercise Library & Form Guide", included: true },
+              { name: "Spotter, Locator & basic Dashboard", included: true },
+              { name: "Basic Progress Tracking", included: true },
+              { name: "Nutrition Tracking (limited)", included: true },
+              { name: "Custom Workout Plans", included: false, description: "Available in Pro & Family" },
+              { name: "Advanced AI Coaching", included: false, description: "Available in Pro & Family" },
             ],
           },
           {
@@ -140,35 +117,13 @@ export default function PricingPage(): JSX.Element {
             price: { monthly: 165 },
             buttonText: "Upgrade to Pro",
             features: [
-              {
-                name: "Spotter, Locator, RepBot, Dashboard",
-                included: true,
-              },
-              {
-                name: "Wearable Device Integration",
-                included: true,
-              },
-              {
-                name: "Nutrition Tracking",
-                included: true,
-              },
-              {
-                name: "Custom Workout Plans",
-                included: true,
-              },
-              {
-                name: "Advanced AI Coaching",
-                included: true,
-              },
-              {
-                name: "Priority Support",
-                included: true,
-              },
-              {
-                name: "1-on-1 Coaching Sessions",
-                included: false,
-                description: "Included in Family",
-              },
+              { name: "Spotter, Locator, RepBot, Dashboard", included: true },
+              { name: "Wearable Device Integration", included: true },
+              { name: "Nutrition Tracking", included: true },
+              { name: "Custom Workout Plans", included: true },
+              { name: "Advanced AI Coaching", included: true },
+              { name: "Priority Support", included: true },
+              { name: "1-on-1 Coaching Sessions", included: false, description: "Included in Family" },
             ],
           },
           {
@@ -178,87 +133,65 @@ export default function PricingPage(): JSX.Element {
             price: { monthly: 400 },
             buttonText: "Go Family",
             features: [
-              {
-                name: "Spotter, Locator, RepBot, Dashboard",
-                included: true,
-              },
-              {
-                name: "Wearable Device Integration",
-                included: true,
-              },
-              {
-                name: "Nutrition Tracking",
-                included: true,
-              },
-              {
-                name: "Custom Workout Plans",
-                included: true,
-              },
-              {
-                name: "Advanced AI Coaching",
-                included: true,
-              },
-              {
-                name: "Priority Support",
-                included: true,
-              },
-              {
-                name: "1-on-1 Coaching Sessions",
-                included: true,
-              },
-              {
-                name: "Family Member Support",
-                included: true,
-              },
+              { name: "Spotter, Locator, RepBot, Dashboard", included: true },
+              { name: "Wearable Device Integration", included: true },
+              { name: "Nutrition Tracking", included: true },
+              { name: "Custom Workout Plans", included: true },
+              { name: "Advanced AI Coaching", included: true },
+              { name: "Priority Support", included: true },
+              { name: "1-on-1 Coaching Sessions", included: true },
+              { name: "Family Member Support", included: true },
             ],
           },
         ]);
 
         setPlans(fallback);
+
+        // Fallback FAQs
+        const fallbackFaqs: FAQ[] = [
+          {
+            question: "Can I change my plan anytime?",
+            answer: "Yes. You can upgrade or downgrade whenever you like. Changes take effect immediately.",
+          },
+          {
+            question: "How does the Family Plan work?",
+            answer: "Add up to 8 family members with separate profiles and shared progress. Pricing is shown on each plan card.",
+          },
+          {
+            question: "What devices are supported?",
+            answer: "Back&Bone works across iOS and Android, and integrates with many popular wearables.",
+          },
+        ];
+
+        setFaqs(fallbackFaqs);
       } finally {
         if (mounted) setLoading(false);
       }
     };
 
     loadPricing();
-
     return () => {
       mounted = false;
     };
   }, []);
 
-  function getAllFeatureNames(plansArr: Plan[] | null) {
-    if (!plansArr) return [];
+  const featureNames = useMemo(() => {
+    if (!plans) return [];
     const set = new Set<string>();
-    plansArr.forEach((p) => {
-      (p.features ?? []).forEach((f) => {
-        set.add(f.name || f.description || "Feature");
-      });
+    plans.forEach((p) => {
+      (p.features ?? []).forEach((f) => set.add(f.name || f.description || "Feature"));
     });
     return Array.from(set);
-  }
-
-  const featureNames = getAllFeatureNames(plans);
+  }, [plans]);
 
   const featureLabel = (count: number) =>
     `Total for ${count} ${count === 1 ? "member" : "members"}`;
 
-  const handleFamilyMinus = () => {
-    setFamilyMembers((prev) => Math.max(FAMILY_MIN, prev - 1));
-  };
-
-  const handleFamilyPlus = () => {
-    setFamilyMembers((prev) => Math.min(FAMILY_MAX, prev + 1));
-  };
+  const handleFamilyMinus = () => setFamilyMembers((prev) => Math.max(FAMILY_MIN, prev - 1));
+  const handleFamilyPlus = () => setFamilyMembers((prev) => Math.min(FAMILY_MAX, prev + 1));
 
   return (
-    <div
-      className="bb-page"
-      style={{
-        overflowX: "hidden",
-        paddingTop: "104px",
-      }}
-    >
+    <div className="bb-page bb-pricing-page" style={{ paddingTop: "104px" }}>
       {/* HERO / INTRO */}
       <section className="bb-section">
         <div className="bb-section-shell">
@@ -283,8 +216,8 @@ export default function PricingPage(): JSX.Element {
                 fontSize: "1.05rem",
               }}
             >
-              From personal plans to family memberships, choose the path that
-              fits your goals and lifestyle.
+              From personal plans to family memberships, choose the path that fits your goals and
+              lifestyle.
             </p>
           </header>
 
@@ -295,38 +228,19 @@ export default function PricingPage(): JSX.Element {
           )}
 
           {error && (
-            <div
-              style={{
-                textAlign: "center",
-                color: "#b91c1c",
-                marginBottom: 12,
-              }}
-            >
+            <div style={{ textAlign: "center", color: "#b91c1c", marginBottom: 12 }}>
               {error}
             </div>
           )}
 
           {/* TOP PRICING CARDS */}
-          <div
-            className="bb-pricing-row"
-            aria-live="polite"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-              gap: 24,
-              alignItems: "stretch",
-            }}
-          >
+          <div className="bb-pricing-row" aria-live="polite">
             {(plans ?? []).map((plan) => {
               const { value, suffix } = renderPricePieces(plan);
-              const key = (plan.id || plan.name || "")
-                .toString()
-                .toLowerCase();
+              const key = (plan.id || plan.name || "").toString().toLowerCase();
 
               const isFree = key.includes("free");
-              const isPro =
-                key.includes("pro") ||
-                (plan.name || "").toString().toLowerCase() === "pro";
+              const isPro = key.includes("pro") || (plan.name || "").toString().toLowerCase() === "pro";
               const isFamily = key.includes("family");
 
               // PRICE DISPLAY LOGIC
@@ -346,21 +260,17 @@ export default function PricingPage(): JSX.Element {
 
               // Button text
               let buttonLabel: string;
-              if (isFree) {
-                buttonLabel = "Get Started";
-              } else if (plan.buttonText) {
-                buttonLabel = plan.buttonText;
-              } else if (isPro) {
-                buttonLabel = "Upgrade to Pro";
-              } else {
-                buttonLabel = `Choose ${plan.name}`;
-              }
+              if (isFree) buttonLabel = "Get Started";
+              else if (plan.buttonText) buttonLabel = plan.buttonText;
+              else if (isPro) buttonLabel = "Upgrade to Pro";
+              else buttonLabel = `Choose ${plan.name}`;
 
               return (
                 <article
                   key={plan.id}
-                  className={`bb-plan-card bb-card-hover bb-anim-fade-up ${isPro ? "bb-plan-card-pro" : ""
-                    } ${isFamily ? "bb-plan-card-family" : ""}`}
+                  className={`bb-plan-card bb-card-hover bb-anim-fade-up ${
+                    isPro ? "bb-plan-card-pro" : ""
+                  } ${isFamily ? "bb-plan-card-family" : ""}`}
                 >
                   {isPro && (
                     <div className="bb-plan-star" aria-hidden="true">
@@ -373,38 +283,26 @@ export default function PricingPage(): JSX.Element {
 
                     <h3 className="bb-plan-name">{plan.name}</h3>
 
-                    {plan.tagline && (
-                      <p className="bb-plan-tagline">{plan.tagline}</p>
-                    )}
+                    {plan.tagline && <p className="bb-plan-tagline">{plan.tagline}</p>}
 
                     <div className="bb-plan-price">
                       {!isFree && displayValue !== "—" && (
                         <span className="bb-plan-price-currency">₹</span>
                       )}
-                      <span className="bb-plan-price-value">
-                        {displayValue}
-                      </span>
+                      <span className="bb-plan-price-value">{displayValue}</span>
                       {!isFree && displaySuffix && (
-                        <span className="bb-plan-price-suffix">
-                          {displaySuffix}
-                        </span>
+                        <span className="bb-plan-price-suffix">{displaySuffix}</span>
                       )}
                     </div>
 
-                    {isFamily && (
-                      <p className="bb-family-total-note">
-                        {featureLabel(familyMembers)}
-                      </p>
-                    )}
+                    {isFamily && <p className="bb-family-total-note">{featureLabel(familyMembers)}</p>}
 
                     <button className="bb-plan-button">{buttonLabel}</button>
 
-                    {/* FAMILY COUNTER – visible only on hover */}
+                    {/* FAMILY COUNTER – visible only on hover (desktop). On mobile it stays visible. */}
                     {isFamily && (
                       <div className="bb-family-counter-card">
-                        <div className="bb-family-counter-label">
-                          Number of Family Members
-                        </div>
+                        <div className="bb-family-counter-label">Number of Family Members</div>
 
                         <div className="bb-family-counter-controls">
                           <button
@@ -415,9 +313,7 @@ export default function PricingPage(): JSX.Element {
                           >
                             –
                           </button>
-                          <span className="bb-family-counter-value">
-                            {familyMembers}
-                          </span>
+                          <span className="bb-family-counter-value">{familyMembers}</span>
                           <button
                             type="button"
                             onClick={handleFamilyPlus}
@@ -428,9 +324,7 @@ export default function PricingPage(): JSX.Element {
                           </button>
                         </div>
 
-                        <div className="bb-family-counter-note">
-                          ₹{FAMILY_PER_MEMBER} per member/month
-                        </div>
+                        <div className="bb-family-counter-note">₹{FAMILY_PER_MEMBER} per member/month</div>
                       </div>
                     )}
 
@@ -445,11 +339,7 @@ export default function PricingPage(): JSX.Element {
                           return (
                             <li
                               key={idx}
-                              style={{
-                                display: "flex",
-                                gap: "6px",
-                                alignItems: "center",
-                              }}
+                              style={{ display: "flex", gap: "6px", alignItems: "center" }}
                             >
                               <span
                                 style={{
@@ -460,16 +350,9 @@ export default function PricingPage(): JSX.Element {
                               >
                                 {isIncluded ? "✓" : "✕"}
                               </span>
-                              <span style={{ color: "#374151" }}>
-                                {feature.name}
-                              </span>
+                              <span style={{ color: "#374151" }}>{feature.name}</span>
                               {!isIncluded && feature.description && (
-                                <span
-                                  style={{
-                                    color: "#9CA3AF",
-                                    fontSize: "0.75rem",
-                                  }}
-                                >
+                                <span style={{ color: "#9CA3AF", fontSize: "0.75rem" }}>
                                   ({feature.description})
                                 </span>
                               )}
@@ -488,6 +371,31 @@ export default function PricingPage(): JSX.Element {
         {/* STYLES */}
         <style>
           {`
+            /* IMPORTANT: remove the "only Free visible" issue by making pricing grid responsive
+               and preventing overflow clipping */
+            .bb-pricing-page {
+              overflow-x: visible;
+            }
+
+            .bb-pricing-row {
+              display: grid;
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: 24px;
+              align-items: stretch;
+            }
+
+            @media (max-width: 1100px) {
+              .bb-pricing-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+              }
+            }
+
+            @media (max-width: 760px) {
+              .bb-pricing-row {
+                grid-template-columns: 1fr;
+              }
+            }
+
             .bb-plan-card {
               position: relative;
               border-radius: 28px;
@@ -495,6 +403,7 @@ export default function PricingPage(): JSX.Element {
               padding: 28px 26px 24px;
               color: #111827;
               overflow: hidden;
+              min-width: 0;
               box-shadow:
                 0 24px 60px rgba(148,163,184,0.35),
                 0 0 0 1px rgba(148,163,184,0.12);
@@ -549,6 +458,7 @@ export default function PricingPage(): JSX.Element {
               flex-direction: column;
               gap: 10px;
               height: 100%;
+              min-width: 0;
             }
 
             .bb-plan-icon {
@@ -584,6 +494,7 @@ export default function PricingPage(): JSX.Element {
               gap: 4px;
               margin-top: 8px;
               margin-bottom: 6px;
+              flex-wrap: wrap;
             }
 
             .bb-plan-price-currency {
@@ -641,6 +552,7 @@ export default function PricingPage(): JSX.Element {
               );
             }
 
+            /* Features: show on hover for desktop; always show on mobile */
             .bb-plan-features {
               margin-top: 6px;
               padding-top: 4px;
@@ -655,9 +567,17 @@ export default function PricingPage(): JSX.Element {
             }
 
             .bb-plan-card:hover .bb-plan-features {
-              max-height: 420px;
+              max-height: 520px;
               opacity: 1;
               transform: translateY(0);
+            }
+
+            @media (max-width: 760px) {
+              .bb-plan-features {
+                max-height: 520px;
+                opacity: 1;
+                transform: none;
+              }
             }
 
             .bb-plan-features-title {
@@ -718,6 +638,15 @@ export default function PricingPage(): JSX.Element {
               transform: translateY(0);
             }
 
+            /* On mobile: keep the family counter visible (no hover) */
+            @media (max-width: 760px) {
+              .bb-plan-card-family .bb-family-counter-card {
+                max-height: 240px;
+                opacity: 1;
+                transform: none;
+              }
+            }
+
             .bb-family-counter-label {
               font-size: 0.95rem;
               font-weight: 600;
@@ -773,13 +702,15 @@ export default function PricingPage(): JSX.Element {
               color: #6b7280;
             }
 
-            @media (max-width: 960px) {
-              .bb-pricing-row {
-                grid-template-columns: 1fr;
-              }
-              .bb-plan-card-pro {
-                transform: translateY(0);
-              }
+            /* Comparison table scroll wrapper for mobile */
+            .bb-compare-scroll {
+              overflow-x: auto;
+              -webkit-overflow-scrolling: touch;
+              border-radius: 16px;
+            }
+
+            .bb-compare-grid {
+              min-width: 760px; /* allows smooth horizontal scroll on mobile */
             }
           `}
         </style>
@@ -788,10 +719,7 @@ export default function PricingPage(): JSX.Element {
       {/* DETAILED FEATURE COMPARISON */}
       <section className="bb-section bb-section-alt">
         <div className="bb-section-shell">
-          <h2
-            className="bb-section-title"
-            style={{ textAlign: "left", marginBottom: "18px" }}
-          >
+          <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
             Detailed Plan Comparison
           </h2>
 
@@ -804,92 +732,75 @@ export default function PricingPage(): JSX.Element {
               fontSize: "0.98rem",
             }}
           >
-            Compare features across plans and choose the level of support that
-            matches your journey.
+            Compare features across plans and choose the level of support that matches your journey.
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: `minmax(200px, 1fr) repeat(${(plans ?? []).length
-                }, minmax(180px, 1fr))`,
-              gap: 12,
-              alignItems: "start",
-            }}
-          >
-            <div style={{ fontWeight: 700, padding: "14px 18px" }}>Feature</div>
+          <div className="bb-compare-scroll">
+            <div
+              className="bb-compare-grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: `minmax(200px, 1fr) repeat(${(plans ?? []).length}, minmax(180px, 1fr))`,
+                gap: 12,
+                alignItems: "start",
+              }}
+            >
+              <div style={{ fontWeight: 700, padding: "14px 18px" }}>Feature</div>
 
-            {(plans ?? []).map((p) => (
-              <div
-                key={`col-${p.id}`}
-                style={{
-                  fontWeight: 700,
-                  padding: "14px 18px",
-                  textAlign: "center",
-                }}
-              >
-                {p.name}
-              </div>
-            ))}
+              {(plans ?? []).map((p) => (
+                <div
+                  key={`col-${p.id}`}
+                  style={{ fontWeight: 700, padding: "14px 18px", textAlign: "center" }}
+                >
+                  {p.name}
+                </div>
+              ))}
 
-            {featureNames.length === 0 ? (
-              <div style={{ gridColumn: `1 / -1`, padding: 8 }}>
-                No detailed features available.
-              </div>
-            ) : (
-              featureNames.map((fname) => (
-                <React.Fragment key={fname}>
-                  <div
-                    style={{
-                      padding: "12px 18px",
-                      borderTop: "1px solid rgba(0,0,0,0.04)",
-                    }}
-                  >
-                    <div style={{ fontWeight: 600 }}>{fname}</div>
-                  </div>
+              {featureNames.length === 0 ? (
+                <div style={{ gridColumn: `1 / -1`, padding: 8 }}>No detailed features available.</div>
+              ) : (
+                featureNames.map((fname) => (
+                  <React.Fragment key={fname}>
+                    <div
+                      style={{
+                        padding: "12px 18px",
+                        borderTop: "1px solid rgba(0,0,0,0.04)",
+                      }}
+                    >
+                      <div style={{ fontWeight: 600 }}>{fname}</div>
+                    </div>
 
-                  {(plans ?? []).map((p) => {
-                    const feat = (p.features ?? []).find(
-                      (f) => (f.name || f.description) === fname
-                    );
-                    const included = feat?.included ?? false;
+                    {(plans ?? []).map((p) => {
+                      const feat = (p.features ?? []).find(
+                        (f) => (f.name || f.description) === fname
+                      );
+                      const included = feat?.included ?? false;
 
-                    return (
-                      <div
-                        key={`${p.id}-${fname}`}
-                        style={{
-                          padding: "12px 18px",
-                          borderTop: "1px solid rgba(0,0,0,0.04)",
-                          textAlign: "center",
-                        }}
-                      >
-                        {included ? (
-                          <span
-                            style={{
-                              display: "inline-block",
-                              fontSize: 18,
-                              color: "#10B981",
-                            }}
-                          >
-                            ✓
-                          </span>
-                        ) : (
-                          <span
-                            style={{
-                              display: "inline-block",
-                              fontSize: 18,
-                              color: "#EF4444",
-                            }}
-                          >
-                            ✕
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </React.Fragment>
-              ))
-            )}
+                      return (
+                        <div
+                          key={`${p.id}-${fname}`}
+                          style={{
+                            padding: "12px 18px",
+                            borderTop: "1px solid rgba(0,0,0,0.04)",
+                            textAlign: "center",
+                          }}
+                        >
+                          {included ? (
+                            <span style={{ display: "inline-block", fontSize: 18, color: "#10B981" }}>
+                              ✓
+                            </span>
+                          ) : (
+                            <span style={{ display: "inline-block", fontSize: 18, color: "#EF4444" }}>
+                              ✕
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </React.Fragment>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -897,48 +808,23 @@ export default function PricingPage(): JSX.Element {
       {/* FAQ */}
       <section className="bb-section">
         <div className="bb-section-shell">
-          <h2
-            className="bb-section-title"
-            style={{ textAlign: "left", marginBottom: "18px" }}
-          >
+          <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
             Frequently Asked Questions
           </h2>
           <p
             className="bb-section-subtitle"
-            style={{
-              textAlign: "left",
-              maxWidth: "720px",
-              margin: "0 0 24px",
-              fontSize: "0.98rem",
-            }}
+            style={{ textAlign: "left", maxWidth: "720px", margin: "0 0 24px", fontSize: "0.98rem" }}
           >
             Everything you need to know before choosing your plan.
           </p>
 
           <div className="bb-faq-list">
-            <div className="bb-faq-item bb-card-hover">
-              <h4>Can I change my plan anytime?</h4>
-              <p>
-                Yes. You can upgrade or downgrade whenever you like. Changes
-                take effect immediately.
-              </p>
-            </div>
-
-            <div className="bb-faq-item bb-card-hover">
-              <h4>How does the Family Plan work?</h4>
-              <p>
-                Add up to 8 family members with separate profiles and shared
-                progress. Pricing is shown on each plan card.
-              </p>
-            </div>
-
-            <div className="bb-faq-item bb-card-hover">
-              <h4>What devices are supported?</h4>
-              <p>
-                Back&Bone works across iOS and Android, and integrates with
-                many popular wearables.
-              </p>
-            </div>
+            {(faqs ?? []).map((faq, idx) => (
+              <div key={idx} className="bb-faq-item bb-card-hover">
+                <h4>{faq.question}</h4>
+                <p>{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -946,14 +832,8 @@ export default function PricingPage(): JSX.Element {
       {/* RISK-FREE CTA */}
       <section className="bb-section">
         <div className="bb-section-shell">
-          <div
-            className="bb-cta-panel bb-center-text bb-card-hover"
-            style={{ fontSize: "1.02rem" }}
-          >
-            <p>
-              Try Back&Bone risk-free · 30-day money-back guarantee · Cancel
-              anytime, no setup fees.
-            </p>
+          <div className="bb-cta-panel bb-center-text bb-card-hover" style={{ fontSize: "1.02rem" }}>
+            <p>Try Back&Bone risk-free · 30-day money-back guarantee · Cancel anytime, no setup fees.</p>
           </div>
         </div>
       </section>
@@ -961,23 +841,14 @@ export default function PricingPage(): JSX.Element {
       {/* NEED A HAND CTA */}
       <section className="bb-section bb-cta">
         <div className="bb-section-shell">
-          <h3
-            className="bb-section-title"
-            style={{ textAlign: "center", marginBottom: "10px" }}
-          >
+          <h3 className="bb-section-title" style={{ textAlign: "center", marginBottom: "10px" }}>
             Need a Hand?
           </h3>
-          <p
-            className="bb-section-subtitle"
-            style={{ textAlign: "center", marginBottom: "18px" }}
-          >
+          <p className="bb-section-subtitle" style={{ textAlign: "center", marginBottom: "18px" }}>
             We're here to help you every step of the way.
           </p>
           <div className="bb-cta-actions">
-            <button
-              className="bb-btn bb-btn-primary bb-btn-animated"
-              onClick={() => navigate("/support")}
-            >
+            <button className="bb-btn bb-btn-primary bb-btn-animated" onClick={() => navigate("/support")}>
               Visit Support Center
             </button>
             <a
@@ -992,7 +863,6 @@ export default function PricingPage(): JSX.Element {
             >
               Email Us
             </a>
-
           </div>
         </div>
       </section>
