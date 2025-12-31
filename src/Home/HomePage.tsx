@@ -80,7 +80,7 @@ export default function HomePage() {
               Every Step of the <span>Way.</span>
             </h1>
             <p className="bb-hero-body">
-              Back&amp;Bone helps you stay consistent, track progress, and
+              Back&Bone helps you stay consistent, track progress, and
               overcome every hurdle on your way to achieving your dream fitness
               goals.
             </p>
@@ -140,7 +140,7 @@ export default function HomePage() {
               margin: "14px auto 0",
             }}
           >
-            Every Back&amp;Bone module focuses on a different part of your
+            Every Back&Bone module focuses on a different part of your
             journey – learning exercises, finding gyms, getting coaching, and
             tracking data.
           </p>
@@ -194,7 +194,7 @@ export default function HomePage() {
           <h2 className="bb-section-title bb-how-title">How it Works</h2>
 
           <p className="bb-section-subtitle bb-how-subtitle">
-            Back&amp;Bone keeps things simple: a clear journey from sign-up to
+            Back&Bone keeps things simple: a clear journey from sign-up to
             long-term progress — with your data always under your control.
           </p>
 
@@ -514,7 +514,7 @@ export default function HomePage() {
           <div className="bb-cta-panel bb-card-hover">
             <h2 className="bb-cta-title">Start Your Fitness Journey Today</h2>
             <p className="bb-cta-subtitle">
-              Join a growing community building consistency with Back&amp;Bone.
+              Join a growing community building consistency with Back&Bone.
             </p>
 
             <div className="bb-cta-actions-fixed">

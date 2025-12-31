@@ -11,7 +11,7 @@ type FooterProps = {
 };
 
 export default function Footer({
-  onOpenDownloadPopup,
+  // onOpenDownloadPopup,
   onNewsletterSuccess,
 }: FooterProps) {
   const [showThankyouPopup, setShowThankyouPopup] = useState(false);
@@ -32,10 +32,10 @@ export default function Footer({
       "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
   } as const;
 
-  const handleOpenDownload = () => {
-    if (onOpenDownloadPopup) onOpenDownloadPopup();
-    setShowDownloadPopup(true);
-  };
+  // const handleOpenDownload = () => {
+  //   if (onOpenDownloadPopup) onOpenDownloadPopup();
+  //   setShowDownloadPopup(true);
+  // };
 
   const handleCloseDownload = () => setShowDownloadPopup(false);
 
@@ -46,18 +46,37 @@ export default function Footer({
 
   const handleCloseThankyou = () => setShowThankyouPopup(false);
 
+  // ✅ Always scroll to top when navigating from footer links (desktop + mobile)
+  const scrollToTop = () => {
+    // setTimeout ensures navigation happens first, then scroll resets
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      // fallback for some mobile browsers
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 0);
+  };
+
   return (
     <footer className="bb-footer">
+      {/* energetic background layers */}
+      <div className="bb-footer-noise" aria-hidden="true" />
+      <div className="bb-footer-glow bb-footer-glow--a" aria-hidden="true" />
+      <div className="bb-footer-glow bb-footer-glow--b" aria-hidden="true" />
+      <div className="bb-footer-glow bb-footer-glow--c" aria-hidden="true" />
+
       <div className="bb-footer-inner">
         {/* BRAND */}
         <div className="bb-footer-col bb-footer-brand">
-          <h4 className="bb-footer-heading">Back&amp;Bone</h4>
+          <h4 className="bb-footer-heading bb-footer-heading--brand">
+            Back&Bone
+          </h4>
           <p className="bb-footer-text">
             A complete fitness ecosystem <br />
             for every transformation journey.
           </p>
 
-          <div className="bb-store-badges">
+          {/* <div className="bb-store-badges">
             <button
               className="bb-store-badge"
               onClick={handleOpenDownload}
@@ -72,7 +91,7 @@ export default function Footer({
             >
               Google Play
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* NEWSLETTER */}
@@ -92,16 +111,20 @@ export default function Footer({
           <h4 className="bb-footer-heading">Support</h4>
 
           <div className="bb-footer-links">
-            <NavLink to="/support" className="bb-footer-link">
+            <NavLink to="/support" className="bb-footer-link" onClick={scrollToTop}>
               Help Center
             </NavLink>
-            <NavLink to="/career" className="bb-footer-link">
+            <NavLink to="/career" className="bb-footer-link" onClick={scrollToTop}>
               Careers
             </NavLink>
-            <NavLink to="/privacy-policy" className="bb-footer-link">
+            <NavLink
+              to="/privacy-policy"
+              className="bb-footer-link"
+              onClick={scrollToTop}
+            >
               Privacy Policy
             </NavLink>
-            <NavLink to="/terms" className="bb-footer-link">
+            <NavLink to="/terms" className="bb-footer-link" onClick={scrollToTop}>
               Terms of Service
             </NavLink>
           </div>
@@ -182,108 +205,244 @@ export default function Footer({
         </div>
 
         <span className="bb-footer-copy">
-          © {new Date().getFullYear()} Back&amp;Bone. All rights reserved.
+          © {new Date().getFullYear()} Back&Bone. All rights reserved.
         </span>
       </div>
 
       <style>
         {`
           .bb-footer{
-            background: linear-gradient(180deg,#6a4ff7 0%,#5a3ee6 30%,#462ecf 60%,#2b1a8f 100%);
+            position: relative;
+            overflow: hidden;
             color:#f9fafb;
+            background:
+              radial-gradient(1100px 260px at 12% -10%, rgba(34,211,238,0.28), transparent 60%),
+              radial-gradient(900px 240px at 85% 5%, rgba(99,102,241,0.30), transparent 55%),
+              radial-gradient(800px 240px at 55% 120%, rgba(255,255,255,0.10), transparent 60%),
+              linear-gradient(180deg,#6a4ff7 0%,#5a3ee6 28%,#462ecf 58%,#2b1a8f 100%);
+              ;
+          }
+
+          /* light texture so it feels more alive */
+          .bb-footer-noise{
+            position:absolute;
+            inset:0;
+            opacity:.12;
+            pointer-events:none;
+            background-image:
+              radial-gradient(circle at 20% 20%, rgba(255,255,255,0.55) 1px, transparent 1px),
+              radial-gradient(circle at 70% 40%, rgba(255,255,255,0.45) 1px, transparent 1px),
+              radial-gradient(circle at 40% 80%, rgba(255,255,255,0.35) 1px, transparent 1px);
+            background-size: 38px 38px, 44px 44px, 52px 52px;
+            mix-blend-mode: overlay;
+            animation: bbNoiseDrift 18s linear infinite;
+          }
+          @keyframes bbNoiseDrift{
+            0% { transform: translate3d(0,0,0); }
+            100% { transform: translate3d(-60px, -40px, 0); }
+          }
+
+          /* multiple moving glows */
+          .bb-footer-glow{
+            position:absolute;
+            width: 560px;
+            height: 560px;
+            border-radius: 999px;
+            filter: blur(34px);
+            opacity: .75;
+            pointer-events:none;
+            mix-blend-mode: screen;
+          }
+
+          .bb-footer-glow--a{
+            left: -180px;
+            top: -220px;
+            background: radial-gradient(circle at 30% 30%, rgba(34,211,238,0.55), transparent 60%);
+            animation: bbGlowA 10s ease-in-out infinite alternate;
+          }
+
+          .bb-footer-glow--b{
+            right: -220px;
+            top: -160px;
+            background: radial-gradient(circle at 35% 35%, rgba(99,102,241,0.62), transparent 62%);
+            animation: bbGlowB 12s ease-in-out infinite alternate;
+          }
+
+          .bb-footer-glow--c{
+            left: 35%;
+            bottom: -320px;
+            background: radial-gradient(circle at 40% 40%, rgba(236,72,153,0.26), transparent 62%);
+            animation: bbGlowC 14s ease-in-out infinite alternate;
+          }
+
+          @keyframes bbGlowA{
+            0% { transform: translate(0,0) scale(1); opacity:.65; }
+            100% { transform: translate(20px, 18px) scale(1.05); opacity:.85; }
+          }
+          @keyframes bbGlowB{
+            0% { transform: translate(0,0) scale(1); opacity:.60; }
+            100% { transform: translate(-18px, 16px) scale(1.06); opacity:.82; }
+          }
+          @keyframes bbGlowC{
+            0% { transform: translate(0,0) scale(1); opacity:.45; }
+            100% { transform: translate(14px, -10px) scale(1.06); opacity:.62; }
           }
 
           /* prevent default h4 margins from adding extra space */
           .bb-footer h4{
             margin: 0;
+            font-size: 1.7em;
           }
 
           .bb-footer-inner{
+            position: relative;
+            z-index: 1;
             max-width:1120px;
             margin:0 auto;
-            padding: 1.6rem 1.25rem 1rem;
+            padding: 2.1rem 1.25rem 1.2rem;
             display:grid;
-            grid-template-columns: minmax(0,1.25fr) minmax(0,1.35fr) minmax(0,0.9fr);
-            gap: 1.15rem 2rem;
+            grid-template-columns: minmax(0,1.15fr) minmax(0,1.45fr) minmax(0,0.9fr);
+            gap: 1.35rem 2.2rem;
             align-items:start;
           }
 
           .bb-footer-col{
             min-width: 0;
+            display:flex;
+            flex-direction:column;
+            gap: 10px;
+            animation: bbFooterRise 520ms ease both;
+          }
+
+          /* stagger columns a bit for energy */
+          .bb-footer-brand{ animation-delay: 60ms; }
+          .bb-footer-newsletter{ animation-delay: 120ms; }
+          .bb-footer-support{ animation-delay: 180ms; }
+
+          @keyframes bbFooterRise{
+            from{ opacity: 0; transform: translateY(10px); }
+            to{ opacity: 1; transform: translateY(0); }
           }
 
           .bb-footer-heading{
-            margin:0 0 .45rem 0;
-            font-weight:800;
-            letter-spacing:.2px;
-            font-size: 1.02rem;
+            margin:0;
+            font-weight:900;
+            letter-spacing:.25px;
+            font-size: 1.22rem;
+            line-height: 1.15;
+            text-shadow: 0 10px 26px rgba(0,0,0,0.20);
           }
+
+          /* brand heading with gradient pop */
+          .bb-footer-heading--brand{
+            background: linear-gradient(
+              90deg,
+              #ffffff 0%,
+              #22d3ee 100%,
+             
+              #301934 50%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+
+            /* energetic glow */
+            text-shadow:
+              0 0 12px rgba(34,211,238,0.45),
+              0 0 28px rgba(99,102,241,0.35);
+
+            filter: none;
+          }
+
 
           .bb-footer-text{
             margin:0;
-            color: rgba(249,250,251,0.92);
-            line-height:1.55;
-            font-size:.95rem;
+            color: rgba(249,250,251,0.94);
+            line-height:1.65;
+            font-size: 1.05rem;
+            max-width: 48ch;
           }
 
-          .bb-store-badges{
-            display:flex;
-            gap:10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-          }
-
-          .bb-store-badge{
-            padding: 10px 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.22);
-            background: rgba(0,0,0,0.22);
-            color:#fff;
-            font-weight:600;
-            cursor:pointer;
-            transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
-            min-width: 120px;
-          }
-
-          .bb-store-badge:hover{
-            transform: translateY(-1px);
-            background: rgba(0,0,0,0.30);
-            border-color: rgba(255,255,255,0.40);
-          }
-
+          /* Newsletter input alignment helper (doesn't touch your form markup) */
           .bb-newsletter-wrap{
-            margin-top: 10px;
-            max-width: 420px;
+            margin-top: 6px;
+            max-width: 520px;
+            padding: 10px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.14);
+            transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+          }
+          .bb-newsletter-wrap:hover{
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.11);
+            border-color: rgba(255,255,255,0.22);
           }
 
           .bb-footer-links{
             display:flex;
             flex-direction:column;
-            gap: 10px;
-            margin-top: 6px;
+            gap: 12px;
+            margin-top: 4px;
           }
 
           .bb-footer-link{
             display:inline-flex;
+            align-items:center;
+            gap: 8px;
             width: fit-content;
-            color: rgba(249,250,251,0.95);
-            font-size: 0.95rem;
-            line-height: 1.3;
+            color: rgba(249,250,251,0.96);
+            font-size: 1.06rem;
+            line-height: 1.4;
+            text-decoration: none;
+            position: relative;
+            transition: transform 160ms ease, opacity 160ms ease;
+          }
+
+          /* tiny arrow for energy */
+          .bb-footer-link::before{
+            content:"›";
+            font-weight:900;
+            opacity:.85;
+            transform: translateY(-1px);
+          }
+
+          /* animated underline */
+          .bb-footer-link::after{
+            content:"";
+            position:absolute;
+            left:0;
+            bottom:-5px;
+            width:100%;
+            height:2px;
+            border-radius:999px;
+            background: rgba(255,255,255,0.78);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 180ms ease;
+            opacity: .95;
           }
 
           .bb-footer-link:hover{
-            text-decoration: underline;
+            transform: translateX(3px);
+            opacity: 1;
+          }
+          .bb-footer-link:hover::after{
+            transform: scaleX(1);
           }
 
           .bb-footer-bottom{
+            position: relative;
+            z-index: 1;
             max-width:1120px;
             margin:0 auto;
-            padding: .9rem 1.25rem 1.1rem;
+            padding: 1.05rem 1.25rem 1.35rem;
             border-top: 1px solid rgba(255,255,255,0.18);
             display:flex;
             justify-content:space-between;
             align-items:center;
-            gap: 12px;
+            gap: 14px;
             flex-wrap:wrap;
           }
 
@@ -294,10 +453,29 @@ export default function Footer({
             flex-wrap:wrap;
           }
 
+          /* make icons feel more premium while keeping your inline style */
+          .bb-social-icon{
+            border-radius: 999px;
+            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.06) !important;
+            box-shadow: 0 16px 34px rgba(0,0,0,0.16);
+            will-change: transform;
+          }
+          .bb-social-icon:hover{
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 22px 44px rgba(0,0,0,0.22);
+            border-color: rgba(255,255,255,1) !important;
+          }
+          .bb-social-icon:active{
+            transform: translateY(-1px) scale(1.02);
+          }
+
           .bb-footer-copy{
-            color: rgba(249,250,251,0.9);
-            font-size: .92rem;
+            color: rgba(249,250,251,0.92);
+            font-size: 1.02rem;
             white-space: nowrap;
+            letter-spacing: .12px;
+            text-shadow: 0 10px 24px rgba(0,0,0,0.18);
           }
 
           @media (max-width: 980px){
@@ -308,13 +486,16 @@ export default function Footer({
             .bb-footer-support{
               grid-column: 1 / -1;
             }
+            .bb-footer-text{
+              max-width: 100%;
+            }
           }
 
           @media (max-width: 640px){
             .bb-footer-inner{
               grid-template-columns: 1fr;
-              padding: 1.25rem 1.1rem .85rem;
-              gap: .9rem;
+              padding: 1.5rem 1.1rem 1.05rem;
+              gap: 1rem;
             }
 
             /* ✅ increase ONLY the marked headings on mobile */
@@ -322,44 +503,51 @@ export default function Footer({
             .bb-footer-newsletter .bb-footer-heading,
             .bb-footer-support .bb-footer-heading{
               font-size: 1.35rem;
-              margin-bottom: .35rem;
+              margin-bottom: .15rem;
               letter-spacing: .25px;
             }
 
-            /* keep Support spacing tight */
-            .bb-footer-support .bb-footer-heading{
-              margin-bottom: .2rem;
+            .bb-footer-text{
+              font-size: 1.02rem;
+              line-height: 1.65;
             }
+
             .bb-footer-support .bb-footer-links{
               margin-top: 2px;
-              gap: 8px;
-            }
-
-            .bb-store-badges{
-              width: 100%;
               gap: 10px;
-            }
-
-            .bb-store-badge{
-              width: 100%;
-              min-width: 0;
-              max-width: 360px;
             }
 
             .bb-newsletter-wrap{
               max-width: 100%;
+              padding: 10px;
             }
 
             .bb-footer-bottom{
               flex-direction: column;
               align-items: center;
               text-align: center;
-              padding: .8rem 1.1rem 1rem;
-              gap: 10px;
+              padding: .95rem 1.1rem 1.15rem;
+              gap: 12px;
             }
 
             .bb-footer-copy{
               white-space: normal;
+            }
+          }
+
+          /* accessibility: reduce motion */
+          @media (prefers-reduced-motion: reduce){
+            .bb-footer-noise,
+            .bb-footer-glow--a,
+            .bb-footer-glow--b,
+            .bb-footer-glow--c{
+              animation: none;
+            }
+            .bb-footer-link,
+            .bb-footer-link::after,
+            .bb-social-icon,
+            .bb-newsletter-wrap{
+              transition: none;
             }
           }
         `}

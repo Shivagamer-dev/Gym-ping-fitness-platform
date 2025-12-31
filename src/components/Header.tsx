@@ -193,7 +193,7 @@ export default function Header() {
 
             {/* Small footer line inside drawer */}
             <div className="mt-5 px-2 text-xs text-white/70">
-              © {new Date().getFullYear()} Back&amp;Bone
+              © {new Date().getFullYear()} Back&Bone
             </div>
           </div>
         </aside>
