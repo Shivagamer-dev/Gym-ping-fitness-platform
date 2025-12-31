@@ -57,6 +57,7 @@ export default function TutorialPage(): JSX.Element {
         if (!mounted) return;
 
         let parsed: Tutorial[] = [];
+        // JSON on GitHub is: { "features": [ ... ] }
         if (Array.isArray(data)) parsed = data as Tutorial[];
         else if (Array.isArray((data as any).features))
           parsed = (data as any).features as Tutorial[];
@@ -139,7 +140,7 @@ export default function TutorialPage(): JSX.Element {
                   color: "#0b1120",
                 }}
               >
-                Back&amp;Bone Tutorials
+                Back&Bone Tutorials
               </h1>
 
               <p
@@ -152,7 +153,7 @@ export default function TutorialPage(): JSX.Element {
                   lineHeight: 1.7,
                 }}
               >
-                Learn how every Back&amp;Bone module works, step by step. From
+                Learn how every Back&Bone module works, step by step. From
                 exercise discovery to smart gym tools, this page walks you
                 through the entire experience.
               </p>
@@ -198,20 +199,18 @@ export default function TutorialPage(): JSX.Element {
                   Quick, practical tips
                 </span>
               </div>
-
-              {/* ✅ Modules moved into bottom-sheet modal (Pricing-fix reference) */}
-              <div style={{ marginTop: 14 }}>
-                <TutorialModal
-                  tutorials={tutorials}
-                  loading={loading}
-                  error={error}
-                  isMobile={isMobile}
-                />
-              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ✅ MODULES SECTION (no button, shown here) */}
+      <TutorialModal
+        tutorials={tutorials}
+        loading={loading}
+        error={error}
+        isMobile={isMobile}
+      />
 
       {/* STATUS (kept) */}
       <section className="bb-section" style={{ paddingTop: 8, paddingBottom: 0 }}>
@@ -250,7 +249,7 @@ export default function TutorialPage(): JSX.Element {
               padding: isMobile ? "0 10px" : 0,
             }}
           >
-            New to Back&amp;Bone? Follow these basics to get set up before you
+            New to Back&Bone? Follow these basics to get set up before you
             dive into each feature tutorial.
           </p>
 

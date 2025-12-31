@@ -1,5 +1,4 @@
 // src/components/TutorialModal.tsx
-import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 
 type TutorialStep = {
@@ -18,6 +17,7 @@ type Tutorial = {
   benefits?: string[];
 };
 
+// Helper to build a usable video URL
 function getVideoUrl(tut: Tutorial): string | null {
   if (tut.videoUrl && tut.videoUrl.trim()) return tut.videoUrl.trim();
 
@@ -127,396 +127,345 @@ export default function TutorialModal({
   error: string | null;
   isMobile: boolean;
 }): JSX.Element {
-  const [open, setOpen] = useState(false);
-
-  // only 4 modules
-  const modules = useMemo(() => {
-    if (!tutorials || tutorials.length === 0) return [];
-    return tutorials.slice(0, 4);
-  }, [tutorials]);
-
-  // lock body scroll + ESC close (same “modal behavior” style)
-  useEffect(() => {
-    if (!open) return;
-
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open]);
+  const modules = (tutorials ?? []).slice(0, 4);
 
   return (
-    <>
-      {/* Trigger button (kept simple, matches your UI style) */}
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
-        <button
-          className="bb-btn bb-btn-primary bb-btn-animated"
-          style={{
-            padding: "12px 22px",
-            borderRadius: 999,
-            fontSize: "0.98rem",
-            width: isMobile ? "100%" : "auto",
-            maxWidth: 420,
-          }}
-          onClick={() => setOpen(true)}
-          disabled={loading}
+    <section
+      className="bb-section bb-section-alt bb-modules"
+      style={{ paddingTop: 6 }}
+    >
+      <div
+        className="bb-section-shell bb-anim-fade-up"
+        style={{ maxWidth: 1180 }}
+      >
+        <h2
+          className="bb-section-title"
+          style={{ textAlign: "center", marginBottom: 6 }}
         >
-          Explore Modules (1–4)
-        </button>
-      </div>
+          Explore Each Back&Bone Module
+        </h2>
 
-      {/* Optional error under button (keep) */}
-      {error && (
-        <div style={{ textAlign: "center", marginTop: 10, color: "#9b1c1c" }}>
-          {error}
-        </div>
-      )}
-
-      {/* Modal / Bottom Sheet */}
-      {open && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setOpen(false)}
+        <p
+          className="bb-section-subtitle"
           style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            background: "rgba(2,6,23,0.55)",
-            backdropFilter: "blur(10px)",
-            display: "flex",
-            alignItems: isMobile ? "flex-end" : "center", // ✅ bottom sheet on mobile
-            justifyContent: "center",
-            padding: isMobile ? 10 : 18,
+            textAlign: "center",
+            maxWidth: 720,
+            margin: "0 auto 28px",
           }}
         >
-          {/* Sheet / Card */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: "min(1100px, 100%)",
-              maxHeight: isMobile ? "88vh" : "86vh",
-              overflow: "hidden",
-              borderRadius: isMobile ? "22px 22px 16px 16px" : 22,
-              background:
-                "linear-gradient(135deg,#ffffff, #fbf5ff 55%, #f5f3ff)",
-              boxShadow:
-                "0 30px 90px rgba(0,0,0,0.35), 0 0 0 1px rgba(226,232,240,0.95)",
-              transform: isMobile ? "translateY(0)" : "translateY(0)",
-            }}
-          >
-            {/* Mobile drag handle (Pricing-fix style) */}
-            {isMobile && (
-              <div
+          Each module unlocks a different part of your fitness routine. Use
+          these tutorials as a quick guide while you explore the app.
+        </p>
+
+        {loading && (
+          <div style={{ textAlign: "center", padding: 18, color: "var(--bb-muted)" }}>
+            Loading modules…
+          </div>
+        )}
+
+        {!loading && error && (
+          <div style={{ textAlign: "center", padding: "6px 0 18px", color: "#9b1c1c" }}>
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && modules.length > 0 ? (
+          modules.map((tut, idx) => {
+            const isEven = idx % 2 === 1;
+            const videoUrl = getVideoUrl(tut);
+
+            const rowDirection = isMobile
+              ? ("column" as const)
+              : isEven
+              ? ("row-reverse" as const)
+              : ("row" as const);
+
+            return (
+              <article
+                key={tut.name + idx}
+                className="bb-feature-row-alt bb-card-hover bb-anim-fade-up"
                 style={{
-                  paddingTop: 10,
-                  paddingBottom: 6,
-                  display: "flex",
-                  justifyContent: "center",
+                  marginBottom: 26,
+                  borderRadius: isMobile ? 22 : 28,
+                  padding: isMobile ? 14 : 22,
+                  background:
+                    "linear-gradient(135deg,#fbf5ff,#f5f3ff,#ffffff 48%)",
+                  boxShadow:
+                    "0 22px 55px rgba(15,23,42,0.12), 0 0 0 1px rgba(226,232,240,0.9)",
                 }}
               >
                 <div
                   style={{
-                    width: 48,
-                    height: 5,
-                    borderRadius: 999,
-                    background: "rgba(15,23,42,0.18)",
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Header (sticky) */}
-            <div
-              style={{
-                position: "sticky",
-                top: 0,
-                zIndex: 2,
-                padding: isMobile ? "10px 14px 12px" : "14px 18px 14px",
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72))",
-                backdropFilter: "blur(8px)",
-                borderBottom: "1px solid rgba(226,232,240,0.9)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 10,
-              }}
-            >
-              <div style={{ minWidth: 0 }}>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    padding: "4px 10px",
-                    borderRadius: 999,
-                    background: "rgba(79,70,229,0.10)",
-                    color: "#4c1d95",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: 0.06,
-                    textTransform: "uppercase",
-                    marginBottom: 6,
+                    display: "flex",
+                    flexDirection: rowDirection,
+                    gap: isMobile ? 14 : 26,
+                    alignItems: "stretch",
                   }}
                 >
-                  Tutorials
-                </div>
-
-                <div
-                  style={{
-                    fontSize: isMobile ? 16 : 18,
-                    fontWeight: 800,
-                    color: "#0b1120",
-                    lineHeight: 1.15,
-                  }}
-                >
-                  Explore Each Back&amp;Bone Module (01–04)
-                </div>
-
-                <div
-                  style={{
-                    marginTop: 6,
-                    fontSize: 13,
-                    color: "rgba(55,65,81,0.9)",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Each module unlocks a different part of your fitness routine.
-                </div>
-              </div>
-
-              <button
-                className="bb-btn bb-btn-ghost bb-btn-animated"
-                style={{
-                  borderRadius: 999,
-                  padding: "10px 14px",
-                  whiteSpace: "nowrap",
-                }}
-                onClick={() => setOpen(false)}
-              >
-                Close ✕
-              </button>
-            </div>
-
-            {/* Scroll area (important for bottom sheet) */}
-            <div
-              style={{
-                overflow: "auto",
-                maxHeight: isMobile ? "calc(88vh - 90px)" : "calc(86vh - 84px)",
-                padding: isMobile ? "12px 12px 16px" : "16px 18px 20px",
-              }}
-            >
-              {loading && (
-                <div style={{ textAlign: "center", padding: 18, color: "var(--bb-muted)" }}>
-                  Loading tutorials…
-                </div>
-              )}
-
-              {!loading && !error && modules.length > 0 ? (
-                modules.map((tut, idx) => {
-                  const isEven = idx % 2 === 1;
-                  const videoUrl = getVideoUrl(tut);
-
-                  const rowDirection = isMobile
-                    ? ("column" as const)
-                    : isEven
-                    ? ("row-reverse" as const)
-                    : ("row" as const);
-
-                  // ✅ BELOW is your SAME module card UI (unchanged)
-                  return (
-                    <article
-                      key={tut.name + idx}
-                      className="bb-feature-row-alt bb-card-hover bb-anim-fade-up"
+                  {/* TEXT COLUMN */}
+                  <div
+                    className="bb-feature-copy-alt"
+                    style={{ flex: 1, minWidth: 0, maxWidth: 680 }}
+                  >
+                    <div
                       style={{
-                        marginBottom: 18,
-                        borderRadius: isMobile ? 22 : 28,
-                        padding: isMobile ? 14 : 22,
-                        background: "linear-gradient(135deg,#fbf5ff,#f5f3ff,#ffffff 48%)",
-                        boxShadow:
-                          "0 22px 55px rgba(15,23,42,0.12), 0 0 0 1px rgba(226,232,240,0.9)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        marginBottom: 6,
+                        flexWrap: "wrap",
                       }}
                     >
-                      <div
+                      <span
                         style={{
-                          display: "flex",
-                          flexDirection: rowDirection,
-                          gap: isMobile ? 14 : 26,
-                          alignItems: "stretch",
+                          padding: "4px 10px",
+                          borderRadius: 999,
+                          fontSize: 11,
+                          letterSpacing: 0.08,
+                          textTransform: "uppercase",
+                          background: "rgba(79,70,229,0.08)",
+                          color: "#4c1d95",
+                          fontWeight: 700,
                         }}
                       >
-                        {/* TEXT COLUMN */}
-                        <div className="bb-feature-copy-alt" style={{ flex: 1, minWidth: 0 }}>
+                        Module {String(idx + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <h3
+                      style={{
+                        marginBottom: 8,
+                        fontSize: "clamp(1.15rem, 3.6vw, 1.25rem)",
+                        fontWeight: 800,
+                        color: "#111827",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {tut.name}
+                    </h3>
+
+                    {/* subtitle + description in a soft info card */}
+                    {(tut.subtitle || tut.description) && (
+                      <div
+                        style={{
+                          borderRadius: 18,
+                          padding: isMobile ? "12px 12px" : "14px 14px",
+                          background: "rgba(255,255,255,0.72)",
+                          border: "1px solid rgba(226,232,240,0.95)",
+                          boxShadow: "0 10px 22px rgba(15,23,42,0.05)",
+                          marginBottom: 12,
+                        }}
+                      >
+                        {tut.subtitle && (
                           <div
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 10,
-                              marginBottom: 6,
-                              flexWrap: "wrap",
-                            }}
-                          >
-                            <span
-                              style={{
-                                padding: "4px 10px",
-                                borderRadius: 999,
-                                fontSize: 11,
-                                letterSpacing: 0.08,
-                                textTransform: "uppercase",
-                                background: "rgba(79,70,229,0.08)",
-                                color: "#4c1d95",
-                                fontWeight: 700,
-                              }}
-                            >
-                              Module {String(idx + 1).padStart(2, "0")}
-                            </span>
-                          </div>
-
-                          <h3
-                            style={{
-                              marginBottom: 6,
-                              fontSize: "clamp(1.15rem, 3.6vw, 1.25rem)",
+                              color: "rgba(55,65,81,0.92)",
+                              fontSize: "0.98rem",
                               fontWeight: 700,
-                              color: "#111827",
+                              marginBottom: 6,
                             }}
                           >
-                            {tut.name}
-                          </h3>
+                            {tut.subtitle}
+                          </div>
+                        )}
 
-                          {tut.subtitle && (
-                            <p
-                              style={{
-                                marginBottom: 10,
-                                color: "var(--bb-muted)",
-                                fontSize: "0.98rem",
-                                lineHeight: 1.7,
-                              }}
-                            >
-                              {tut.subtitle}
-                            </p>
-                          )}
-
-                          {tut.description && (
-                            <p
-                              style={{
-                                marginBottom: 12,
-                                lineHeight: 1.75,
-                                color: "#374151",
-                                fontSize: "0.96rem",
-                              }}
-                            >
-                              {tut.description}
-                            </p>
-                          )}
-
-                          {/* ✅ MOBILE: VIDEO ABOVE STEPS */}
-                          {isMobile && (
-                            <div style={{ marginTop: 10, marginBottom: 6 }}>
-                              <VideoCard
-                                videoUrl={videoUrl}
-                                tutName={tut.name}
-                                isMobile={isMobile}
-                              />
-                            </div>
-                          )}
-
-                          {/* Steps */}
-                          {tut.steps && tut.steps.length > 0 && (
-                            <div style={{ marginTop: 8 }}>
-                              <div
-                                style={{
-                                  fontWeight: 700,
-                                  margin: "10px 0 6px",
-                                  fontSize: "0.9rem",
-                                  textTransform: "uppercase",
-                                  letterSpacing: 0.08,
-                                  color: "#6b21a8",
-                                }}
-                              >
-                                Steps
-                              </div>
-                              <ul
-                                style={{
-                                  marginTop: 4,
-                                  marginLeft: 16,
-                                  paddingLeft: 4,
-                                  lineHeight: 1.75,
-                                  color: "#374151",
-                                  fontSize: "0.95rem",
-                                }}
-                              >
-                                {tut.steps.map((s, i) => (
-                                  <li key={s.title + i} style={{ marginBottom: 8 }}>
-                                    <strong>{s.title}:</strong> {s.description}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {/* Benefits */}
-                          {tut.benefits && tut.benefits.length > 0 && (
-                            <div style={{ marginTop: 12 }}>
-                              <div
-                                style={{
-                                  fontWeight: 700,
-                                  margin: "6px 0 6px",
-                                  fontSize: "0.9rem",
-                                  textTransform: "uppercase",
-                                  letterSpacing: 0.08,
-                                  color: "#0f766e",
-                                }}
-                              >
-                                Benefits
-                              </div>
-                              <ul
-                                style={{
-                                  marginTop: 4,
-                                  marginLeft: 16,
-                                  paddingLeft: 4,
-                                  lineHeight: 1.75,
-                                  color: "#374151",
-                                  fontSize: "0.95rem",
-                                }}
-                              >
-                                {tut.benefits.map((b, bi) => (
-                                  <li key={bi} style={{ marginBottom: 6 }}>
-                                    {b}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* ✅ DESKTOP: VIDEO COLUMN */}
-                        {!isMobile && (
-                          <VideoCard
-                            videoUrl={videoUrl}
-                            tutName={tut.name}
-                            isMobile={isMobile}
-                          />
+                        {tut.description && (
+                          <div
+                            style={{
+                              color: "#374151",
+                              fontSize: "0.96rem",
+                              lineHeight: 1.75,
+                            }}
+                          >
+                            {tut.description}
+                          </div>
                         )}
                       </div>
-                    </article>
-                  );
-                })
-              ) : !loading && !error ? (
-                <div style={{ textAlign: "center", padding: 18 }}>
-                  No modules available.
+                    )}
+
+                    {/* ✅ MOBILE: VIDEO ABOVE STEPS */}
+                    {isMobile && (
+                      <div style={{ marginTop: 8, marginBottom: 10 }}>
+                        <VideoCard
+                          videoUrl={videoUrl}
+                          tutName={tut.name}
+                          isMobile={isMobile}
+                        />
+                      </div>
+                    )}
+
+                    {/* Steps (new better styling) */}
+                    {tut.steps && tut.steps.length > 0 && (
+                      <div style={{ marginTop: 14 }}>
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontWeight: 800,
+                            padding: "6px 12px",
+                            borderRadius: 999,
+                            fontSize: 12,
+                            textTransform: "uppercase",
+                            letterSpacing: 0.1,
+                            color: "#5b21b6",
+                            background: "rgba(139,92,246,0.10)",
+                            border: "1px solid rgba(139,92,246,0.18)",
+                          }}
+                        >
+                          Steps
+                        </div>
+
+                        <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                          {tut.steps.map((s, i) => (
+                            <div
+                              key={s.title + i}
+                              style={{
+                                display: "flex",
+                                gap: 12,
+                                alignItems: "flex-start",
+                                padding: "12px 12px",
+                                borderRadius: 16,
+                                background: "rgba(255,255,255,0.75)",
+                                border: "1px solid rgba(226,232,240,0.95)",
+                                boxShadow: "0 10px 22px rgba(15,23,42,0.05)",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: 30,
+                                  height: 30,
+                                  borderRadius: 999,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontWeight: 900,
+                                  fontSize: 13,
+                                  color: "#fff",
+                                  background:
+                                    "linear-gradient(135deg,#8b5cf6,#4c1d95)",
+                                  flex: "0 0 auto",
+                                  marginTop: 1,
+                                }}
+                              >
+                                {i + 1}
+                              </div>
+
+                              <div style={{ minWidth: 0 }}>
+                                <div
+                                  style={{
+                                    fontWeight: 800,
+                                    color: "#111827",
+                                    marginBottom: 4,
+                                    lineHeight: 1.25,
+                                  }}
+                                >
+                                  {s.title}
+                                </div>
+                                <div
+                                  style={{
+                                    color: "#374151",
+                                    lineHeight: 1.7,
+                                    fontSize: "0.95rem",
+                                  }}
+                                >
+                                  {s.description}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Benefits (new better styling) */}
+                    {tut.benefits && tut.benefits.length > 0 && (
+                      <div style={{ marginTop: 14 }}>
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontWeight: 800,
+                            padding: "6px 12px",
+                            borderRadius: 999,
+                            fontSize: 12,
+                            textTransform: "uppercase",
+                            letterSpacing: 0.1,
+                            color: "#0f766e",
+                            background: "rgba(13,148,136,0.10)",
+                            border: "1px solid rgba(13,148,136,0.18)",
+                          }}
+                        >
+                          Benefits
+                        </div>
+
+                        <div
+                          style={{
+                            marginTop: 10,
+                            display: "grid",
+                            gap: 8,
+                          }}
+                        >
+                          {tut.benefits.map((b, bi) => (
+                            <div
+                              key={bi}
+                              style={{
+                                padding: "10px 12px",
+                                borderRadius: 14,
+                                background: "rgba(255,255,255,0.75)",
+                                border: "1px solid rgba(226,232,240,0.95)",
+                                boxShadow: "0 10px 22px rgba(15,23,42,0.05)",
+                                display: "flex",
+                                gap: 10,
+                                alignItems: "flex-start",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: 10,
+                                  height: 10,
+                                  borderRadius: 999,
+                                  background:
+                                    "linear-gradient(135deg,#0ea5e9,#10b981)",
+                                  marginTop: 6,
+                                  flex: "0 0 auto",
+                                }}
+                              />
+                              <div
+                                style={{
+                                  color: "#374151",
+                                  lineHeight: 1.7,
+                                  fontSize: "0.95rem",
+                                }}
+                              >
+                                {b}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ✅ DESKTOP: VIDEO COLUMN */}
+                  {!isMobile && (
+                    <VideoCard
+                      videoUrl={videoUrl}
+                      tutName={tut.name}
+                      isMobile={isMobile}
+                    />
+                  )}
                 </div>
-              ) : null}
-            </div>
+              </article>
+            );
+          })
+        ) : !loading && !error ? (
+          <div style={{ textAlign: "center", padding: 18 }}>
+            No modules available.
           </div>
-        </div>
-      )}
-    </>
+        ) : null}
+      </div>
+    </section>
   );
 }
