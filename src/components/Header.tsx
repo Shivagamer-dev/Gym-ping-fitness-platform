@@ -97,7 +97,7 @@ export default function Header() {
               type="button"
             >
               <span className="block text-xl sm:text-2xl">Back</span>
-              <span className="block text-xl sm:text-2xl -mt-2">&amp;Bone</span>
+              <span className="block text-xl sm:text-2xl -mt-2">&Bone</span>
             </button>
 
             {/* Desktop Navigation */}
@@ -163,7 +163,7 @@ export default function Header() {
             <div className="select-none">
               <div className="text-white font-extrabold leading-[0.85]">
                 <div className="text-2xl">Back</div>
-                <div className="text-2xl -mt-1">&amp;Bone</div>
+                <div className="text-2xl -mt-1">&Bone</div>
               </div>
               <div className="mt-2 text-white/80 text-xs">
                 Navigate quickly
