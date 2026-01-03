@@ -72,98 +72,29 @@ export default function PricingPage(): JSX.Element {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(PRICING_JSON_RAW);
+        const res = await fetch(PRICING_JSON_RAW, { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to fetch pricing (${res.status})`);
 
         const data = await res.json();
         const rawPlans: Plan[] = Array.isArray(data) ? data : data.plans ?? [];
         const rawFaqs: FAQ[] = data.faqs ?? [];
 
-        // Show Free, Pro, Family
         const filtered = rawPlans.filter((p) => {
           const key = (p.id || p.name || "").toString().toLowerCase();
           return key.includes("free") || key.includes("pro") || key.includes("family");
         });
 
         const baseWithIcons = addDefaultIcons(filtered.length ? filtered : rawPlans);
+
         if (!mounted) return;
         setPlans(baseWithIcons);
         setFaqs(rawFaqs);
       } catch (err) {
         if (!mounted) return;
         console.error(err);
-        setError("Could not load pricing data. Showing default plans.");
-
-        // Fallback plans (only used if GitHub JSON fails completely)
-        const fallback: Plan[] = addDefaultIcons([
-          {
-            id: "free",
-            name: "Free",
-            tagline: "Essential features to get started",
-            price: { monthly: 0 },
-            features: [
-              { name: "Exercise Library & Form Guide", included: true },
-              { name: "Spotter, Locator & basic Dashboard", included: true },
-              { name: "Basic Progress Tracking", included: true },
-              { name: "Nutrition Tracking (limited)", included: true },
-              { name: "Custom Workout Plans", included: false, description: "Available in Pro & Family" },
-              { name: "Advanced AI Coaching", included: false, description: "Available in Pro & Family" },
-            ],
-          },
-          {
-            id: "pro",
-            name: "Pro",
-            tagline: "Most popular for serious fitness enthusiasts",
-            price: { monthly: 165 },
-            buttonText: "Upgrade to Pro",
-            features: [
-              { name: "Spotter, Locator, RepBot, Dashboard", included: true },
-              { name: "Wearable Device Integration", included: true },
-              { name: "Nutrition Tracking", included: true },
-              { name: "Custom Workout Plans", included: true },
-              { name: "Advanced AI Coaching", included: true },
-              { name: "Priority Support", included: true },
-              { name: "1-on-1 Coaching Sessions", included: false, description: "Included in Family" },
-            ],
-          },
-          {
-            id: "family",
-            name: "Family",
-            tagline: "Perfect for families (2–8 members)",
-            price: { monthly: 400 },
-            buttonText: "Go Family",
-            features: [
-              { name: "Spotter, Locator, RepBot, Dashboard", included: true },
-              { name: "Wearable Device Integration", included: true },
-              { name: "Nutrition Tracking", included: true },
-              { name: "Custom Workout Plans", included: true },
-              { name: "Advanced AI Coaching", included: true },
-              { name: "Priority Support", included: true },
-              { name: "1-on-1 Coaching Sessions", included: true },
-              { name: "Family Member Support", included: true },
-            ],
-          },
-        ]);
-
-        setPlans(fallback);
-
-        // Fallback FAQs
-        const fallbackFaqs: FAQ[] = [
-          {
-            question: "Can I change my plan anytime?",
-            answer: "Yes. You can upgrade or downgrade whenever you like. Changes take effect immediately.",
-          },
-          {
-            question: "How does the Family Plan work?",
-            answer: "Add up to 8 family members with separate profiles and shared progress. Pricing is shown on each plan card.",
-          },
-          {
-            question: "What devices are supported?",
-            answer: "Back&Bone works across iOS and Android, and integrates with many popular wearables.",
-          },
-        ];
-
-        setFaqs(fallbackFaqs);
+        setError("Check your connection and try again later");
+        setPlans(null);
+        setFaqs(null);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -191,7 +122,7 @@ export default function PricingPage(): JSX.Element {
   const handleFamilyPlus = () => setFamilyMembers((prev) => Math.min(FAMILY_MAX, prev + 1));
 
   return (
-    <div className="bb-page bb-pricing-page" style={{ paddingTop: "104px" }}>
+    <div className="bb-page bb-pricing-page" style={{ paddingTop: "20px" }}>
       {/* HERO / INTRO */}
       <section className="bb-section">
         <div className="bb-section-shell">
@@ -228,172 +159,163 @@ export default function PricingPage(): JSX.Element {
           )}
 
           {error && (
-            <div style={{ textAlign: "center", color: "#b91c1c", marginBottom: 12 }}>
+            <div style={{ textAlign: "center", color: "#6b7280", marginBottom: 14 }}>
               {error}
             </div>
           )}
 
           {/* TOP PRICING CARDS */}
-          <div className="bb-pricing-row" aria-live="polite">
-            {(plans ?? []).map((plan) => {
-              const { value, suffix } = renderPricePieces(plan);
-              const key = (plan.id || plan.name || "").toString().toLowerCase();
+          {!loading && !error && (
+            <div className="bb-pricing-row" aria-live="polite">
+              {(plans ?? []).map((plan) => {
+                const { value, suffix } = renderPricePieces(plan);
+                const key = (plan.id || plan.name || "").toString().toLowerCase();
 
-              const isFree = key.includes("free");
-              const isPro = key.includes("pro") || (plan.name || "").toString().toLowerCase() === "pro";
-              const isFamily = key.includes("family");
+                const isFree = key.includes("free");
+                const isPro =
+                  key.includes("pro") || (plan.name || "").toString().toLowerCase() === "pro";
+                const isFamily = key.includes("family");
 
-              // PRICE DISPLAY LOGIC
-              let displayValue = value;
-              let displaySuffix = suffix;
+                let displayValue = value;
+                let displaySuffix = suffix;
 
-              if (isFamily) {
-                const familyTotal = familyMembers * FAMILY_PER_MEMBER;
-                displayValue = familyTotal.toString();
-                displaySuffix = "/month";
-              }
+                if (isFamily) {
+                  const familyTotal = familyMembers * FAMILY_PER_MEMBER;
+                  displayValue = familyTotal.toString();
+                  displaySuffix = "/month";
+                }
 
-              if (isFree) {
-                displayValue = "Free";
-                displaySuffix = "";
-              }
+                if (isFree) {
+                  displayValue = "Free";
+                  displaySuffix = "";
+                }
 
-              // Button text
-              let buttonLabel: string;
-              if (isFree) buttonLabel = "Get Started";
-              else if (plan.buttonText) buttonLabel = plan.buttonText;
-              else if (isPro) buttonLabel = "Upgrade to Pro";
-              else buttonLabel = `Choose ${plan.name}`;
+                let buttonLabel: string;
+                if (isFree) buttonLabel = "Get Started";
+                else if (plan.buttonText) buttonLabel = plan.buttonText;
+                else if (isPro) buttonLabel = "Upgrade to Pro";
+                else buttonLabel = `Choose ${plan.name}`;
 
-              return (
-                <article
-                  key={plan.id}
-                  className={`bb-plan-card bb-card-hover bb-anim-fade-up ${
-                    isPro ? "bb-plan-card-pro" : ""
-                  } ${isFamily ? "bb-plan-card-family" : ""}`}
-                >
-                  {isPro && (
-                    <div className="bb-plan-star" aria-hidden="true">
-                      ★
-                    </div>
-                  )}
-
-                  <div className="bb-plan-inner">
-                    <div className="bb-plan-icon">{plan.icon ?? "⚡"}</div>
-
-                    <h3 className="bb-plan-name">{plan.name}</h3>
-
-                    {plan.tagline && <p className="bb-plan-tagline">{plan.tagline}</p>}
-
-                    <div className="bb-plan-price">
-                      {!isFree && displayValue !== "—" && (
-                        <span className="bb-plan-price-currency">₹</span>
-                      )}
-                      <span className="bb-plan-price-value">{displayValue}</span>
-                      {!isFree && displaySuffix && (
-                        <span className="bb-plan-price-suffix">{displaySuffix}</span>
-                      )}
-                    </div>
-
-                    {isFamily && <p className="bb-family-total-note">{featureLabel(familyMembers)}</p>}
-
-                    <button className="bb-plan-button">{buttonLabel}</button>
-
-                    {/* FAMILY COUNTER – visible only on hover (desktop). On mobile it stays visible. */}
-                    {isFamily && (
-                      <div className="bb-family-counter-card">
-                        <div className="bb-family-counter-label">Number of Family Members</div>
-
-                        <div className="bb-family-counter-controls">
-                          <button
-                            type="button"
-                            onClick={handleFamilyMinus}
-                            disabled={familyMembers <= FAMILY_MIN}
-                            aria-label="Decrease family members"
-                          >
-                            –
-                          </button>
-                          <span className="bb-family-counter-value">{familyMembers}</span>
-                          <button
-                            type="button"
-                            onClick={handleFamilyPlus}
-                            disabled={familyMembers >= FAMILY_MAX}
-                            aria-label="Increase family members"
-                          >
-                            +
-                          </button>
-                        </div>
-
-                        <div className="bb-family-counter-note">₹{FAMILY_PER_MEMBER} per member/month</div>
+                return (
+                  <article
+                    key={plan.id}
+                    className={`bb-plan-card bb-card-hover bb-anim-fade-up ${
+                      isPro ? "bb-plan-card-pro" : ""
+                    } ${isFamily ? "bb-plan-card-family" : ""}`}
+                  >
+                    {isPro && (
+                      <div className="bb-plan-star" aria-hidden="true">
+                        ★
                       </div>
                     )}
 
-                    <div className="bb-plan-divider" />
+                    <div className="bb-plan-inner">
+                      {/* ✅ Same icon block for ALL plans (Free now matches exactly) */}
+                      <div className="bb-plan-icon">{isFree ? "✓" : plan.icon ?? "⚡"}</div>
 
-                    {/* FEATURES WITH TICK / CROSS */}
-                    <div className="bb-plan-features">
-                      <h4 className="bb-plan-features-title">Features</h4>
-                      <ul className="bb-plan-features-list">
-                        {(plan.features ?? []).map((feature, idx) => {
-                          const isIncluded = feature.included === true;
-                          return (
-                            <li
-                              key={idx}
-                              style={{ display: "flex", gap: "6px", alignItems: "center" }}
+                      <h3 className="bb-plan-name">{plan.name}</h3>
+
+                      {plan.tagline && <p className="bb-plan-tagline">{plan.tagline}</p>}
+
+                      <div className="bb-plan-price">
+                        {!isFree && displayValue !== "—" && (
+                          <span className="bb-plan-price-currency">₹</span>
+                        )}
+                        <span className="bb-plan-price-value">{displayValue}</span>
+                        {!isFree && displaySuffix && (
+                          <span className="bb-plan-price-suffix">{displaySuffix}</span>
+                        )}
+                      </div>
+
+                      {isFamily && (
+                        <p className="bb-family-total-note">{featureLabel(familyMembers)}</p>
+                      )}
+
+                      <button className="bb-plan-button">{buttonLabel}</button>
+
+                      {isFamily && (
+                        <div className="bb-family-counter-card">
+                          <div className="bb-family-counter-label">Number of Family Members</div>
+
+                          <div className="bb-family-counter-controls">
+                            <button
+                              type="button"
+                              onClick={handleFamilyMinus}
+                              disabled={familyMembers <= FAMILY_MIN}
+                              aria-label="Decrease family members"
                             >
-                              <span
-                                style={{
-                                  fontSize: "1rem",
-                                  fontWeight: 700,
-                                  color: isIncluded ? "#10B981" : "#EF4444",
-                                }}
+                              -
+                            </button>
+                            <span className="bb-family-counter-value">{familyMembers}</span>
+                            <button
+                              type="button"
+                              onClick={handleFamilyPlus}
+                              disabled={familyMembers >= FAMILY_MAX}
+                              aria-label="Increase family members"
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          <div className="bb-family-counter-note">
+                            ₹{FAMILY_PER_MEMBER} per member/month
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="bb-plan-divider" />
+
+                      <div className="bb-plan-features">
+                        <h4 className="bb-plan-features-title">Features</h4>
+                        <ul className="bb-plan-features-list">
+                          {(plan.features ?? []).map((feature, idx) => {
+                            const isIncluded = feature.included === true;
+                            return (
+                              <li
+                                key={idx}
+                                style={{ display: "flex", gap: "6px", alignItems: "center" }}
                               >
-                                {isIncluded ? "✓" : "✕"}
-                              </span>
-                              <span style={{ color: "#374151" }}>{feature.name}</span>
-                              {!isIncluded && feature.description && (
-                                <span style={{ color: "#9CA3AF", fontSize: "0.75rem" }}>
-                                  ({feature.description})
+                                <span
+                                  style={{
+                                    fontSize: "1rem",
+                                    fontWeight: 700,
+                                    color: isIncluded ? "#10B981" : "#EF4444",
+                                  }}
+                                >
+                                  {isIncluded ? "✓" : "✕"}
                                 </span>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
+                                <span style={{ color: "#374151" }}>{feature.name}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* STYLES */}
         <style>
           {`
-            /* IMPORTANT: remove the "only Free visible" issue by making pricing grid responsive
-               and preventing overflow clipping */
-            .bb-pricing-page {
-              overflow-x: visible;
-            }
+            .bb-pricing-page { overflow-x: visible; }
 
             .bb-pricing-row {
               display: grid;
               grid-template-columns: repeat(3, minmax(0, 1fr));
-              gap: 24px;
+              gap: 34px;
               align-items: stretch;
             }
 
             @media (max-width: 1100px) {
-              .bb-pricing-row {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-              }
+              .bb-pricing-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
             }
 
             @media (max-width: 760px) {
-              .bb-pricing-row {
-                grid-template-columns: 1fr;
-              }
+              .bb-pricing-row { grid-template-columns: 1fr; gap: 18px; }
             }
 
             .bb-plan-card {
@@ -407,10 +329,7 @@ export default function PricingPage(): JSX.Element {
               box-shadow:
                 0 24px 60px rgba(148,163,184,0.35),
                 0 0 0 1px rgba(148,163,184,0.12);
-              transition:
-                transform 260ms ease,
-                box-shadow 260ms ease,
-                background 260ms ease;
+              transition: transform 260ms ease, box-shadow 260ms ease, background 260ms ease;
               display: flex;
               flex-direction: column;
             }
@@ -528,10 +447,7 @@ export default function PricingPage(): JSX.Element {
               color: #f9fafb;
               background: linear-gradient(135deg, #8b5cf6, #ec4899);
               box-shadow: 0 14px 32px rgba(236,72,153,0.55);
-              transition:
-                transform 200ms ease,
-                box-shadow 200ms ease,
-                filter 180ms ease;
+              transition: transform 200ms ease, box-shadow 200ms ease, filter 180ms ease;
             }
 
             .bb-plan-button:hover {
@@ -544,15 +460,9 @@ export default function PricingPage(): JSX.Element {
               height: 1px;
               width: 100%;
               margin: 18px 0 8px;
-              background: linear-gradient(
-                to right,
-                transparent,
-                rgba(148,163,184,0.6),
-                transparent
-              );
+              background: linear-gradient(to right, transparent, rgba(148,163,184,0.6), transparent);
             }
 
-            /* Features: show on hover for desktop; always show on mobile */
             .bb-plan-features {
               margin-top: 6px;
               padding-top: 4px;
@@ -560,10 +470,7 @@ export default function PricingPage(): JSX.Element {
               opacity: 0;
               transform: translateY(10px);
               overflow: hidden;
-              transition:
-                max-height 340ms ease,
-                opacity 260ms ease,
-                transform 340ms ease;
+              transition: max-height 340ms ease, opacity 260ms ease, transform 340ms ease;
             }
 
             .bb-plan-card:hover .bb-plan-features {
@@ -626,10 +533,7 @@ export default function PricingPage(): JSX.Element {
               opacity: 0;
               transform: translateY(8px);
               overflow: hidden;
-              transition:
-                max-height 260ms ease,
-                opacity 200ms ease,
-                transform 260ms ease;
+              transition: max-height 260ms ease, opacity 200ms ease, transform 260ms ease;
             }
 
             .bb-plan-card-family:hover .bb-family-counter-card {
@@ -638,7 +542,6 @@ export default function PricingPage(): JSX.Element {
               transform: translateY(0);
             }
 
-            /* On mobile: keep the family counter visible (no hover) */
             @media (max-width: 760px) {
               .bb-plan-card-family .bb-family-counter-card {
                 max-height: 240px;
@@ -647,10 +550,7 @@ export default function PricingPage(): JSX.Element {
               }
             }
 
-            .bb-family-counter-label {
-              font-size: 0.95rem;
-              font-weight: 600;
-            }
+            .bb-family-counter-label { font-size: 0.95rem; font-weight: 600; }
 
             .bb-family-counter-controls {
               display: flex;
@@ -697,143 +597,309 @@ export default function PricingPage(): JSX.Element {
               color: #111827;
             }
 
-            .bb-family-counter-note {
-              font-size: 0.9rem;
+            .bb-family-counter-note { font-size: 0.9rem; color: #6b7280; }
+
+            .bb-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 16px; }
+            .bb-compare-grid { min-width: 760px; }
+
+            .bb-riskfree {
+              max-width: 980px;
+              margin: 0 auto;
+              border-radius: 26px;
+              padding: 18px 18px;
+              background: linear-gradient(145deg, #faf5ff, #fdf2ff);
+              box-shadow: 0 22px 55px rgba(148,163,184,0.22), 0 0 0 1px rgba(168,85,247,0.18);
+              position: relative;
+              overflow: hidden;
+            }
+
+            .bb-riskfree::before {
+              content: "";
+              position: absolute;
+              inset: -2px;
+              background: radial-gradient(circle at 15% 0%, rgba(168,85,247,0.26), transparent 52%),
+                          radial-gradient(circle at 85% 100%, rgba(236,72,153,0.22), transparent 52%);
+              pointer-events: none;
+            }
+
+            .bb-riskfree-inner {
+              position: relative;
+              z-index: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 12px;
+              text-align: center;
+              flex-wrap: wrap;
+            }
+
+            .bb-riskfree-badge { display: none; }
+
+            .bb-riskfree-text {
+              font-size: 1.02rem;
+              color: #0f172a;
+              font-weight: 600;
+              line-height: 1.5;
+              text-align: center;
+            }
+
+            .bb-riskfree-text span { font-weight: 800; }
+
+            .bb-riskfree-lines { display: inline; }
+            .bb-riskfree-line { display: inline; }
+
+            @media (max-width: 760px) {
+              .bb-riskfree { padding: 16px 14px; border-radius: 22px; }
+              .bb-riskfree-text { font-size: 0.98rem; }
+
+              .bb-riskfree-lines {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                align-items: center;
+              }
+
+              .bb-riskfree-line {
+                display: block;
+                width: 100%;
+                text-align: center;
+              }
+            }
+
+            .bb-help-card {
+              max-width: 980px;
+              margin: 0 auto;
+              background: #ffffff;
+              border-radius: 34px;
+              padding: 38px 22px;
+              text-align: center;
+              box-shadow: 0 26px 70px rgba(15,23,42,0.12);
+              border: 1px solid rgba(148,163,184,0.35);
+            }
+
+            .bb-help-title {
+              margin: 0 0 10px;
+              font-size: clamp(1.5rem, 4vw, 2.05rem);
+              font-weight: 900;
+              color: #0b1120;
+              letter-spacing: -0.02em;
+            }
+
+            .bb-help-subtitle {
+              max-width: 900px;
+              margin: 0 auto 18px;
               color: #6b7280;
+              line-height: 1.85;
+              font-size: 1.02rem;
+              text-align: center;
+              text-wrap: balance;
             }
 
-            /* Comparison table scroll wrapper for mobile */
-            .bb-compare-scroll {
-              overflow-x: auto;
-              -webkit-overflow-scrolling: touch;
-              border-radius: 16px;
+            .bb-help-actions {
+              display: flex;
+              justify-content: center;
+              gap: 14px;
+              flex-wrap: wrap;
+              margin: 8px 0 10px;
             }
 
-            .bb-compare-grid {
-              min-width: 760px; /* allows smooth horizontal scroll on mobile */
+            .bb-help-btn-primary {
+              border: none;
+              cursor: pointer;
+              border-radius: 999px;
+              padding: 12px 26px;
+              font-weight: 700;
+              font-size: 0.98rem;
+              color: #fff;
+              background: #0b0b0f;
+              box-shadow: 0 16px 40px rgba(2,6,23,0.25);
+              transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+              min-width: 220px;
+            }
+
+            .bb-help-btn-primary:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 18px 46px rgba(2,6,23,0.3);
+              filter: brightness(1.05);
+            }
+
+            .bb-help-btn-ghost {
+              border-radius: 999px;
+              padding: 12px 26px;
+              font-weight: 700;
+              font-size: 0.98rem;
+              color: #111827;
+              background: #ffffff;
+              border: 1px solid rgba(226,232,240,0.95);
+              box-shadow: 0 14px 34px rgba(15,23,42,0.08);
+              text-decoration: none;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              min-width: 140px;
+              transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+            }
+
+            .bb-help-btn-ghost:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 16px 40px rgba(15,23,42,0.10);
+              filter: brightness(1.02);
+            }
+
+            .bb-help-footnote {
+              margin: 0;
+              color: #9ca3af;
+              font-size: 0.92rem;
+            }
+
+            @media (max-width: 760px) {
+              .bb-help-card { border-radius: 26px; padding: 22px 14px; }
+              .bb-help-actions > * { width: 100%; max-width: 420px; }
+              .bb-help-btn-primary, .bb-help-btn-ghost { min-width: unset; }
+              .bb-help-subtitle { font-size: 0.98rem; }
             }
           `}
         </style>
       </section>
 
       {/* DETAILED FEATURE COMPARISON */}
-      <section className="bb-section bb-section-alt">
-        <div className="bb-section-shell">
-          <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
-            Detailed Plan Comparison
-          </h2>
+      {!loading && !error && (
+        <section className="bb-section bb-section-alt">
+          <div className="bb-section-shell">
+            <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
+              Detailed Plan Comparison
+            </h2>
 
-          <p
-            className="bb-section-subtitle"
-            style={{
-              textAlign: "left",
-              maxWidth: "720px",
-              margin: "0 0 24px",
-              fontSize: "0.98rem",
-            }}
-          >
-            Compare features across plans and choose the level of support that matches your journey.
-          </p>
-
-          <div className="bb-compare-scroll">
-            <div
-              className="bb-compare-grid"
+            <p
+              className="bb-section-subtitle"
               style={{
-                display: "grid",
-                gridTemplateColumns: `minmax(200px, 1fr) repeat(${(plans ?? []).length}, minmax(180px, 1fr))`,
-                gap: 12,
-                alignItems: "start",
+                textAlign: "left",
+                maxWidth: "720px",
+                margin: "0 0 24px",
+                fontSize: "0.98rem",
               }}
             >
-              <div style={{ fontWeight: 700, padding: "14px 18px" }}>Feature</div>
+              Compare features across plans and choose the level of support that matches your journey.
+            </p>
 
-              {(plans ?? []).map((p) => (
-                <div
-                  key={`col-${p.id}`}
-                  style={{ fontWeight: 700, padding: "14px 18px", textAlign: "center" }}
-                >
-                  {p.name}
-                </div>
-              ))}
+            <div className="bb-compare-scroll">
+              <div
+                className="bb-compare-grid"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: `minmax(200px, 1fr) repeat(${(plans ?? []).length}, minmax(180px, 1fr))`,
+                  gap: 12,
+                  alignItems: "start",
+                }}
+              >
+                <div style={{ fontWeight: 700, padding: "14px 18px" }}>Feature</div>
 
-              {featureNames.length === 0 ? (
-                <div style={{ gridColumn: `1 / -1`, padding: 8 }}>No detailed features available.</div>
-              ) : (
-                featureNames.map((fname) => (
-                  <React.Fragment key={fname}>
-                    <div
-                      style={{
-                        padding: "12px 18px",
-                        borderTop: "1px solid rgba(0,0,0,0.04)",
-                      }}
-                    >
-                      <div style={{ fontWeight: 600 }}>{fname}</div>
-                    </div>
+                {(plans ?? []).map((p) => (
+                  <div
+                    key={`col-${p.id}`}
+                    style={{ fontWeight: 700, padding: "14px 18px", textAlign: "center" }}
+                  >
+                    {p.name}
+                  </div>
+                ))}
 
-                    {(plans ?? []).map((p) => {
-                      const feat = (p.features ?? []).find(
-                        (f) => (f.name || f.description) === fname
-                      );
-                      const included = feat?.included ?? false;
+                {featureNames.length === 0 ? (
+                  <div style={{ gridColumn: `1 / -1`, padding: 8 }}>No detailed features available.</div>
+                ) : (
+                  featureNames.map((fname) => (
+                    <React.Fragment key={fname}>
+                      <div style={{ padding: "12px 18px", borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+                        <div style={{ fontWeight: 600 }}>{fname}</div>
+                      </div>
 
-                      return (
-                        <div
-                          key={`${p.id}-${fname}`}
-                          style={{
-                            padding: "12px 18px",
-                            borderTop: "1px solid rgba(0,0,0,0.04)",
-                            textAlign: "center",
-                          }}
-                        >
-                          {included ? (
-                            <span style={{ display: "inline-block", fontSize: 18, color: "#10B981" }}>
-                              ✓
-                            </span>
-                          ) : (
-                            <span style={{ display: "inline-block", fontSize: 18, color: "#EF4444" }}>
-                              ✕
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </React.Fragment>
-                ))
-              )}
+                      {(plans ?? []).map((p) => {
+                        const feat = (p.features ?? []).find(
+                          (f) => (f.name || f.description) === fname
+                        );
+                        const included = feat?.included ?? false;
+
+                        return (
+                          <div
+                            key={`${p.id}-${fname}`}
+                            style={{
+                              padding: "12px 18px",
+                              borderTop: "1px solid rgba(0,0,0,0.04)",
+                              textAlign: "center",
+                            }}
+                          >
+                            {included ? (
+                              <span style={{ display: "inline-block", fontSize: 18, color: "#10B981" }}>
+                                ✓
+                              </span>
+                            ) : (
+                              <span style={{ display: "inline-block", fontSize: 18, color: "#EF4444" }}>
+                                ✕
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </React.Fragment>
+                  ))
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FAQ */}
-      <section className="bb-section">
-        <div className="bb-section-shell">
-          <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
-            Frequently Asked Questions
-          </h2>
-          <p
-            className="bb-section-subtitle"
-            style={{ textAlign: "left", maxWidth: "720px", margin: "0 0 24px", fontSize: "0.98rem" }}
-          >
-            Everything you need to know before choosing your plan.
-          </p>
+      {!loading && !error && (
+        <section className="bb-section">
+          <div className="bb-section-shell">
+            <div style={{ textAlign: "center", marginBottom: "18px" }}>
+              <h2 className="bb-section-title" style={{ textAlign: "center", marginBottom: "10px" }}>
+                Frequently Asked Questions
+              </h2>
+              <p
+                className="bb-section-subtitle"
+                style={{ textAlign: "center", margin: "0 auto", maxWidth: "720px" }}
+              >
+                Everything you need to know before choosing your plan.
+              </p>
+            </div>
 
-          <div className="bb-faq-list">
-            {(faqs ?? []).map((faq, idx) => (
-              <div key={idx} className="bb-faq-item bb-card-hover">
-                <h4>{faq.question}</h4>
-                <p>{faq.answer}</p>
-              </div>
-            ))}
+            <div style={{ maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "14px" }}>
+              {(faqs ?? []).map((faq, idx) => (
+                <div
+                  key={idx}
+                  className="bb-card-hover"
+                  style={{
+                    background: "#fff",
+                    borderRadius: 18,
+                    padding: "16px 18px",
+                    boxShadow: "0 10px 26px rgba(15,23,42,0.06), 0 0 0 1px rgba(226,232,240,0.9)",
+                  }}
+                >
+                  <h4 style={{ margin: "0 0 6px", fontWeight: 800, color: "#0f172a" }}>{faq.question}</h4>
+                  <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>{faq.answer}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* RISK-FREE CTA */}
       <section className="bb-section">
         <div className="bb-section-shell">
-          <div className="bb-cta-panel bb-center-text bb-card-hover" style={{ fontSize: "1.02rem" }}>
-            <p>Try Back&Bone risk-free · 30-day money-back guarantee · Cancel anytime, no setup fees.</p>
+          <div className="bb-riskfree bb-card-hover">
+            <div className="bb-riskfree-inner">
+              <div className="bb-riskfree-text">
+                <span className="bb-riskfree-lines">
+                  <span className="bb-riskfree-line">
+                    Try <span>Back&Bone</span> risk-free
+                  </span>
+                  <span className="bb-riskfree-line"> · <span>30-day</span> money-back guarantee</span>
+                  <span className="bb-riskfree-line"> · Cancel anytime, no setup fees.</span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -841,28 +907,25 @@ export default function PricingPage(): JSX.Element {
       {/* NEED A HAND CTA */}
       <section className="bb-section bb-cta">
         <div className="bb-section-shell">
-          <h3 className="bb-section-title" style={{ textAlign: "center", marginBottom: "10px" }}>
-            Need a Hand?
-          </h3>
-          <p className="bb-section-subtitle" style={{ textAlign: "center", marginBottom: "18px" }}>
-            We're here to help you every step of the way.
-          </p>
-          <div className="bb-cta-actions">
-            <button className="bb-btn bb-btn-primary bb-btn-animated" onClick={() => navigate("/support")}>
-              Visit Support Center
-            </button>
-            <a
-              href="mailto:support@backnbone.com"
-              className="bb-btn bb-btn-ghost bb-btn-animated"
-              style={{
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              Email Us
-            </a>
+          <div className="bb-help-card bb-anim-fade-up">
+            <h3 className="bb-help-title">Need a Hand?</h3>
+
+            <p className="bb-help-subtitle">
+              Stuck anywhere in the app? Reach out and we&apos;ll walk you through the right module
+              or send a quick loom recording.
+            </p>
+
+            <div className="bb-help-actions">
+              <button className="bb-help-btn-primary" onClick={() => navigate("/support")}>
+                Visit Support Center
+              </button>
+
+              <a href="mailto:support@backnbone.com" className="bb-help-btn-ghost">
+                Email Us
+              </a>
+            </div>
+
+            <p className="bb-help-footnote">We typically respond within 24 hours.</p>
           </div>
         </div>
       </section>

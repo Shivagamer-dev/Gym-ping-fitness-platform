@@ -57,7 +57,6 @@ export default function TutorialPage(): JSX.Element {
         if (!mounted) return;
 
         let parsed: Tutorial[] = [];
-        // JSON on GitHub is: { "features": [ ... ] }
         if (Array.isArray(data)) parsed = data as Tutorial[];
         else if (Array.isArray((data as any).features))
           parsed = (data as any).features as Tutorial[];
@@ -84,127 +83,54 @@ export default function TutorialPage(): JSX.Element {
   const shellMax = useMemo(() => (isMobile ? 980 : 1180), [isMobile]);
 
   return (
-    <div className="bb-page" style={{ paddingTop: "86px", overflowX: "hidden" }}>
-      {/* HERO / INTRO */}
-      <section className="bb-section bb-hero-section bb-anim-fade-up">
+    <div
+      className="bb-page"
+      style={{
+        // ✅ keep reduced top space
+        paddingTop: isMobile ? "70px" : "76px",
+        overflowX: "hidden",
+      }}
+    >
+      {/* ✅ HERO / INTRO (UPDATED: remove big purple hero background card) */}
+      <section
+        className="bb-section bb-anim-fade-up"
+        style={{
+          paddingTop: 6,
+          paddingBottom: 18,
+        }}
+      >
         <div className="bb-section-shell" style={{ maxWidth: 980 }}>
-          <div
-            style={{
-              borderRadius: isMobile ? 24 : 32,
-              padding: isMobile ? "22px 16px 24px" : "30px 26px 32px",
-              background:
-                "radial-gradient(circle at 0 0, #a855f7 0, #6366f1 18%, #f9f5ff 52%, #ffffff 100%)",
-              boxShadow:
-                "0 28px 70px rgba(79,70,229,0.40), 0 0 0 1px rgba(148,163,184,0.30)",
-              textAlign: "center",
-              color: "#0f172a",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div
+          <div style={{ textAlign: "center" }}>
+            <h1
               style={{
-                position: "absolute",
-                inset: "-40%",
-                background:
-                  "radial-gradient(circle at 10% 0, rgba(244,244,255,0.9), transparent 50%)",
-                opacity: 0.7,
-                pointerEvents: "none",
+                fontSize: "clamp(2rem, 6vw, 2.6rem)",
+                lineHeight: 1.08,
+                fontWeight: 900,
+                margin: "0px 0 15px",
+                color: "#0b1120",
               }}
-            />
+            >
+              Back&Bone Tutorials
+            </h1>
 
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div
-                style={{
-                  display: "inline-flex",
-                  padding: "4px 12px",
-                  borderRadius: 999,
-                  background: "rgba(15,23,42,0.85)",
-                  color: "#e5e7eb",
-                  fontSize: 12,
-                  letterSpacing: 0.09,
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  marginBottom: 10,
-                }}
-              >
-                Product Tutorials
-              </div>
-
-              <h1
-                style={{
-                  fontSize: "clamp(2rem, 6vw, 2.9rem)",
-                  lineHeight: 1.06,
-                  fontWeight: 800,
-                  margin: "6px 0 10px",
-                  color: "#0b1120",
-                }}
-              >
-                Back&Bone Tutorials
-              </h1>
-
-              <p
-                className="bb-section-subtitle"
-                style={{
-                  maxWidth: 760,
-                  margin: "0 auto 14px",
-                  fontSize: "clamp(0.98rem, 2.6vw, 1.02rem)",
-                  color: "#111827",
-                  lineHeight: 1.7,
-                }}
-              >
-                Learn how every Back&Bone module works, step by step. From
-                exercise discovery to smart gym tools, this page walks you
-                through the entire experience.
-              </p>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: 10,
-                  flexWrap: "wrap",
-                  marginTop: 8,
-                  fontSize: 12,
-                }}
-              >
-                <span
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    background: "rgba(15,23,42,0.08)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  App walkthroughs
-                </span>
-                <span
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    background: "rgba(15,23,42,0.08)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  Feature deep-dives
-                </span>
-                <span
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    background: "rgba(15,23,42,0.08)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  Quick, practical tips
-                </span>
-              </div>
-            </div>
+            <p
+              className="bb-section-subtitle"
+              style={{
+                maxWidth: 760,
+                margin: "0 auto 10px",
+                fontSize: "clamp(0.98rem, 2.6vw, 1.02rem)",
+                color: "#4b5563",
+                lineHeight: 1.75,
+              }}
+            >
+              Each module unlocks a different part of your fitness routine. Use these
+              tutorials as a quick guide while you explore the app.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ✅ MODULES SECTION (no button, shown here) */}
+      {/* ✅ Modules section (NO BUTTON) sits between header and steps */}
       <TutorialModal
         tutorials={tutorials}
         loading={loading}
@@ -212,19 +138,8 @@ export default function TutorialPage(): JSX.Element {
         isMobile={isMobile}
       />
 
-      {/* STATUS (kept) */}
-      <section className="bb-section" style={{ paddingTop: 8, paddingBottom: 0 }}>
-        <div className="bb-section-shell" style={{ maxWidth: shellMax }}>
-          {loading && (
-            <div style={{ textAlign: "center", padding: 24, color: "var(--bb-muted)" }}>
-              Loading tutorials…
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* 3-STEP ONBOARDING */}
-      <section className="bb-section bb-anim-fade-up">
+      <section className="bb-section bb-anim-fade-up" style={{ paddingTop: 10 }}>
         <div
           className="bb-section-shell bb-steps-wrap"
           style={{ textAlign: "center", maxWidth: 1050 }}
@@ -232,8 +147,9 @@ export default function TutorialPage(): JSX.Element {
           <h2
             style={{
               fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
-              fontWeight: 700,
+              fontWeight: 800,
               marginBottom: 8,
+              marginTop: 12,
             }}
           >
             Start in 3 Simple Steps
@@ -243,7 +159,7 @@ export default function TutorialPage(): JSX.Element {
             className="bb-section-subtitle"
             style={{
               maxWidth: 640,
-              margin: "0 auto 22px",
+              margin: "0 auto 18px",
               color: "var(--bb-muted)",
               lineHeight: 1.7,
               padding: isMobile ? "0 10px" : 0,
@@ -288,7 +204,14 @@ export default function TutorialPage(): JSX.Element {
                   background: "rgba(255,255,255,0.96)",
                   boxShadow:
                     "0 18px 40px rgba(15,23,42,0.10), 0 0 0 1px rgba(226,232,240,0.9)",
-                  textAlign: "left",
+
+                  // ✅ CHANGE: center all content inside each box (desktop + mobile)
+                  textAlign: "center",
+
+                  // ✅ CHANGE: make inner layout feel truly centered vertically too
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
                 <div
@@ -302,15 +225,34 @@ export default function TutorialPage(): JSX.Element {
                     justifyContent: "center",
                     color: "#fff",
                     fontWeight: 800,
-                    marginBottom: 12,
+                    margin: "0 auto 12px",
                     fontSize: 18,
                     boxShadow: "0 12px 24px rgba(79,70,229,0.45)",
                   }}
                 >
                   {step.num}
                 </div>
-                <h3 style={{ fontSize: "1.05rem", marginBottom: 6 }}>{step.title}</h3>
-                <p style={{ color: "var(--bb-muted)", lineHeight: 1.7, margin: 0 }}>
+
+                <h3
+                  style={{
+                    fontSize: "1.05rem",
+                    marginBottom: 6,
+                    fontWeight: 800,
+                    textAlign: "center",
+                  }}
+                >
+                  {step.title}
+                </h3>
+
+                <p
+                  style={{
+                    color: "var(--bb-muted)",
+                    lineHeight: 1.7,
+                    margin: 0,
+                    textAlign: "center",
+                    maxWidth: 360, // keeps lines looking centered and neat
+                  }}
+                >
                   {step.body}
                 </p>
               </div>
@@ -320,16 +262,19 @@ export default function TutorialPage(): JSX.Element {
       </section>
 
       {/* SUPPORT CTA */}
-      <section className="bb-section bb-cta" style={{ paddingBottom: 40 }}>
+      <section
+        className="bb-section bb-cta"
+        style={{ paddingTop: 18, paddingBottom: 24 }}
+      >
         <div className="bb-section-shell bb-anim-fade-up">
           <div
             style={{
-              maxWidth: 820,
+              maxWidth: 920,
               margin: "0 auto",
               textAlign: "center",
               background: "#ffffff",
               borderRadius: isMobile ? 24 : 32,
-              padding: isMobile ? "22px 16px 22px" : "30px 24px 32px",
+              padding: isMobile ? "18px 16px 18px" : "24px 24px 26px",
               boxShadow:
                 "0 20px 50px rgba(15,23,42,0.16), 0 0 0 1px rgba(148,163,184,0.28)",
             }}
@@ -339,6 +284,7 @@ export default function TutorialPage(): JSX.Element {
               style={{
                 marginBottom: 8,
                 fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
+                fontWeight: 900,
               }}
             >
               Need a Hand?
@@ -347,10 +293,12 @@ export default function TutorialPage(): JSX.Element {
             <p
               className="bb-section-subtitle"
               style={{
-                marginBottom: 18,
+                maxWidth: 860,
+                margin: "0 auto 16px",
                 color: "var(--bb-muted)",
                 fontSize: "0.98rem",
-                lineHeight: 1.7,
+                lineHeight: 1.75,
+                textAlign: "center",
               }}
             >
               Stuck anywhere in the app? Reach out and we&apos;ll walk you
