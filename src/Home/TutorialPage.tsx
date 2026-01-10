@@ -1,5 +1,6 @@
 // src/Home/TutorialPage.tsx
 import { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import TutorialModal from "../components/TutorialModal";
 import NeedHand from "../components/NeedHand";
 
@@ -116,13 +117,29 @@ export default function TutorialPage(): JSX.Element {
   const shellMax = useMemo(() => (isMobile ? 980 : 1180), [isMobile]);
 
   return (
-    <div
-      className={clsx(
-        "bb-page min-h-screen w-full overflow-x-hidden bg-white",
-        isMobile ? "pt-[110px]" : "pt-[110px]"
-      )}
-      style={{ maxWidth: "100%" }}
-    >
+    <>
+      <Helmet>
+        <title>Back&Bone Tutorials - Master Every Feature</title>
+        <meta name="description" content="Learn how to use Back&Bone with our comprehensive tutorials. Master Spotter, Locator, RepBot, and Dashboard features for the ultimate fitness experience." />
+        <meta name="keywords" content="Back&Bone tutorials, fitness app guide, workout tutorials, fitness features, app walkthrough" />
+        <link rel="canonical" href="https://backandbone.com/tutorial" />
+        <meta property="og:title" content="Back&Bone Tutorials - Master Every Feature" />
+        <meta property="og:description" content="Learn how to use Back&Bone with our comprehensive tutorials. Master all features for the ultimate fitness experience." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/tutorial" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone Tutorials - Master Every Feature" />
+        <meta name="twitter:description" content="Learn how to use Back&Bone with our comprehensive tutorials. Master all features for the ultimate fitness experience." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+      </Helmet>
+      <div
+        className={clsx(
+          "bb-page min-h-screen w-full overflow-x-hidden bg-white",
+          isMobile ? "pt-[110px]" : "pt-[110px]"
+        )}
+        style={{ maxWidth: "100%" }}
+      >
       {/* HERO / INTRO (no big purple card, clean like you wanted) */}
       <section className="py-4 sm:py-6">
         <div className="mx-auto px-5" style={{ maxWidth: shellMax }}>
@@ -266,5 +283,6 @@ export default function TutorialPage(): JSX.Element {
         }
       `}</style>
     </div>
+  </>
   );
 }

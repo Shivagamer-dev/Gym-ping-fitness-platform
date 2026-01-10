@@ -1,5 +1,6 @@
 // src/Home/TermsPage.tsx
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import Contact from "../components/contact";
 
 function useRevealOnScroll() {
@@ -164,6 +165,22 @@ export default function TermsPage(): JSX.Element {
   ];
 
   return (
+    <>
+      <Helmet>
+        <title>Back&Bone Terms of Service - Legal Agreement</title>
+        <meta name="description" content="Read Back&Bone's terms of service. Understand our legal agreement, user conduct policies, intellectual property rights, and governing law for using our fitness platform." />
+        <meta name="keywords" content="terms of service, legal agreement, user conduct, Back&Bone terms, intellectual property, governing law" />
+        <link rel="canonical" href="https://backandbone.com/terms" />
+        <meta property="og:title" content="Back&Bone Terms of Service - Legal Agreement" />
+        <meta property="og:description" content="Read Back&Bone's terms of service. Understand our legal agreement, user conduct policies, and governing law." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/terms" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone Terms of Service - Legal Agreement" />
+        <meta name="twitter:description" content="Read Back&Bone's terms of service. Understand our legal agreement and policies." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+      </Helmet>
 <div className="min-h-screen w-full overflow-x-hidden bg-white pt-[21px] sm:pt-24">
       {/* HERO / TITLE */}
       <section className="py-6 sm:py-8">
@@ -262,5 +279,6 @@ export default function TermsPage(): JSX.Element {
         }
       `}</style>
     </div>
+  </>
   );
 }

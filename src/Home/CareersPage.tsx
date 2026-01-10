@@ -117,7 +117,19 @@ export default function CareersPage(): JSX.Element {
       variants={pageIn}
     >
       <Helmet>
-        <title>Careers · Back&Bone</title>
+        <title>Careers at Back&Bone - Join Our Team</title>
+        <meta name="description" content="Join Back&Bone's innovative team building AI-powered fitness solutions. Explore career opportunities in AI, product development, and fitness technology. Remote-first with competitive benefits." />
+        <meta name="keywords" content="careers Back&Bone, job openings, fitness tech jobs, AI jobs, remote work, startup careers, product development" />
+        <link rel="canonical" href="https://backandbone.com/career" />
+        <meta property="og:title" content="Careers at Back&Bone - Join Our Team" />
+        <meta property="og:description" content="Join Back&Bone's innovative team building AI-powered fitness solutions. Explore career opportunities in AI and fitness technology." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/career" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Careers at Back&Bone - Join Our Team" />
+        <meta name="twitter:description" content="Join Back&Bone's innovative team building AI-powered fitness solutions. Explore career opportunities." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
       </Helmet>
 
       {/* Popup form */}

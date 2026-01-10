@@ -1,6 +1,7 @@
 // src/Home/AboutPage.tsx
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import communityImage from "../assets/images/bb-community-gesture.jpg";
 import CTA from "../components/CTA";
 
@@ -27,16 +28,32 @@ export default function AboutPage() {
   };
 
   return (
-    <div
-      className="min-h-screen text-slate-900"
-      style={{
-        background:
-          "radial-gradient(1200px 380px at 20% -10%, rgba(99,102,241,0.16), transparent 60%)," +
-          "radial-gradient(900px 320px at 85% 0%, rgba(34,211,238,0.12), transparent 55%)," +
-          "linear-gradient(180deg, rgba(99,102,241,0.06), rgba(255,255,255,0) 32%)," +
-          "#ffffff",
-      }}
-    >
+    <>
+      <Helmet>
+        <title>About Back&Bone - Our Story & Mission</title>
+        <meta name="description" content="Learn about Back&Bone's mission to make fitness simple, affordable, and accessible. Discover our story, core pillars, and commitment to your fitness journey." />
+        <meta name="keywords" content="about Back&Bone, fitness app story, mission, founders, fitness technology" />
+        <link rel="canonical" href="https://backandbone.com/about" />
+        <meta property="og:title" content="About Back&Bone - Our Story & Mission" />
+        <meta property="og:description" content="Learn about Back&Bone's mission to make fitness simple, affordable, and accessible. Discover our story and commitment to your fitness journey." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/bb-community-gesture.jpg" />
+        <meta property="og:url" content="https://backandbone.com/about" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Back&Bone - Our Story & Mission" />
+        <meta name="twitter:description" content="Learn about Back&Bone's mission to make fitness simple, affordable, and accessible." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/bb-community-gesture.jpg" />
+      </Helmet>
+      <div
+        className="min-h-screen text-slate-900"
+        style={{
+          background:
+            "radial-gradient(1200px 380px at 20% -10%, rgba(99,102,241,0.16), transparent 60%)," +
+            "radial-gradient(900px 320px at 85% 0%, rgba(34,211,238,0.12), transparent 55%)," +
+            "linear-gradient(180deg, rgba(99,102,241,0.06), rgba(255,255,255,0) 32%)," +
+            "#ffffff",
+        }}
+      >
       {/* HERO */}
       <header className="pt-14 pb-4 sm:pt-11 sm:pb-4">
         <div className="mx-auto max-w-[1120px] px-5">
@@ -346,5 +363,6 @@ export default function AboutPage() {
       {/* ✅ CTA (imported from components, removed the hardcoded CTA section) */}
       <CTA />
     </div>
+  </>
   );
 }

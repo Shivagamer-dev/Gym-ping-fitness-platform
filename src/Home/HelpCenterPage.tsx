@@ -1,6 +1,7 @@
 // src/Home/HelpCenterPage.tsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../App.css";
 import Contact from "../components/contact";
 
@@ -63,14 +64,49 @@ export default function HelpCenterPage(): JSX.Element {
     return () => window.clearTimeout(t);
   }, [location.hash, loading]);
 
+  // Generate FAQ structured data
+  const faqStructuredData = faqs ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq, _index) => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  } : null;
+
   return (
-    <div
-      className="min-h-screen overflow-x-hidden pt-[76px] sm:pt-[48px]"
-      style={{
-        background:
-          "radial-gradient(circle at 0% 0%, #ede9fe 0, #fdf4ff 40%, #f5f3ff 100%)",
-      }}
-    >
+    <>
+      <Helmet>
+        <title>Back&Bone Help Center & Support</title>
+        <meta name="description" content="Get answers to common questions about Back&Bone. Find support for workouts, app features, subscriptions, and more. Contact our team for personalized help." />
+        <meta name="keywords" content="Back&Bone support, help center, FAQ, fitness app help, workout support, customer service" />
+        <link rel="canonical" href="https://backandbone.com/support" />
+        <meta property="og:title" content="Back&Bone Help Center & Support" />
+        <meta property="og:description" content="Get answers to common questions about Back&Bone. Find support for workouts, app features, subscriptions, and more." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/support" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone Help Center & Support" />
+        <meta name="twitter:description" content="Get answers to common questions about Back&Bone. Find support for workouts, app features, subscriptions, and more." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        {faqStructuredData && (
+          <script type="application/ld+json">
+            {JSON.stringify(faqStructuredData)}
+          </script>
+        )}
+      </Helmet>
+      <div
+        className="min-h-screen overflow-x-hidden pt-[76px] sm:pt-[48px]"
+        style={{
+          background:
+            "radial-gradient(circle at 0% 0%, #ede9fe 0, #fdf4ff 40%, #f5f3ff 100%)",
+        }}
+      >
       {/* HERO */}
       <section className="px-4 pb-6 pt-4 sm:px-5">
         <div className="mx-auto max-w-[1120px]">
@@ -230,5 +266,6 @@ export default function HelpCenterPage(): JSX.Element {
         }
       `}</style>
     </div>
+  </>
   );
 }

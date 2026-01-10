@@ -1,6 +1,7 @@
 // src/Home/PricingPage.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../App.css";
 import NeedHand from "../components/NeedHand";
 
@@ -137,14 +138,30 @@ export default function PricingPage(): JSX.Element {
   const handleFamilyPlus = () => setFamilyMembers((prev) => Math.min(FAMILY_MAX, prev + 1));
 
   return (
-    <div
-      className={clsx(
-        "bb-page bb-pricing-page overflow-x-hidden pt-5",
-        // ✅ smooth enter
-        "transition-all duration-700 ease-out",
-        pageEnter ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-      )}
-    >
+    <>
+      <Helmet>
+        <title>Back&Bone Pricing - Choose Your Plan</title>
+        <meta name="description" content="Choose the perfect Back&Bone fitness plan. Free tier available, Pro features for serious athletes, family plans for the whole household. Start your fitness journey today." />
+        <meta name="keywords" content="fitness pricing, subscription plans, Back&Bone pro, family fitness plan, gym app pricing" />
+        <link rel="canonical" href="https://backandbone.com/pricing" />
+        <meta property="og:title" content="Back&Bone Pricing - Choose Your Plan" />
+        <meta property="og:description" content="Choose the perfect Back&Bone fitness plan. Free tier available, Pro features for serious athletes, family plans for the whole household." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/pricing" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone Pricing - Choose Your Plan" />
+        <meta name="twitter:description" content="Choose the perfect Back&Bone fitness plan. Free tier available, Pro features for serious athletes." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+      </Helmet>
+      <div
+        className={clsx(
+          "bb-page bb-pricing-page overflow-x-hidden pt-5",
+          // ✅ smooth enter
+          "transition-all duration-700 ease-out",
+          pageEnter ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+        )}
+      >
       {/* HERO / INTRO */}
       <section className="py-10 sm:py-12">
         <div className="mx-auto max-w-6xl px-5">
@@ -507,5 +524,6 @@ export default function PricingPage(): JSX.Element {
       {/* NEED A HAND CTA (moved to component) */}
       <NeedHand />
     </div>
+  </>
   );
 }

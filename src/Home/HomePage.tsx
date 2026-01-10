@@ -1,5 +1,6 @@
 // src/Home/HomePage.tsx
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import "../App.css";
 
 import heroImg from "../assets/images/hero.png";
@@ -100,13 +101,29 @@ export default function HomePage() {
   };
 
   return (
-    <div
-      className={[
-        "bb-page bb-home overflow-x-hidden",
-        pageReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
-        "transition-all duration-500",
-      ].join(" ")}
-    >
+    <>
+      <Helmet>
+        <title>Back&Bone - Your AI Fitness Partner</title>
+        <meta name="description" content="Transform your fitness journey with Back&Bone. AI-powered workouts, personalized plans, gym locator, and progress tracking. Join thousands achieving their goals." />
+        <meta name="keywords" content="fitness app, AI fitness, workout plans, gym locator, fitness tracking, personal trainer" />
+        <link rel="canonical" href="https://backandbone.com" />
+        <meta property="og:title" content="Back&Bone - Your AI Fitness Partner" />
+        <meta property="og:description" content="Transform your fitness journey with AI-powered workouts, personalized plans, and smart fitness tracking." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/hero.png" />
+        <meta property="og:url" content="https://backandbone.com" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone - Your AI Fitness Partner" />
+        <meta name="twitter:description" content="Transform your fitness journey with AI-powered workouts, personalized plans, and smart fitness tracking." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/hero.png" />
+      </Helmet>
+      <div
+        className={[
+          "bb-page bb-home overflow-x-hidden",
+          pageReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
+          "transition-all duration-500",
+        ].join(" ")}
+      >
       {/* ===== HERO SECTION ===== */}
       <section className="relative w-full overflow-visible bg-[radial-gradient(circle_at_0%_0%,#8b5cf6_0,#4c1d95_40%,#2e1065_100%)]">
         {/* ambient blobs */}
@@ -450,6 +467,7 @@ export default function HomePage() {
         }
       `}</style>
     </div>
+  </>
   );
 }
 

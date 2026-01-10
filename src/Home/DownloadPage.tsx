@@ -1,5 +1,6 @@
 // src/Home/DownloadPage.tsx
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import "../App.css";
 
 // Import the popup
@@ -24,15 +25,31 @@ export default function DownloadPage() {
   // };
 
   return (
-    <div
-      className="bb-page"
-      style={{
-        paddingTop: "104px",
-        overflowX: "hidden",
-        background:
-          "radial-gradient(circle at 0% 0%, #ede9fe 0, #f5f3ff 40%, #f9fafb 100%)",
-      }}
-    >
+    <>
+      <Helmet>
+        <title>Download Back&Bone App - iOS & Android</title>
+        <meta name="description" content="Download Back&Bone fitness app for iOS and Android. Currently in beta testing. Join our closed beta program for personalized AI-powered workouts and gym discovery." />
+        <meta name="keywords" content="download Back&Bone, fitness app download, iOS app, Android app, beta testing, mobile fitness app" />
+        <link rel="canonical" href="https://backandbone.com/app-download" />
+        <meta property="og:title" content="Download Back&Bone App - iOS & Android" />
+        <meta property="og:description" content="Download Back&Bone fitness app for iOS and Android. Currently in beta testing with exclusive features." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/app-download" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Download Back&Bone App - iOS & Android" />
+        <meta name="twitter:description" content="Download Back&Bone fitness app for iOS and Android. Currently in beta testing." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+      </Helmet>
+      <div
+        className="bb-page"
+        style={{
+          paddingTop: "104px",
+          overflowX: "hidden",
+          background:
+            "radial-gradient(circle at 0% 0%, #ede9fe 0, #f5f3ff 40%, #f9fafb 100%)",
+        }}
+      >
       <section className="bb-section bb-section-alt">
         <div
           className="bb-section-shell"
@@ -194,6 +211,7 @@ export default function DownloadPage() {
         />
       )}
     </div>
+  </>
   );
 }
 

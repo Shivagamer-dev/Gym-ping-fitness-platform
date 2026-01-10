@@ -1,5 +1,6 @@
 // src/Home/PrivacyPolicyPage.tsx
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import Contact from "../components/contact";
 
 function useRevealOnScroll() {
@@ -140,6 +141,22 @@ export default function PrivacyPolicyPage() {
   ];
 
   return (
+    <>
+      <Helmet>
+        <title>Back&Bone Privacy Policy - Data Protection & Rights</title>
+        <meta name="description" content="Read Back&Bone's privacy policy. Learn how we collect, use, and protect your personal data. Your privacy matters to us - understand your rights and our commitments." />
+        <meta name="keywords" content="privacy policy, data protection, Back&Bone privacy, user rights, data security, GDPR compliance" />
+        <link rel="canonical" href="https://backandbone.com/privacy-policy" />
+        <meta property="og:title" content="Back&Bone Privacy Policy - Data Protection & Rights" />
+        <meta property="og:description" content="Read Back&Bone's privacy policy. Learn how we collect, use, and protect your personal data. Your privacy matters to us." />
+        <meta property="og:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+        <meta property="og:url" content="https://backandbone.com/privacy-policy" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Back&Bone Privacy Policy - Data Protection & Rights" />
+        <meta name="twitter:description" content="Read Back&Bone's privacy policy. Learn how we collect, use, and protect your personal data." />
+        <meta name="twitter:image" content="https://backandbone.com/src/assets/images/CircLogo.png" />
+      </Helmet>
 <div className="min-h-screen w-full overflow-x-hidden bg-white pt-[50px] sm:pt-24">
       {/* HERO */}
       <section className="py-6 sm:py-8">
@@ -242,5 +259,6 @@ export default function PrivacyPolicyPage() {
         }
       `}</style>
     </div>
+  </>
   );
 }
