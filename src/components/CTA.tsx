@@ -1,18 +1,59 @@
 // src/components/CTA.tsx
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import AppDownloadPopup from "./AppDownloadPopup";
 
 export default function CTA(): JSX.Element {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const scrollToFeatures = () => {
-    const el = document.getElementById("features");
-    if (!el) {
-      // fallback: top of page if #features isn't present
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return false;
+
+    // If you have a fixed navbar, adjust offset here
+    const headerOffset = 84; // change if your navbar height differs
+    const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+    return true;
+  };
+
+  const waitAndScroll = (id: string) => {
+    const start = Date.now();
+    const timeoutMs = 2000;
+
+    const tick = () => {
+      if (scrollToId(id)) return;
+      if (Date.now() - start > timeoutMs) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  };
+
+  const handleExploreFeatures = () => {
+    const targetId = "features";
+
+    // If already on Home, just scroll
+    if (location.pathname === "/") {
+      // update hash (nice for sharing / refresh)
+      if (window.location.hash !== `#${targetId}`) {
+        window.history.replaceState(null, "", `#${targetId}`);
+      }
+      waitAndScroll(targetId);
       return;
     }
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // If on any other page: go Home + hash, then scroll after route mounts
+    navigate(`/#${targetId}`);
+    // run after navigation (CTA unmounting won't cancel requestAnimationFrame)
+    setTimeout(() => waitAndScroll(targetId), 50);
   };
 
   return (
@@ -27,10 +68,6 @@ export default function CTA(): JSX.Element {
           <div className="pointer-events-none absolute -inset-10 opacity-70 bg-[radial-gradient(circle_at_20%_10%,rgba(236,72,153,0.16),transparent_55%),radial-gradient(circle_at_80%_0%,rgba(99,102,241,0.18),transparent_55%),radial-gradient(circle_at_50%_120%,rgba(34,211,238,0.12),transparent_55%)]" />
 
           <div className="relative z-10">
-            {/* <p className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200/70 bg-white/70 px-4 py-2 text-[0.7rem] font-extrabold tracking-[0.18em] text-slate-600">
-           
-            </p> */}
-
             <h2 className="mx-auto text-[clamp(1.7rem,4.2vw,2.6rem)] font-black leading-[1.12] text-slate-900">
               Ready to Transform Your Fitness Journey?
             </h2>
@@ -46,7 +83,7 @@ export default function CTA(): JSX.Element {
                 className="group w-full max-w-[30em] rounded-full bg-violet-600 px-9 py-3.5 text-base font-bold text-white shadow-[0_18px_40px_rgba(79,70,229,0.28)] transition duration-200 hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-[0_24px_55px_rgba(79,70,229,0.34)] active:translate-y-0 sm:w-auto"
               >
                 <span className="inline-flex items-center gap-1">
-                  Download the Back&Bone App
+                  Download the Back&amp;Bone App
                   <span className="transition-transform duration-200 group-hover:translate-x-0.5">
                     →
                   </span>
@@ -54,16 +91,12 @@ export default function CTA(): JSX.Element {
               </button>
 
               <button
-                onClick={scrollToFeatures}
+                onClick={handleExploreFeatures}
                 className="w-full max-w-[280px] rounded-full border border-slate-200 bg-white px-9 py-3.5 text-base font-bold text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.10)] transition duration-200 hover:-translate-y-0.5 hover:bg-slate-50 active:translate-y-0 sm:w-auto"
               >
                 Explore Features
               </button>
             </div>
-
-            {/* <p className="mt-5 text-sm text-slate-500">
-              No credit card needed • Cancel anytime
-            </p> */}
           </div>
         </div>
       </div>
