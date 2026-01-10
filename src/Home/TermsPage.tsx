@@ -52,12 +52,12 @@ export default function TermsPage(): JSX.Element {
       body: (
         <>
           <p>
-            The Back&amp;Bone website serves as an informational and promotional platform for the
-            Back&amp;Bone mobile and web application. The website provides:
+            The Back&Bone website serves as an informational and promotional platform for the
+            Back&Bone mobile and web application. The website provides:
           </p>
           <ul className="list-disc pl-5">
             <li>Information about our brand, technology, and features.</li>
-            <li>Links to download or explore the Back&amp;Bone app.</li>
+            <li>Links to download or explore the Back&Bone app.</li>
             <li>Company-related updates and product information.</li>
           </ul>
           <p>
@@ -73,7 +73,7 @@ export default function TermsPage(): JSX.Element {
       body: (
         <p>
           All content on this website — logos, visuals, text, and designs — is the property of
-          Back&amp;Bone / Frintt Studio Pvt. Ltd. You may not reproduce, distribute, or reuse any
+          Back&Bone / Frintt Studio Pvt. Ltd. You may not reproduce, distribute, or reuse any
           content without prior written consent.
         </p>
       ),
@@ -120,7 +120,7 @@ export default function TermsPage(): JSX.Element {
       t: "Limitation of Liability",
       body: (
         <p>
-          Under no circumstances shall Back&amp;Bone or its affiliates be liable for any indirect,
+          Under no circumstances shall Back&Bone or its affiliates be liable for any indirect,
           incidental, or consequential damages arising from your use of this site. Your sole
           remedy for dissatisfaction is to stop using the site.
         </p>
@@ -195,7 +195,7 @@ export default function TermsPage(): JSX.Element {
               </h1>
 
               <p className="mx-auto mt-3 max-w-[820px] text-[0.98rem] leading-7 text-slate-600">
-                By accessing or using the Back&amp;Bone website, you agree to these Terms and
+                By accessing or using the Back&Bone website, you agree to these Terms and
                 Conditions. Please read them carefully before browsing or submitting any
                 information.
               </p>

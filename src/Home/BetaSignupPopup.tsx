@@ -132,7 +132,7 @@ export default function BetaSignupPopup({
                 Join Our Beta Program
               </h2>
               <p className="mt-1 text-sm text-white/70">
-                Get early access to Back&amp;Bone and help shape AI-powered
+                Get early access to Back&Bone and help shape AI-powered
                 fitness.
               </p>
             </div>

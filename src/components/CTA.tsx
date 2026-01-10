@@ -83,7 +83,7 @@ export default function CTA(): JSX.Element {
                 className="group w-full max-w-[30em] rounded-full bg-violet-600 px-9 py-3.5 text-base font-bold text-white shadow-[0_18px_40px_rgba(79,70,229,0.28)] transition duration-200 hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-[0_24px_55px_rgba(79,70,229,0.34)] active:translate-y-0 sm:w-auto"
               >
                 <span className="inline-flex items-center gap-1">
-                  Download the Back&amp;Bone App
+                  Download the Back&Bone App
                   <span className="transition-transform duration-200 group-hover:translate-x-0.5">
                     →
                   </span>

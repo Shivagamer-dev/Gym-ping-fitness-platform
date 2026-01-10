@@ -192,7 +192,7 @@ export default function TutorialPage(): JSX.Element {
               isMobile ? "px-2" : ""
             )}
           >
-            New to Back&amp;Bone? Follow these basics to get set up before you dive into each
+            New to Back&Bone? Follow these basics to get set up before you dive into each
             feature tutorial.
           </p>
 

@@ -135,7 +135,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-xl text-base leading-8 text-white/80 md:mx-0">
-              Back&amp;Bone helps you stay consistent, track progress, and
+              Back&Bone helps you stay consistent, track progress, and
               overcome every hurdle on your way to achieving your dream fitness
               goals.
             </p>
@@ -192,7 +192,7 @@ export default function HomePage() {
             style={{ transitionDelay: "110ms" }}
             className="opacity-0 translate-y-3 mx-auto mt-4 max-w-[720px] text-center text-[1.02rem] leading-7 text-slate-600 transition-all duration-700"
           >
-            Every Back&amp;Bone module focuses on a different part of your
+            Every Back&Bone module focuses on a different part of your
             journey – learning exercises, finding gyms, getting coaching, and
             tracking data.
           </p>
@@ -253,7 +253,7 @@ export default function HomePage() {
             style={{ transitionDelay: "110ms" }}
             className="opacity-0 translate-y-3 mx-auto mt-3 max-w-[760px] text-center text-[1.02rem] leading-7 text-slate-600 transition-all duration-700"
           >
-            Back&amp;Bone keeps things simple: a clear journey from sign-up to
+            Back&Bone keeps things simple: a clear journey from sign-up to
             long-term progress — with your data always under your control.
           </p>
 

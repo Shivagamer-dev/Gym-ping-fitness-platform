@@ -132,11 +132,11 @@ export default function AboutPage() {
             className="rounded-2xl border border-slate-900/10 bg-white/95 p-6 shadow-[0_18px_54px_rgba(2,6,23,0.07)]"
           >
             <h2 className="mb-3 text-[2.05rem] font-black tracking-[-0.35px]">
-              Why We Started Back&amp;Bone
+              Why We Started Back&Bone
             </h2>
 
             <p className="my-2 text-[1.05rem] leading-[1.78] text-slate-900">
-              Back&amp;Bone began with a simple frustration: starting a fitness
+              Back&Bone began with a simple frustration: starting a fitness
               journey shouldn’t feel so hard.
             </p>
 

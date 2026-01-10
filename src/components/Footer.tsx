@@ -86,7 +86,7 @@ export default function Footer({ onNewsletterSuccess }: FooterProps) {
         {/* BRAND */}
         <div className="flex min-w-0 flex-col items-center gap-3 md:items-start motion-safe:animate-[bbFooterRise_520ms_ease_both] motion-reduce:animate-none">
           <h4 className="text-[1.55rem] font-black leading-tight tracking-[0.2px]">
-            Back&amp;Bone
+            Back&Bone
           </h4>
 
           <p className="max-w-[44ch] text-[1.02rem] leading-relaxed text-slate-50/95">
@@ -224,7 +224,7 @@ export default function Footer({ onNewsletterSuccess }: FooterProps) {
         </div>
 
         <span className="w-full text-center text-[1.02rem] tracking-[0.12px] text-slate-50/90 [text-shadow:0_10px_24px_rgba(0,0,0,0.18)] md:w-auto md:text-right">
-          © {new Date().getFullYear()} Back&amp;Bone. All rights reserved.
+          © {new Date().getFullYear()} Back&Bone. All rights reserved.
         </span>
       </div>
 

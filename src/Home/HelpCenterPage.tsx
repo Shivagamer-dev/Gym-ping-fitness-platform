@@ -108,7 +108,7 @@ export default function HelpCenterPage(): JSX.Element {
                 </h1>
 
                 <p className="mx-auto mt-2 max-w-[860px] text-[1rem] leading-relaxed text-slate-600">
-                  We’re here to help you get the best out of Back&amp;Bone.
+                  We’re here to help you get the best out of Back&Bone.
                   Explore quick answers, helpful tips, and expert support in one
                   place.
                 </p>
@@ -143,7 +143,7 @@ export default function HelpCenterPage(): JSX.Element {
                     Frequently Asked Questions
                   </h2>
                   <p className="mt-1 max-w-[680px] text-[0.95rem] leading-relaxed text-slate-600">
-                    Find quick answers to common questions about Back&amp;Bone.
+                    Find quick answers to common questions about Back&Bone.
                     Start here before reaching out to support.
                   </p>
                 </div>
