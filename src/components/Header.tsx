@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Thankyou from "./Thankyou";
 import BetaSignupPopup from "../Home/BetaSignupPopup";
@@ -16,25 +16,24 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location.pathname]);
 
-  // Close mobile menu when switching to desktop width
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) setIsMenuOpen(false);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Lock body scroll when drawer is open
   useEffect(() => {
     if (!isMenuOpen) return;
     const prev = document.body.style.overflow;
@@ -44,7 +43,6 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
-  // Close on ESC
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsMenuOpen(false);
@@ -55,63 +53,86 @@ export default function Header() {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const go = (to: string) => {
+    if (location.pathname === to) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      setIsMenuOpen(false);
+      return;
+    }
+    setIsMenuOpen(false);
+    navigate(to);
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  };
+
   const DesktopLink = ({ to, label }: { to: string; label: string }) => (
-    <Link
-      to={to}
-      className={`transition hover:opacity-85 whitespace-nowrap ${
-        isActive(to) ? "opacity-100" : "opacity-95"
-      }`}
+    <button
+      type="button"
+      onClick={() => go(to)}
+      className={[
+        "relative whitespace-nowrap text-white/90 hover:text-white transition",
+        "text-base font-medium",
+        isActive(to) ? "text-white" : "",
+      ].join(" ")}
     >
       {label}
-    </Link>
+      <span
+        className={[
+          "pointer-events-none absolute left-0 -bottom-2 h-[2px] w-full rounded-full transition-opacity",
+          isActive(to) ? "opacity-100 bg-white/80" : "opacity-0 bg-transparent",
+        ].join(" ")}
+      />
+    </button>
   );
 
   const MobileLink = ({ to, label }: { to: string; label: string }) => (
-    <Link
-      to={to}
-      className={`w-full rounded-xl px-4 py-3 text-base font-semibold transition
-        ${
-          isActive(to)
-            ? "bg-white/15 ring-1 ring-white/20"
-            : "hover:bg-white/10"
-        }`}
+    <button
+      type="button"
+      onClick={() => go(to)}
+      className={[
+        "w-full text-left rounded-xl px-4 py-3 text-base font-semibold transition",
+        isActive(to)
+          ? "bg-white/15 ring-1 ring-white/20 text-white"
+          : "text-white/90 hover:bg-white/10 hover:text-white",
+      ].join(" ")}
     >
       {label}
-    </Link>
+    </button>
   );
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-          isScrolled ? "bg-[#5d3be8] shadow-lg" : "bg-[#6e4aff]"
-        }`}
+        className={[
+          "fixed top-0 left-0 w-full z-50 transition-all duration-300",
+          isScrolled
+            ? "bg-[#5d3be8] shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
+            : "bg-[#6e4aff]",
+        ].join(" ")}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex items-center justify-between gap-4">
-            {/* TEXT LOGO */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex h-[92px] items-center justify-between gap-4">
             <button
-              onClick={() => navigate("/")}
-              className="text-white font-extrabold text-left select-none leading-[0.7] shrink-0"
+              onClick={() => go("/")}
+              className="select-none text-left font-extrabold leading-[0.7] text-white"
               aria-label="Back & Bone Home"
               type="button"
             >
               <span className="block text-xl sm:text-2xl">Back</span>
-              <span className="block text-xl sm:text-2xl -mt-2">&Bone</span>
+              <span className="block -mt-2 text-xl sm:text-2xl">&Bone</span>
             </button>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-16 text-white font-medium text-base min-w-0">
+            <nav className="hidden min-w-0 items-center gap-16 text-base font-medium text-white lg:flex">
               <DesktopLink to="/" label="Home" />
               <DesktopLink to="/about" label="About us" />
               <DesktopLink to="/pricing" label="Pricing" />
               <DesktopLink to="/tutorial" label="Tutorial" />
             </nav>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="lg:hidden text-white text-3xl shrink-0 rounded-lg px-2 py-1 hover:bg-white/10 transition"
+              className="rounded-lg px-2 py-1 text-3xl text-white transition hover:bg-white/10 lg:hidden"
               aria-label="Open menu"
               type="button"
             >
@@ -120,26 +141,18 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Popups (unchanged logic) */}
-        {isPopupOpen && (
-          <BetaSignupPopup onClose={() => setIsPopupOpen(false)} />
-        )}
+        {isPopupOpen && <BetaSignupPopup onClose={() => setIsPopupOpen(false)} />}
         {showThankYou && (
-          <Thankyou
-            isOpen={showThankYou}
-            onClose={() => setShowThankYou(false)}
-          />
+          <Thankyou isOpen={showThankYou} onClose={() => setShowThankYou(false)} />
         )}
       </header>
 
-      {/* MOBILE DRAWER + OVERLAY */}
       <div
-        className={`fixed inset-0 z-[60] lg:hidden transition ${
+        className={`fixed inset-0 z-[60] transition lg:hidden ${
           isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!isMenuOpen}
       >
-        {/* Overlay */}
         <button
           type="button"
           aria-label="Close menu"
@@ -149,38 +162,32 @@ export default function Header() {
           }`}
         />
 
-        {/* Drawer */}
         <aside
-          className={`absolute right-0 top-0 h-full w-[86%] max-w-[360px]
-          bg-[#4b2fd6] text-white shadow-2xl
-          transition-transform duration-300 ease-out
-          ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+          className={`absolute right-0 top-0 h-full w-[86%] max-w-[360px] bg-[#4b2fd6] text-white shadow-2xl transition-transform duration-300 ease-out ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
           role="dialog"
           aria-modal="true"
         >
-          {/* Drawer header */}
           <div className="flex items-start justify-between px-5 pt-5">
             <div className="select-none">
-              <div className="text-white font-extrabold leading-[0.85]">
+              <div className="font-extrabold leading-[0.85] text-white">
                 <div className="text-2xl">Back</div>
-                <div className="text-2xl -mt-1">&Bone</div>
+                <div className="-mt-1 text-2xl">&Bone</div>
               </div>
-              <div className="mt-2 text-white/80 text-xs">
-                Navigate quickly
-              </div>
+              {/* <div className="mt-2 text-xs text-white/80">Navigate quickly</div> */}
             </div>
 
             <button
               type="button"
               onClick={() => setIsMenuOpen(false)}
               aria-label="Close menu"
-              className="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10 transition"
+              className="rounded-lg px-3 py-2 text-white/90 transition hover:bg-white/10"
             >
               ✕
             </button>
           </div>
 
-          {/* Links */}
           <div className="px-4 pt-5">
             <div className="rounded-2xl bg-white/10 p-3 ring-1 ring-white/10">
               <div className="flex flex-col gap-2">
@@ -191,7 +198,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Small footer line inside drawer */}
             <div className="mt-5 px-2 text-xs text-white/70">
               © {new Date().getFullYear()} Back&Bone
             </div>

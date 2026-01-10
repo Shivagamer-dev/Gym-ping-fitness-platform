@@ -1,7 +1,8 @@
 // src/Home/PricingPage.tsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../App.css";
+import NeedHand from "../components/NeedHand";
 
 type Feature = {
   name: string;
@@ -40,11 +41,24 @@ const renderPricePieces = (p: Plan) => {
   return { value: monthly.toString(), suffix: "/month" };
 };
 
+function clsx(...x: Array<string | false | null | undefined>) {
+  return x.filter(Boolean).join(" ");
+}
+
 export default function PricingPage(): JSX.Element {
   const [plans, setPlans] = useState<Plan[] | null>(null);
   const [faqs, setFaqs] = useState<FAQ[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // ✅ page-enter animation (runs every time you come to /pricing)
+  const location = useLocation();
+  const [pageEnter, setPageEnter] = useState(false);
+  useEffect(() => {
+    setPageEnter(false);
+    const t = window.setTimeout(() => setPageEnter(true), 20);
+    return () => window.clearTimeout(t);
+  }, [location.key]);
 
   // Family-plan state
   const [familyMembers, setFamilyMembers] = useState<number>(2);
@@ -60,6 +74,7 @@ export default function PricingPage(): JSX.Element {
       let icon = "✔";
       if (key.includes("pro")) icon = "⚡";
       if (key.includes("family")) icon = "👪";
+      if (key.includes("free")) icon = "✓";
       return { ...p, icon };
     });
   }
@@ -122,51 +137,48 @@ export default function PricingPage(): JSX.Element {
   const handleFamilyPlus = () => setFamilyMembers((prev) => Math.min(FAMILY_MAX, prev + 1));
 
   return (
-    <div className="bb-page bb-pricing-page" style={{ paddingTop: "20px" }}>
+    <div
+      className={clsx(
+        "bb-page bb-pricing-page overflow-x-hidden pt-5",
+        // ✅ smooth enter
+        "transition-all duration-700 ease-out",
+        pageEnter ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      )}
+    >
       {/* HERO / INTRO */}
-      <section className="bb-section">
-        <div className="bb-section-shell">
-          <header style={{ textAlign: "center", marginBottom: "32px" }}>
-            <p className="bb-hero-kicker">Choose a plan</p>
-            <h1
-              style={{
-                fontSize: "3rem",
-                lineHeight: 1.05,
-                fontWeight: 800,
-                marginBottom: "12px",
-              }}
-            >
+      <section className="py-10 sm:py-12">
+        <div className="mx-auto max-w-6xl px-5">
+          <header className="text-center">
+            <p className="text-xs font-extrabold tracking-[0.16em] text-slate-500">
+              Choose a plan
+            </p>
+
+            <h1 className="mt-2 text-[clamp(2rem,4.5vw,3rem)] font-extrabold leading-[1.05] text-slate-900">
               Find Your Perfect Fitness Plan
             </h1>
-            <p
-              className="bb-section-subtitle"
-              style={{
-                textAlign: "center",
-                maxWidth: "760px",
-                margin: "0 auto",
-                fontSize: "1.05rem",
-              }}
-            >
+
+            <p className="mx-auto mt-3 max-w-[760px] text-[1.03rem] leading-7 text-slate-600">
               From personal plans to family memberships, choose the path that fits your goals and
               lifestyle.
             </p>
           </header>
 
           {loading && (
-            <div style={{ textAlign: "center", padding: 36 }}>
-              <div className="bb-anim-fade-up">Loading pricing…</div>
+            <div className="py-9 text-center">
+              <div className="animate-[bbFadeUp_520ms_ease-out_both] text-slate-600">
+                Loading pricing…
+              </div>
             </div>
           )}
 
-          {error && (
-            <div style={{ textAlign: "center", color: "#6b7280", marginBottom: 14 }}>
-              {error}
-            </div>
-          )}
+          {error && <div className="mt-6 text-center text-sm text-slate-500">{error}</div>}
 
           {/* TOP PRICING CARDS */}
           {!loading && !error && (
-            <div className="bb-pricing-row" aria-live="polite">
+            <div
+              className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-7 xl:grid-cols-3 xl:gap-9"
+              aria-live="polite"
+            >
               {(plans ?? []).map((plan) => {
                 const { value, suffix } = renderPricePieces(plan);
                 const key = (plan.id || plan.name || "").toString().toLowerCase();
@@ -199,92 +211,156 @@ export default function PricingPage(): JSX.Element {
                 return (
                   <article
                     key={plan.id}
-                    className={`bb-plan-card bb-card-hover bb-anim-fade-up ${
-                      isPro ? "bb-plan-card-pro" : ""
-                    } ${isFamily ? "bb-plan-card-family" : ""}`}
+                    className={clsx(
+                      "bb-plan-card group relative overflow-hidden rounded-[28px] px-[26px] pb-6 pt-7 text-slate-900",
+                      "shadow-[0_24px_60px_rgba(148,163,184,0.35),0_0_0_1px_rgba(148,163,184,0.12)]",
+                      "transition-transform duration-300 ease-out hover:-translate-y-2",
+                      isPro
+                        ? "bg-[linear-gradient(145deg,#eef2ff,#f5f3ff)] hover:bg-[linear-gradient(145deg,#e0e7ff,#f3f4ff)] hover:shadow-[0_30px_80px_rgba(129,140,248,0.55),0_0_0_1px_rgba(129,140,248,0.35)]"
+                        : "bg-[linear-gradient(145deg,#f8fbff,#f3f7ff)] hover:bg-[linear-gradient(145deg,#f3f7ff,#eef3ff)] hover:shadow-[0_30px_80px_rgba(129,140,248,0.55),0_0_0_1px_rgba(129,140,248,0.35)]"
+                    )}
                   >
+                    {/* gradient border (pure tailwind) */}
+                    <div className="pointer-events-none absolute inset-0 rounded-[28px] p-[1px] opacity-55 [background:linear-gradient(135deg,#e6efff,#dfe9ff,#f1f5ff)] [mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] [mask-composite:exclude]" />
+
                     {isPro && (
-                      <div className="bb-plan-star" aria-hidden="true">
+                      <div
+                        className="absolute right-5 top-3 text-[1.9rem] text-yellow-400 drop-shadow-[0_8px_20px_rgba(250,204,21,0.7)]"
+                        aria-hidden="true"
+                      >
                         ★
                       </div>
                     )}
 
-                    <div className="bb-plan-inner">
-                      {/* ✅ Same icon block for ALL plans (Free now matches exactly) */}
-                      <div className="bb-plan-icon">{isFree ? "✓" : plan.icon ?? "⚡"}</div>
+                    <div className="relative z-10 flex h-full min-w-0 flex-col gap-2">
+                      {/* icon (same block for ALL plans) */}
+                      <div className="mb-2 flex">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-[radial-gradient(circle_at_0_0,#5b8cff,#7aa2ff)] text-[1.7rem] text-white shadow-[0_10px_30px_rgba(129,140,248,0.7)]">
+                          {isFree ? "✓" : plan.icon ?? "⚡"}
+                        </div>
+                      </div>
 
-                      <h3 className="bb-plan-name">{plan.name}</h3>
+                      <h3 className="m-0 text-[1.4rem] font-bold text-slate-900">{plan.name}</h3>
 
-                      {plan.tagline && <p className="bb-plan-tagline">{plan.tagline}</p>}
+                      {plan.tagline && (
+                        <p className="m-0 text-[0.92rem] text-slate-500">{plan.tagline}</p>
+                      )}
 
-                      <div className="bb-plan-price">
+                      <div className="mt-2 flex flex-wrap items-baseline gap-1">
                         {!isFree && displayValue !== "—" && (
-                          <span className="bb-plan-price-currency">₹</span>
+                          <span className="text-[1.15rem] text-violet-700">₹</span>
                         )}
-                        <span className="bb-plan-price-value">{displayValue}</span>
+                        <span className="text-[2.4rem] font-extrabold leading-none text-slate-900">
+                          {displayValue}
+                        </span>
                         {!isFree && displaySuffix && (
-                          <span className="bb-plan-price-suffix">{displaySuffix}</span>
+                          <span className="ml-1 text-[0.96rem] text-slate-500">{displaySuffix}</span>
                         )}
                       </div>
 
                       {isFamily && (
-                        <p className="bb-family-total-note">{featureLabel(familyMembers)}</p>
+                        <p className="m-0 text-[0.9rem] text-slate-500">
+                          {featureLabel(familyMembers)}
+                        </p>
                       )}
 
-                      <button className="bb-plan-button">{buttonLabel}</button>
+                      <button
+                        className={clsx(
+                          "mt-1 w-full rounded-full px-4 py-[11px] text-[0.97rem] font-semibold text-white",
+                          "bg-[linear-gradient(135deg,#4f7df3,#5b8cff)] shadow-[0_12px_28px_rgba(79,125,243,0.25)]",
+                          "transition duration-200 hover:-translate-y-[1px] hover:shadow-[0_18px_38px_rgba(236,72,153,0.7)] hover:brightness-[1.05] active:translate-y-0"
+                        )}
+                        onClick={() => {
+                          if (isFree) navigate("/signup");
+                          else navigate("/app-download");
+                        }}
+                      >
+                        {buttonLabel}
+                      </button>
 
+                      {/* Family counter (hover reveal on desktop, always visible on mobile) */}
                       {isFamily && (
-                        <div className="bb-family-counter-card">
-                          <div className="bb-family-counter-label">Number of Family Members</div>
+                        <div
+                          className={clsx(
+                            "mt-3 overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,#f3e8ff,#e0f2fe)] p-4 text-slate-900",
+                            "transition-all duration-300",
+                            "max-h-0 opacity-0 translate-y-2 group-hover:max-h-[240px] group-hover:opacity-100 group-hover:translate-y-0",
+                            "md:group-hover:max-h-[240px]",
+                            "max-md:max-h-[240px] max-md:opacity-100 max-md:translate-y-0"
+                          )}
+                        >
+                          <div className="text-[0.95rem] font-semibold">Number of Family Members</div>
 
-                          <div className="bb-family-counter-controls">
+                          <div className="mt-2 flex items-center justify-center gap-4">
                             <button
                               type="button"
                               onClick={handleFamilyMinus}
                               disabled={familyMembers <= FAMILY_MIN}
                               aria-label="Decrease family members"
+                              className={clsx(
+                                "flex h-10 w-10 items-center justify-center rounded-full text-[1.4rem] leading-none text-white",
+                                "bg-violet-500 shadow-[0_10px_24px_rgba(139,92,246,0.4)] transition",
+                                "hover:-translate-y-[1px] hover:bg-violet-600 hover:shadow-[0_14px_30px_rgba(124,58,237,0.45)]",
+                                "disabled:cursor-default disabled:opacity-45 disabled:shadow-none disabled:hover:translate-y-0"
+                              )}
                             >
                               -
                             </button>
-                            <span className="bb-family-counter-value">{familyMembers}</span>
+
+                            <span className="min-w-7 text-center text-[1.2rem] font-semibold text-slate-900">
+                              {familyMembers}
+                            </span>
+
                             <button
                               type="button"
                               onClick={handleFamilyPlus}
                               disabled={familyMembers >= FAMILY_MAX}
                               aria-label="Increase family members"
+                              className={clsx(
+                                "flex h-10 w-10 items-center justify-center rounded-full text-[1.4rem] leading-none text-white",
+                                "bg-violet-500 shadow-[0_10px_24px_rgba(139,92,246,0.4)] transition",
+                                "hover:-translate-y-[1px] hover:bg-violet-600 hover:shadow-[0_14px_30px_rgba(124,58,237,0.45)]",
+                                "disabled:cursor-default disabled:opacity-45 disabled:shadow-none disabled:hover:translate-y-0"
+                              )}
                             >
                               +
                             </button>
                           </div>
 
-                          <div className="bb-family-counter-note">
+                          <div className="mt-2 text-[0.9rem] text-slate-500">
                             ₹{FAMILY_PER_MEMBER} per member/month
                           </div>
                         </div>
                       )}
 
-                      <div className="bb-plan-divider" />
+                      <div className="my-4 h-px w-full bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.6),transparent)]" />
 
-                      <div className="bb-plan-features">
-                        <h4 className="bb-plan-features-title">Features</h4>
-                        <ul className="bb-plan-features-list">
+                      {/* Features (hover reveal on desktop, always visible on mobile) */}
+                      <div
+                        className={clsx(
+                          "overflow-hidden pt-1 transition-all duration-300",
+                          "max-h-0 opacity-0 translate-y-2 group-hover:max-h-[520px] group-hover:opacity-100 group-hover:translate-y-0",
+                          "max-md:max-h-[520px] max-md:opacity-100 max-md:translate-y-0"
+                        )}
+                      >
+                        <h4 className="m-0 mb-2 text-[0.9rem] font-semibold text-slate-600">
+                          Features
+                        </h4>
+
+                        <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[0.87rem]">
                           {(plan.features ?? []).map((feature, idx) => {
                             const isIncluded = feature.included === true;
                             return (
-                              <li
-                                key={idx}
-                                style={{ display: "flex", gap: "6px", alignItems: "center" }}
-                              >
+                              <li key={idx} className="flex items-center gap-2">
                                 <span
-                                  style={{
-                                    fontSize: "1rem",
-                                    fontWeight: 700,
-                                    color: isIncluded ? "#10B981" : "#EF4444",
-                                  }}
+                                  className={clsx(
+                                    "text-[1rem] font-extrabold",
+                                    isIncluded ? "text-emerald-500" : "text-red-500"
+                                  )}
                                 >
                                   {isIncluded ? "✓" : "✕"}
                                 </span>
-                                <span style={{ color: "#374151" }}>{feature.name}</span>
+                                <span className="text-slate-700">{feature.name}</span>
                               </li>
                             );
                           })}
@@ -298,493 +374,31 @@ export default function PricingPage(): JSX.Element {
           )}
         </div>
 
-        {/* STYLES */}
-        <style>
-          {`
-            .bb-pricing-page { overflow-x: visible; }
-
-            .bb-pricing-row {
-              display: grid;
-              grid-template-columns: repeat(3, minmax(0, 1fr));
-              gap: 34px;
-              align-items: stretch;
-            }
-
-            @media (max-width: 1100px) {
-              .bb-pricing-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
-            }
-
-            @media (max-width: 760px) {
-              .bb-pricing-row { grid-template-columns: 1fr; gap: 18px; }
-            }
-
-            .bb-plan-card {
-              position: relative;
-              border-radius: 28px;
-              background: linear-gradient(145deg, #faf5ff, #f4f4ff);
-              padding: 28px 26px 24px;
-              color: #111827;
-              overflow: hidden;
-              min-width: 0;
-              box-shadow:
-                0 24px 60px rgba(148,163,184,0.35),
-                0 0 0 1px rgba(148,163,184,0.12);
-              transition: transform 260ms ease, box-shadow 260ms ease, background 260ms ease;
-              display: flex;
-              flex-direction: column;
-            }
-
-            .bb-plan-card::before {
-              content: "";
-              position: absolute;
-              inset: 0;
-              border-radius: 28px;
-              padding: 1px;
-              background: linear-gradient(135deg, #a855f7, #8b5cf6, #ec4899);
-              -webkit-mask:
-                linear-gradient(#000 0 0) content-box,
-                linear-gradient(#000 0 0);
-              -webkit-mask-composite: xor;
-              mask-composite: exclude;
-              opacity: 0.55;
-              pointer-events: none;
-            }
-
-            .bb-plan-card-pro {
-              background: linear-gradient(145deg, #f5f3ff, #fef3ff);
-              box-shadow:
-                0 28px 80px rgba(129,140,248,0.55),
-                0 0 0 1px rgba(129,140,248,0.35);
-            }
-
-            .bb-plan-card:hover {
-              transform: translateY(-10px);
-              box-shadow:
-                0 30px 80px rgba(129,140,248,0.55),
-                0 0 0 1px rgba(129,140,248,0.35);
-              background: linear-gradient(145deg, #ede9fe, #fdf2ff);
-            }
-
-            .bb-plan-card-pro:hover {
-              transform: translateY(-14px);
-              background: linear-gradient(145deg, #e0e7ff, #fdf2ff);
-            }
-
-            .bb-plan-inner {
-              position: relative;
-              z-index: 1;
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              height: 100%;
-              min-width: 0;
-            }
-
-            .bb-plan-icon {
-              width: 56px;
-              height: 56px;
-              border-radius: 20px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 1.7rem;
-              background: radial-gradient(circle at 0 0, #a855f7, #6366f1);
-              color: white;
-              margin-bottom: 12px;
-              box-shadow: 0 10px 30px rgba(129,140,248,0.7);
-            }
-
-            .bb-plan-name {
-              margin: 0;
-              font-size: 1.4rem;
-              font-weight: 700;
-              color: #0f172a;
-            }
-
-            .bb-plan-tagline {
-              margin: 0 0 4px;
-              font-size: 0.92rem;
-              color: #6b7280;
-            }
-
-            .bb-plan-price {
-              display: flex;
-              align-items: baseline;
-              gap: 4px;
-              margin-top: 8px;
-              margin-bottom: 6px;
-              flex-wrap: wrap;
-            }
-
-            .bb-plan-price-currency {
-              font-size: 1.15rem;
-              margin-right: 2px;
-              color: #7c3aed;
-            }
-
-            .bb-plan-price-value {
-              font-size: 2.4rem;
-              font-weight: 800;
-              color: #111827;
-            }
-
-            .bb-plan-price-suffix {
-              font-size: 0.96rem;
-              color: #6b7280;
-              margin-left: 2px;
-            }
-
-            .bb-plan-button {
-              margin-top: 4px;
-              padding: 11px 16px;
-              border-radius: 999px;
-              border: none;
-              outline: none;
-              cursor: pointer;
-              width: 100%;
-              font-weight: 600;
-              font-size: 0.97rem;
-              color: #f9fafb;
-              background: linear-gradient(135deg, #8b5cf6, #ec4899);
-              box-shadow: 0 14px 32px rgba(236,72,153,0.55);
-              transition: transform 200ms ease, box-shadow 200ms ease, filter 180ms ease;
-            }
-
-            .bb-plan-button:hover {
-              transform: translateY(-1px);
-              box-shadow: 0 18px 38px rgba(236,72,153,0.7);
-              filter: brightness(1.05);
-            }
-
-            .bb-plan-divider {
-              height: 1px;
-              width: 100%;
-              margin: 18px 0 8px;
-              background: linear-gradient(to right, transparent, rgba(148,163,184,0.6), transparent);
-            }
-
-            .bb-plan-features {
-              margin-top: 6px;
-              padding-top: 4px;
-              max-height: 0;
-              opacity: 0;
-              transform: translateY(10px);
-              overflow: hidden;
-              transition: max-height 340ms ease, opacity 260ms ease, transform 340ms ease;
-            }
-
-            .bb-plan-card:hover .bb-plan-features {
-              max-height: 520px;
-              opacity: 1;
-              transform: translateY(0);
-            }
-
-            @media (max-width: 760px) {
-              .bb-plan-features {
-                max-height: 520px;
-                opacity: 1;
-                transform: none;
-              }
-            }
-
-            .bb-plan-features-title {
-              margin: 0 0 6px;
-              font-size: 0.9rem;
-              font-weight: 600;
-              color: #4b5563;
-            }
-
-            .bb-plan-features-list {
-              list-style: none;
-              padding: 0;
-              margin: 0;
-              display: flex;
-              flex-direction: column;
-              gap: 4px;
-              font-size: 0.87rem;
-            }
-
-            .bb-plan-star {
-              position: absolute;
-              top: 14px;
-              right: 20px;
-              font-size: 1.9rem;
-              color: #facc15;
-              text-shadow: 0 8px 20px rgba(250,204,21,0.7);
-            }
-
-            .bb-family-total-note {
-              margin: 0 0 10px;
-              font-size: 0.9rem;
-              color: #6b7280;
-            }
-
-            .bb-plan-card-family .bb-family-counter-card {
-              margin-top: 14px;
-              padding: 16px 20px 14px;
-              border-radius: 22px;
-              background: linear-gradient(135deg, #f3e8ff, #e0f2fe);
-              color: #111827;
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-
-              max-height: 0;
-              opacity: 0;
-              transform: translateY(8px);
-              overflow: hidden;
-              transition: max-height 260ms ease, opacity 200ms ease, transform 260ms ease;
-            }
-
-            .bb-plan-card-family:hover .bb-family-counter-card {
-              max-height: 220px;
-              opacity: 1;
-              transform: translateY(0);
-            }
-
-            @media (max-width: 760px) {
-              .bb-plan-card-family .bb-family-counter-card {
-                max-height: 240px;
-                opacity: 1;
-                transform: none;
-              }
-            }
-
-            .bb-family-counter-label { font-size: 0.95rem; font-weight: 600; }
-
-            .bb-family-counter-controls {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 18px;
-            }
-
-            .bb-family-counter-controls button {
-              width: 40px;
-              height: 40px;
-              border-radius: 999px;
-              border: none;
-              background: #8b5cf6;
-              color: #f9fafb;
-              font-size: 1.4rem;
-              line-height: 1;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              box-shadow: 0 10px 24px rgba(139,92,246,0.4);
-              transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
-            }
-
-            .bb-family-counter-controls button:hover:not(:disabled) {
-              background: #7c3aed;
-              transform: translateY(-1px);
-              box-shadow: 0 14px 30px rgba(124,58,237,0.45);
-            }
-
-            .bb-family-counter-controls button:disabled {
-              opacity: 0.45;
-              cursor: default;
-              transform: none;
-              box-shadow: none;
-            }
-
-            .bb-family-counter-value {
-              min-width: 28px;
-              text-align: center;
-              font-size: 1.2rem;
-              font-weight: 600;
-              color: #111827;
-            }
-
-            .bb-family-counter-note { font-size: 0.9rem; color: #6b7280; }
-
-            .bb-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 16px; }
-            .bb-compare-grid { min-width: 760px; }
-
-            .bb-riskfree {
-              max-width: 980px;
-              margin: 0 auto;
-              border-radius: 26px;
-              padding: 18px 18px;
-              background: linear-gradient(145deg, #faf5ff, #fdf2ff);
-              box-shadow: 0 22px 55px rgba(148,163,184,0.22), 0 0 0 1px rgba(168,85,247,0.18);
-              position: relative;
-              overflow: hidden;
-            }
-
-            .bb-riskfree::before {
-              content: "";
-              position: absolute;
-              inset: -2px;
-              background: radial-gradient(circle at 15% 0%, rgba(168,85,247,0.26), transparent 52%),
-                          radial-gradient(circle at 85% 100%, rgba(236,72,153,0.22), transparent 52%);
-              pointer-events: none;
-            }
-
-            .bb-riskfree-inner {
-              position: relative;
-              z-index: 1;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 12px;
-              text-align: center;
-              flex-wrap: wrap;
-            }
-
-            .bb-riskfree-badge { display: none; }
-
-            .bb-riskfree-text {
-              font-size: 1.02rem;
-              color: #0f172a;
-              font-weight: 600;
-              line-height: 1.5;
-              text-align: center;
-            }
-
-            .bb-riskfree-text span { font-weight: 800; }
-
-            .bb-riskfree-lines { display: inline; }
-            .bb-riskfree-line { display: inline; }
-
-            @media (max-width: 760px) {
-              .bb-riskfree { padding: 16px 14px; border-radius: 22px; }
-              .bb-riskfree-text { font-size: 0.98rem; }
-
-              .bb-riskfree-lines {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-                align-items: center;
-              }
-
-              .bb-riskfree-line {
-                display: block;
-                width: 100%;
-                text-align: center;
-              }
-            }
-
-            .bb-help-card {
-              max-width: 980px;
-              margin: 0 auto;
-              background: #ffffff;
-              border-radius: 34px;
-              padding: 38px 22px;
-              text-align: center;
-              box-shadow: 0 26px 70px rgba(15,23,42,0.12);
-              border: 1px solid rgba(148,163,184,0.35);
-            }
-
-            .bb-help-title {
-              margin: 0 0 10px;
-              font-size: clamp(1.5rem, 4vw, 2.05rem);
-              font-weight: 900;
-              color: #0b1120;
-              letter-spacing: -0.02em;
-            }
-
-            .bb-help-subtitle {
-              max-width: 900px;
-              margin: 0 auto 18px;
-              color: #6b7280;
-              line-height: 1.85;
-              font-size: 1.02rem;
-              text-align: center;
-              text-wrap: balance;
-            }
-
-            .bb-help-actions {
-              display: flex;
-              justify-content: center;
-              gap: 14px;
-              flex-wrap: wrap;
-              margin: 8px 0 10px;
-            }
-
-            .bb-help-btn-primary {
-              border: none;
-              cursor: pointer;
-              border-radius: 999px;
-              padding: 12px 26px;
-              font-weight: 700;
-              font-size: 0.98rem;
-              color: #fff;
-              background: #0b0b0f;
-              box-shadow: 0 16px 40px rgba(2,6,23,0.25);
-              transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
-              min-width: 220px;
-            }
-
-            .bb-help-btn-primary:hover {
-              transform: translateY(-1px);
-              box-shadow: 0 18px 46px rgba(2,6,23,0.3);
-              filter: brightness(1.05);
-            }
-
-            .bb-help-btn-ghost {
-              border-radius: 999px;
-              padding: 12px 26px;
-              font-weight: 700;
-              font-size: 0.98rem;
-              color: #111827;
-              background: #ffffff;
-              border: 1px solid rgba(226,232,240,0.95);
-              box-shadow: 0 14px 34px rgba(15,23,42,0.08);
-              text-decoration: none;
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              min-width: 140px;
-              transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
-            }
-
-            .bb-help-btn-ghost:hover {
-              transform: translateY(-1px);
-              box-shadow: 0 16px 40px rgba(15,23,42,0.10);
-              filter: brightness(1.02);
-            }
-
-            .bb-help-footnote {
-              margin: 0;
-              color: #9ca3af;
-              font-size: 0.92rem;
-            }
-
-            @media (max-width: 760px) {
-              .bb-help-card { border-radius: 26px; padding: 22px 14px; }
-              .bb-help-actions > * { width: 100%; max-width: 420px; }
-              .bb-help-btn-primary, .bb-help-btn-ghost { min-width: unset; }
-              .bb-help-subtitle { font-size: 0.98rem; }
-            }
-          `}
-        </style>
+        {/* tiny CSS only for a small fade-up (kept) */}
+        <style>{`
+          @keyframes bbFadeUp { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+          @media (prefers-reduced-motion: reduce){
+            *{ animation: none !important; transition: none !important; }
+          }
+        `}</style>
       </section>
 
       {/* DETAILED FEATURE COMPARISON */}
       {!loading && !error && (
-        <section className="bb-section bb-section-alt">
-          <div className="bb-section-shell">
-            <h2 className="bb-section-title" style={{ textAlign: "left", marginBottom: "18px" }}>
+        <section className="bg-[linear-gradient(180deg,rgba(99,102,241,0.06),rgba(255,255,255,0))] py-12 sm:py-14">
+          <div className="mx-auto max-w-6xl px-5">
+            <h2 className="text-left text-2xl font-extrabold tracking-tight text-slate-900">
               Detailed Plan Comparison
             </h2>
 
-            <p
-              className="bb-section-subtitle"
-              style={{
-                textAlign: "left",
-                maxWidth: "720px",
-                margin: "0 0 24px",
-                fontSize: "0.98rem",
-              }}
-            >
-              Compare features across plans and choose the level of support that matches your journey.
+            <p className="mt-2 max-w-[720px] text-left text-[0.98rem] leading-7 text-slate-600">
+              Compare features across plans and choose the level of support that matches your
+              journey.
             </p>
 
-            <div className="bb-compare-scroll">
+            <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200/70 bg-white/70 shadow-[0_18px_55px_rgba(17,24,39,0.06)] backdrop-blur-sm">
               <div
-                className="bb-compare-grid"
+                className="min-w-[760px]"
                 style={{
                   display: "grid",
                   gridTemplateColumns: `minmax(200px, 1fr) repeat(${(plans ?? []).length}, minmax(180px, 1fr))`,
@@ -792,24 +406,26 @@ export default function PricingPage(): JSX.Element {
                   alignItems: "start",
                 }}
               >
-                <div style={{ fontWeight: 700, padding: "14px 18px" }}>Feature</div>
+                <div className="px-5 py-4 font-extrabold text-slate-900">Feature</div>
 
                 {(plans ?? []).map((p) => (
                   <div
                     key={`col-${p.id}`}
-                    style={{ fontWeight: 700, padding: "14px 18px", textAlign: "center" }}
+                    className="px-5 py-4 text-center font-extrabold text-slate-900"
                   >
                     {p.name}
                   </div>
                 ))}
 
                 {featureNames.length === 0 ? (
-                  <div style={{ gridColumn: `1 / -1`, padding: 8 }}>No detailed features available.</div>
+                  <div className="col-span-full px-5 pb-5 text-sm text-slate-600">
+                    No detailed features available.
+                  </div>
                 ) : (
                   featureNames.map((fname) => (
                     <React.Fragment key={fname}>
-                      <div style={{ padding: "12px 18px", borderTop: "1px solid rgba(0,0,0,0.04)" }}>
-                        <div style={{ fontWeight: 600 }}>{fname}</div>
+                      <div className="border-t border-slate-200/60 px-5 py-3">
+                        <div className="font-semibold text-slate-800">{fname}</div>
                       </div>
 
                       {(plans ?? []).map((p) => {
@@ -821,18 +437,14 @@ export default function PricingPage(): JSX.Element {
                         return (
                           <div
                             key={`${p.id}-${fname}`}
-                            style={{
-                              padding: "12px 18px",
-                              borderTop: "1px solid rgba(0,0,0,0.04)",
-                              textAlign: "center",
-                            }}
+                            className="border-t border-slate-200/60 px-5 py-3 text-center"
                           >
                             {included ? (
-                              <span style={{ display: "inline-block", fontSize: 18, color: "#10B981" }}>
+                              <span className="inline-block text-[18px] font-extrabold text-emerald-500">
                                 ✓
                               </span>
                             ) : (
-                              <span style={{ display: "inline-block", fontSize: 18, color: "#EF4444" }}>
+                              <span className="inline-block text-[18px] font-extrabold text-red-500">
                                 ✕
                               </span>
                             )}
@@ -850,34 +462,25 @@ export default function PricingPage(): JSX.Element {
 
       {/* FAQ */}
       {!loading && !error && (
-        <section className="bb-section">
-          <div className="bb-section-shell">
-            <div style={{ textAlign: "center", marginBottom: "18px" }}>
-              <h2 className="bb-section-title" style={{ textAlign: "center", marginBottom: "10px" }}>
+        <section className="py-12 sm:py-14">
+          <div className="mx-auto max-w-6xl px-5">
+            <div className="text-center">
+              <h2 className="text-center text-2xl font-extrabold tracking-tight text-slate-900">
                 Frequently Asked Questions
               </h2>
-              <p
-                className="bb-section-subtitle"
-                style={{ textAlign: "center", margin: "0 auto", maxWidth: "720px" }}
-              >
+              <p className="mx-auto mt-2 max-w-[720px] text-center text-[1.02rem] leading-7 text-slate-600">
                 Everything you need to know before choosing your plan.
               </p>
             </div>
 
-            <div style={{ maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "14px" }}>
+            <div className="mx-auto mt-6 flex max-w-[900px] flex-col gap-4">
               {(faqs ?? []).map((faq, idx) => (
                 <div
                   key={idx}
-                  className="bb-card-hover"
-                  style={{
-                    background: "#fff",
-                    borderRadius: 18,
-                    padding: "16px 18px",
-                    boxShadow: "0 10px 26px rgba(15,23,42,0.06), 0 0 0 1px rgba(226,232,240,0.9)",
-                  }}
+                  className="rounded-2xl bg-white px-5 py-4 shadow-[0_10px_26px_rgba(15,23,42,0.06),0_0_0_1px_rgba(226,232,240,0.9)] transition-transform duration-200 hover:-translate-y-[2px]"
                 >
-                  <h4 style={{ margin: "0 0 6px", fontWeight: 800, color: "#0f172a" }}>{faq.question}</h4>
-                  <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>{faq.answer}</p>
+                  <h4 className="m-0 mb-2 font-extrabold text-slate-900">{faq.question}</h4>
+                  <p className="m-0 leading-7 text-slate-600">{faq.answer}</p>
                 </div>
               ))}
             </div>
@@ -886,49 +489,23 @@ export default function PricingPage(): JSX.Element {
       )}
 
       {/* RISK-FREE CTA */}
-      <section className="bb-section">
-        <div className="bb-section-shell">
-          <div className="bb-riskfree bb-card-hover">
-            <div className="bb-riskfree-inner">
-              <div className="bb-riskfree-text">
-                <span className="bb-riskfree-lines">
-                  <span className="bb-riskfree-line">
-                    Try <span>Back&Bone</span> risk-free
-                  </span>
-                  <span className="bb-riskfree-line"> · <span>30-day</span> money-back guarantee</span>
-                  <span className="bb-riskfree-line"> · Cancel anytime, no setup fees.</span>
-                </span>
-              </div>
+      <section className="pt-6 pb-6 sm:pt-8 sm:pb-8">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="relative overflow-hidden rounded-[26px] bg-[linear-gradient(145deg,#faf5ff,#fdf2ff)] p-5 shadow-[0_22px_55px_rgba(148,163,184,0.22),0_0_0_1px_rgba(168,85,247,0.18)]">
+            <div className="pointer-events-none absolute -inset-2 bg-[radial-gradient(circle_at_15%_0%,rgba(168,85,247,0.26),transparent_52%),radial-gradient(circle_at_85%_100%,rgba(236,72,153,0.22),transparent_52%)]" />
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-2 text-center">
+              <p className="m-0 text-[1.02rem] font-semibold leading-7 text-slate-900">
+                Try <span className="font-extrabold">Back&Bone</span> risk-free ·{" "}
+                <span className="font-extrabold">30-day</span> money-back guarantee · Cancel
+                anytime, no setup fees.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* NEED A HAND CTA */}
-      <section className="bb-section bb-cta">
-        <div className="bb-section-shell">
-          <div className="bb-help-card bb-anim-fade-up">
-            <h3 className="bb-help-title">Need a Hand?</h3>
-
-            <p className="bb-help-subtitle">
-              Stuck anywhere in the app? Reach out and we&apos;ll walk you through the right module
-              or send a quick loom recording.
-            </p>
-
-            <div className="bb-help-actions">
-              <button className="bb-help-btn-primary" onClick={() => navigate("/support")}>
-                Visit Support Center
-              </button>
-
-              <a href="mailto:support@backnbone.com" className="bb-help-btn-ghost">
-                Email Us
-              </a>
-            </div>
-
-            <p className="bb-help-footnote">We typically respond within 24 hours.</p>
-          </div>
-        </div>
-      </section>
+      {/* NEED A HAND CTA (moved to component) */}
+      <NeedHand />
     </div>
   );
 }

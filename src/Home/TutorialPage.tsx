@@ -1,7 +1,7 @@
 // src/Home/TutorialPage.tsx
 import { useEffect, useMemo, useState } from "react";
-import "../App.css";
 import TutorialModal from "../components/TutorialModal";
+import NeedHand from "../components/NeedHand";
 
 type TutorialStep = {
   title: string;
@@ -22,12 +22,44 @@ type Tutorial = {
 const DATA_URL =
   "https://raw.githubusercontent.com/BUTDRILL1/backnbone-data/main/tutorials.json";
 
+function clsx(...x: Array<string | false | null | undefined>) {
+  return x.filter(Boolean).join(" ");
+}
+
+function useRevealOnScroll() {
+  useEffect(() => {
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-bb-reveal]")
+    );
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target as HTMLElement;
+          el.classList.remove("opacity-0", "translate-y-3");
+          el.classList.add("opacity-100", "translate-y-0");
+          io.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
 export default function TutorialPage(): JSX.Element {
   const [tutorials, setTutorials] = useState<Tutorial[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
+
+  useRevealOnScroll();
+
+  // detect mobile (keeps your original behavior)
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 820px)");
     const update = () => setIsMobile(mq.matches);
@@ -80,104 +112,91 @@ export default function TutorialPage(): JSX.Element {
     };
   }, []);
 
+  // kept (even if not used elsewhere, safe + matches your original code intent)
   const shellMax = useMemo(() => (isMobile ? 980 : 1180), [isMobile]);
 
   return (
     <div
-      className="bb-page"
-      style={{
-        // ✅ keep reduced top space
-        paddingTop: isMobile ? "70px" : "76px",
-        overflowX: "hidden",
-      }}
+      className={clsx(
+        "bb-page min-h-screen w-full overflow-x-hidden bg-white",
+        isMobile ? "pt-[110px]" : "pt-[110px]"
+      )}
+      style={{ maxWidth: "100%" }}
     >
-      {/* ✅ HERO / INTRO (UPDATED: remove big purple hero background card) */}
-      <section
-        className="bb-section bb-anim-fade-up"
-        style={{
-          paddingTop: 6,
-          paddingBottom: 18,
-        }}
-      >
-        <div className="bb-section-shell" style={{ maxWidth: 980 }}>
-          <div style={{ textAlign: "center" }}>
+      {/* HERO / INTRO (no big purple card, clean like you wanted) */}
+      <section className="py-4 sm:py-6">
+        <div className="mx-auto px-5" style={{ maxWidth: shellMax }}>
+          <div className="text-center">
             <h1
-              style={{
-                fontSize: "clamp(2rem, 6vw, 2.6rem)",
-                lineHeight: 1.08,
-                fontWeight: 900,
-                margin: "0px 0 15px",
-                color: "#0b1120",
-              }}
+              data-bb-reveal
+              className={clsx(
+                "opacity-0 translate-y-3 transition-all duration-500",
+                "text-[clamp(2rem,6vw,2.6rem)] font-black leading-[1.08] text-slate-950"
+              )}
             >
               Back&Bone Tutorials
             </h1>
 
             <p
-              className="bb-section-subtitle"
-              style={{
-                maxWidth: 760,
-                margin: "0 auto 10px",
-                fontSize: "clamp(0.98rem, 2.6vw, 1.02rem)",
-                color: "#4b5563",
-                lineHeight: 1.75,
-              }}
+              data-bb-reveal
+              style={{ transitionDelay: "100ms" }}
+              className={clsx(
+                "opacity-0 translate-y-3 transition-all duration-500",
+                "mx-auto mt-3 max-w-[760px] text-[clamp(0.98rem,2.6vw,1.02rem)] leading-7 text-slate-600"
+              )}
             >
-              Each module unlocks a different part of your fitness routine. Use these
-              tutorials as a quick guide while you explore the app.
+              Each module unlocks a different part of your fitness routine. Use these tutorials as
+              a quick guide while you explore the app.
             </p>
+
+            {/* subtle animated underline */}
+            <div
+              data-bb-reveal
+              style={{ transitionDelay: "170ms" }}
+              className="opacity-0 translate-y-3 mx-auto mt-5 h-[3px] w-[120px] rounded-full bg-[linear-gradient(90deg,rgba(79,70,229,0.0),rgba(79,70,229,0.55),rgba(236,72,153,0.55),rgba(79,70,229,0.0))] animate-[bbShimmerLine_2.6s_ease-in-out_infinite] transition-all duration-500"
+            />
           </div>
         </div>
       </section>
 
-      {/* ✅ Modules section (NO BUTTON) sits between header and steps */}
-      <TutorialModal
-        tutorials={tutorials}
-        loading={loading}
-        error={error}
-        isMobile={isMobile}
-      />
+      {/* Modules section (your component, no button) */}
+      <div
+        data-bb-reveal
+        className="opacity-0 translate-y-3 transition-all duration-500"
+        style={{ transitionDelay: "160ms" }}
+      >
+        <TutorialModal
+          tutorials={tutorials}
+          loading={loading}
+          error={error}
+          isMobile={isMobile}
+        />
+      </div>
 
       {/* 3-STEP ONBOARDING */}
-      <section className="bb-section bb-anim-fade-up" style={{ paddingTop: 10 }}>
-        <div
-          className="bb-section-shell bb-steps-wrap"
-          style={{ textAlign: "center", maxWidth: 1050 }}
-        >
+      <section className="py-6 sm:py-10">
+        <div className="mx-auto max-w-[1050px] px-5 text-center">
           <h2
-            style={{
-              fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
-              fontWeight: 800,
-              marginBottom: 8,
-              marginTop: 12,
-            }}
+            data-bb-reveal
+            className="opacity-0 translate-y-3 text-[clamp(1.35rem,4vw,1.8rem)] font-extrabold tracking-tight text-slate-900 transition-all duration-500"
           >
             Start in 3 Simple Steps
           </h2>
 
           <p
-            className="bb-section-subtitle"
-            style={{
-              maxWidth: 640,
-              margin: "0 auto 18px",
-              color: "var(--bb-muted)",
-              lineHeight: 1.7,
-              padding: isMobile ? "0 10px" : 0,
-            }}
+            data-bb-reveal
+            style={{ transitionDelay: "100ms" }}
+            className={clsx(
+              "opacity-0 translate-y-3 transition-all duration-500",
+              "mx-auto mt-2 max-w-[640px] leading-7 text-slate-600",
+              isMobile ? "px-2" : ""
+            )}
           >
-            New to Back&Bone? Follow these basics to get set up before you
-            dive into each feature tutorial.
+            New to Back&amp;Bone? Follow these basics to get set up before you dive into each
+            feature tutorial.
           </p>
 
-          <div
-            className="bb-steps-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 16,
-              alignItems: "stretch",
-            }}
-          >
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 num: 1,
@@ -194,165 +213,58 @@ export default function TutorialPage(): JSX.Element {
                 title: "Start Your Journey",
                 body: "Explore workouts, discover gyms, and let RepBot support every rep while your dashboard tracks progress.",
               },
-            ].map((step) => (
+            ].map((step, i) => (
               <div
                 key={step.num}
-                className="bb-card-hover bb-anim-card"
-                style={{
-                  padding: isMobile ? "18px 16px 18px" : "22px 22px 24px",
-                  borderRadius: 24,
-                  background: "rgba(255,255,255,0.96)",
-                  boxShadow:
-                    "0 18px 40px rgba(15,23,42,0.10), 0 0 0 1px rgba(226,232,240,0.9)",
-
-                  // ✅ CHANGE: center all content inside each box (desktop + mobile)
-                  textAlign: "center",
-
-                  // ✅ CHANGE: make inner layout feel truly centered vertically too
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+                data-bb-reveal
+                style={{ transitionDelay: `${i * 90}ms` }}
+                className={clsx(
+                  "opacity-0 translate-y-3 transition-all duration-500",
+                  "group relative overflow-hidden rounded-3xl bg-white/95",
+                  "p-5 sm:p-6",
+                  "shadow-[0_18px_40px_rgba(15,23,42,0.10),0_0_0_1px_rgba(226,232,240,0.9)]",
+                  "hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.14)]"
+                )}
               >
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 999,
-                    background: "linear-gradient(135deg,#8b5cf6,#4c1d95)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    fontWeight: 800,
-                    margin: "0 auto 12px",
-                    fontSize: 18,
-                    boxShadow: "0 12px 24px rgba(79,70,229,0.45)",
-                  }}
-                >
-                  {step.num}
+                {/* animated soft corner glow */}
+                <div className="pointer-events-none absolute -inset-10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.22),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.16),transparent_55%)]" />
+
+                <div className="relative flex flex-col items-center text-center">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#8b5cf6,#4c1d95)] text-[18px] font-extrabold text-white shadow-[0_12px_24px_rgba(79,70,229,0.45)] transition-transform duration-300 group-hover:scale-[1.05] animate-[bbPop_900ms_ease-out_both]">
+                    {step.num}
+                  </div>
+
+                  <h3 className="text-[1.05rem] font-extrabold text-slate-900">
+                    {step.title}
+                  </h3>
+
+                  <p className="mt-2 max-w-[360px] leading-7 text-slate-600">
+                    {step.body}
+                  </p>
                 </div>
 
-                <h3
-                  style={{
-                    fontSize: "1.05rem",
-                    marginBottom: 6,
-                    fontWeight: 800,
-                    textAlign: "center",
-                  }}
-                >
-                  {step.title}
-                </h3>
-
-                <p
-                  style={{
-                    color: "var(--bb-muted)",
-                    lineHeight: 1.7,
-                    margin: 0,
-                    textAlign: "center",
-                    maxWidth: 360, // keeps lines looking centered and neat
-                  }}
-                >
-                  {step.body}
-                </p>
+                {/* tiny floating dots */}
+                <span className="pointer-events-none absolute right-5 top-5 h-2 w-2 rounded-full bg-violet-400/60 shadow-[0_0_18px_rgba(139,92,246,0.45)] animate-[bbDot_6s_ease-in-out_infinite]" />
+                <span className="pointer-events-none absolute bottom-5 left-6 h-2 w-2 rounded-full bg-fuchsia-400/50 shadow-[0_0_18px_rgba(236,72,153,0.38)] animate-[bbDot_7.5s_ease-in-out_infinite]" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SUPPORT CTA */}
-      <section
-        className="bb-section bb-cta"
-        style={{ paddingTop: 18, paddingBottom: 24 }}
-      >
-        <div className="bb-section-shell bb-anim-fade-up">
-          <div
-            style={{
-              maxWidth: 920,
-              margin: "0 auto",
-              textAlign: "center",
-              background: "#ffffff",
-              borderRadius: isMobile ? 24 : 32,
-              padding: isMobile ? "18px 16px 18px" : "24px 24px 26px",
-              boxShadow:
-                "0 20px 50px rgba(15,23,42,0.16), 0 0 0 1px rgba(148,163,184,0.28)",
-            }}
-          >
-            <h3
-              className="bb-section-title"
-              style={{
-                marginBottom: 8,
-                fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
-                fontWeight: 900,
-              }}
-            >
-              Need a Hand?
-            </h3>
+      {/* ✅ NEED A HAND (imported component) */}
+      <NeedHand />
 
-            <p
-              className="bb-section-subtitle"
-              style={{
-                maxWidth: 860,
-                margin: "0 auto 16px",
-                color: "var(--bb-muted)",
-                fontSize: "0.98rem",
-                lineHeight: 1.75,
-                textAlign: "center",
-              }}
-            >
-              Stuck anywhere in the app? Reach out and we&apos;ll walk you
-              through the right module or send a quick loom recording.
-            </p>
+      {/* Animations only (safe + doesn’t affect layout) */}
+      <style>{`
+        @keyframes bbPop { 0%{opacity:0; transform:translateY(10px) scale(.96)} 100%{opacity:1; transform:translateY(0) scale(1)} }
+        @keyframes bbShimmerLine { 0%{filter:blur(0px); opacity:.55} 50%{filter:blur(.2px); opacity:1} 100%{filter:blur(0px); opacity:.55} }
+        @keyframes bbDot { 0%{transform:translate(0,0); opacity:.6} 50%{transform:translate(8px,6px); opacity:.9} 100%{transform:translate(0,0); opacity:.6} }
 
-            <div
-              className="bb-cta-actions"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 12,
-                marginBottom: 8,
-                flexWrap: "wrap",
-              }}
-            >
-              <button
-                className="bb-btn bb-btn-primary bb-btn-animated"
-                style={{
-                  padding: "12px 26px",
-                  borderRadius: 999,
-                  fontSize: "0.98rem",
-                  width: isMobile ? "100%" : "auto",
-                  maxWidth: 360,
-                }}
-                onClick={() => {
-                  window.location.href = "/support";
-                }}
-              >
-                Visit Support Center
-              </button>
-
-              <a
-                href="mailto:support@backnbone.com"
-                className="bb-btn bb-btn-ghost bb-btn-animated"
-                style={{
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: isMobile ? "100%" : "auto",
-                  maxWidth: 360,
-                }}
-              >
-                Email Us
-              </a>
-            </div>
-
-            <p style={{ marginTop: 6, fontSize: "0.85rem", color: "#6b7280" }}>
-              We typically respond within 24 hours.
-            </p>
-          </div>
-        </div>
-      </section>
+        @media (prefers-reduced-motion: reduce){
+          *{ animation: none !important; transition: none !important; }
+        }
+      `}</style>
     </div>
   );
 }

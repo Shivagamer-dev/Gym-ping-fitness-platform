@@ -1,8 +1,8 @@
 // src/Home/BetaSignupPopup.tsx
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import "../phone-input.css";
 import { apiClient } from "../lib/apiClient";
 import Thankyou from "../components/Thankyou";
 
@@ -17,19 +17,55 @@ export default function BetaSignupPopup({
   const [loading, setLoading] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  // Lock body scroll while popup is open
-  useEffect(() => {
-    const original = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = original;
-    };
+  // Create/Reuse modal root for portal
+  const portalEl = useMemo(() => {
+    const id = "bb-modal-root";
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement("div");
+      el.id = id;
+      document.body.appendChild(el);
+    }
+    return el;
   }, []);
 
-  const handleCloseBetaSignup = () => {
-    setShowThankYou(false);
-    onClose();
-  };
+  // ✅ Hard lock background scroll (desktop + mobile)
+  useEffect(() => {
+    const scrollY = window.scrollY;
+
+    const originalOverflow = document.body.style.overflow;
+    const originalPosition = document.body.style.position;
+    const originalTop = document.body.style.top;
+    const originalWidth = document.body.style.width;
+    const originalPaddingRight = document.body.style.paddingRight;
+
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0)
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+
+      document.body.style.overflow = originalOverflow;
+      document.body.style.position = originalPosition;
+      document.body.style.top = originalTop;
+      document.body.style.width = originalWidth;
+      document.body.style.paddingRight = originalPaddingRight;
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,17 +75,8 @@ export default function BetaSignupPopup({
     const fullName = formData.get("fullName")?.toString().trim();
     const email = formData.get("email")?.toString().trim();
 
-    // Basic validation
     if (!fullName || !email || !phoneValue) {
       alert("Please fill in all required fields.");
-      setLoading(false);
-      return;
-    }
-
-    // Email regex validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
       setLoading(false);
       return;
     }
@@ -60,127 +87,174 @@ export default function BetaSignupPopup({
         email,
         phone: phoneValue,
       });
-
       if (error) throw new Error(error.message);
-
       setShowThankYou(true);
-    } catch (err) {
-      console.error("Supabase insert error:", err);
+    } catch {
       alert("Something went wrong. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (showThankYou) {
-    return (
-      <Thankyou isOpen={showThankYou} onClose={handleCloseBetaSignup} />
-    );
-  }
+  const content = showThankYou ? (
+    <Thankyou isOpen={showThankYou} onClose={onClose} />
+  ) : (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-md p-4"
+      style={{ overscrollBehavior: "contain" }}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      onTouchMove={(e) => e.preventDefault()} // extra safety for mobile
+      onWheel={(e) => e.preventDefault()} // extra safety for desktop
+    >
+      {/* modal wrapper */}
+      <div className="relative w-full max-w-lg">
+        <div className="relative overflow-hidden rounded-3xl bg-[#0B071A] text-white shadow-[0_30px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/10">
+          {/* glow */}
+          <div className="pointer-events-none absolute -inset-10 -z-10 blur-2xl bg-[radial-gradient(circle_at_20%_10%,rgba(236,72,153,0.25),transparent_55%),radial-gradient(circle_at_80%_0%,rgba(99,102,241,0.25),transparent_55%)]" />
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
-      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl bg-slate-950/95 text-white shadow-2xl">
-        {/* Soft gradient border glow */}
-        <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-pink-500/30 via-purple-600/25 to-blue-500/30 blur-2xl" />
-
-        {/* Close button */}
-        <button
-          type="button"
-          className="absolute right-4 top-4 text-3xl font-bold leading-none text-slate-300 transition-colors hover:text-pink-400"
-          onClick={onClose}
-          aria-label="Close beta signup"
-        >
-          &times;
-        </button>
-
-        <div className="px-7 pb-7 pt-6 sm:px-8 sm:pb-8 sm:pt-7">
-          {/* Header block */}
-          <div className="mb-6 rounded-2xl border border-slate-700/70 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-slate-900/90 px-4 py-4">
-            <h2 className="text-xl font-semibold text-pink-300 sm:text-2xl">
-              Join Our Beta Program
-            </h2>
-            <p className="mt-1 text-sm text-slate-300/80">
-              Get early access to Back&Bone, help us improve the experience,
-              and shape the future of AI-powered fitness.
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4"
-            noValidate
+          {/* close */}
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/5 text-2xl text-white/80 hover:bg-white/10"
+            aria-label="Close"
+            type="button"
           >
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="mb-1 block text-sm font-medium text-slate-200"
-              >
-                Full Name <span className="text-pink-400">*</span>
-              </label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                placeholder="Your Full Name"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-3 text-sm text-white outline-none transition ring-0 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/60"
-                required
-              />
+            ×
+          </button>
+
+          {/* content (scrolls if needed, scrollbar hidden) */}
+          <div className="bb-hide-scrollbar max-h-[85vh] overflow-y-auto px-6 py-7 sm:px-8">
+            {/* header */}
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <h2 className="text-xl font-extrabold sm:text-2xl">
+                Join Our Beta Program
+              </h2>
+              <p className="mt-1 text-sm text-white/70">
+                Get early access to Back&amp;Bone and help shape AI-powered
+                fitness.
+              </p>
             </div>
 
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-1 block text-sm font-medium text-slate-200"
-              >
-                Email Address <span className="text-pink-400">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="your.name@example.com"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-3 text-sm text-white outline-none transition ring-0 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/60"
-                required
-              />
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-slate-200">
-                Phone Number <span className="text-pink-400">*</span>
-              </label>
-              <div className="w-full rounded-lg border border-slate-700 bg-slate-900/80 transition focus-within:border-pink-500 focus-within:ring-2 focus-within:ring-pink-500/60">
-                <PhoneInput
-                  placeholder="Enter phone number"
-                  value={phoneValue}
-                  onChange={setPhoneValue}
-                  defaultCountry="IN"
-                  className="phone-input-custom-inner"
-                  numberInputProps={{
-                    className:
-                      "w-full bg-transparent px-3 py-3 text-sm text-white outline-none",
-                  }}
+            {/* FORM */}
+            <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+              {/* name */}
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold">
+                  Full Name <span className="text-fuchsia-300">*</span>
+                </label>
+                <input
+                  name="fullName"
+                  placeholder="Your Full Name"
+                  required
+                  className="w-full rounded-xl border border-white/10 bg-[#120A2A] px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-violet-400/30"
                 />
               </div>
-            </div>
 
-            <div className="mt-1 text-xs text-slate-400">
-              * Required fields
-            </div>
+              {/* email */}
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold">
+                  Email Address <span className="text-fuchsia-300">*</span>
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="your.name@example.com"
+                  required
+                  className="w-full rounded-xl border border-white/10 bg-[#120A2A] px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-violet-400/30"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-3 w-full rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(236,72,153,0.55)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-pink-400 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Submitting..." : "Join Beta Program"}
-            </button>
-          </form>
+              {/* phone */}
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold">
+                  Phone Number <span className="text-fuchsia-300">*</span>
+                </label>
+
+                <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-[#120A2A] px-3 py-2 focus-within:ring-2 focus-within:ring-violet-400/30">
+                  <PhoneInput
+                    defaultCountry="IN"
+                    value={phoneValue}
+                    onChange={setPhoneValue}
+                    placeholder="Enter phone number"
+                    className="PhoneInput flex w-full max-w-full items-center gap-2"
+                    // ✅ only styles the visible select, NOT the dropdown options
+                    countrySelectProps={{
+                      className:
+                        "bg-transparent text-white/90 outline-none focus:outline-none",
+                    }}
+                    numberInputProps={{
+                      className:
+                        "w-full max-w-full bg-transparent px-2 py-1.5 text-sm text-white placeholder:text-white/35 outline-none",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <p className="text-xs text-white/50">* Required fields</p>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-2 w-full rounded-full bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 py-3 text-sm font-semibold shadow-lg disabled:opacity-60"
+              >
+                {loading ? "Submitting..." : "Join Beta Program"}
+              </button>
+            </form>
+          </div>
+
+          {/* ✅ FIX: country names not visible
+              The dropdown list is rendered by native <select><option>.
+              Tailwind can't style <option> reliably, so we force readable colors here.
+          */}
+          <style>{`
+            .bb-hide-scrollbar {
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+            }
+            .bb-hide-scrollbar::-webkit-scrollbar {
+              width: 0px;
+              height: 0px;
+            }
+
+            /* PhoneInput base alignment */
+            .PhoneInput {
+              width: 100%;
+            }
+
+            /* Visible select in the input row */
+            .PhoneInputCountrySelect {
+              background: transparent !important;
+              color: rgba(255,255,255,0.9) !important;
+              border: none !important;
+              outline: none !important;
+            }
+
+            /* ✅ Dropdown options (THIS fixes your issue) */
+            .PhoneInputCountrySelect option {
+              color: #111827 !important;       /* slate-900 */
+              background: #ffffff !important;  /* white */
+            }
+
+            /* Arrow */
+            .PhoneInputCountrySelectArrow {
+              color: rgba(255,255,255,0.75) !important;
+            }
+
+            /* Input */
+            .PhoneInputInput {
+              color: #ffffff !important;
+              background: transparent !important;
+            }
+            .PhoneInputInput::placeholder {
+              color: rgba(255,255,255,0.35) !important;
+            }
+          `}</style>
         </div>
       </div>
     </div>
   );
+
+  return createPortal(content, portalEl);
 }

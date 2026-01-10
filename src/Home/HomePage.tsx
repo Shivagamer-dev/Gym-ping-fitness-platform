@@ -1,6 +1,5 @@
 // src/Home/HomePage.tsx
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 
 import heroImg from "../assets/images/hero.png";
@@ -13,6 +12,7 @@ import amitFounderImg from "../assets/images/no_phtoto.jpg";
 import omFounderImg from "../assets/images/om-founder.png";
 
 import BetaSignupPopup from "./BetaSignupPopup";
+import CTA from "../components/CTA";
 
 type Founder = {
   id: string;
@@ -26,15 +26,6 @@ type Founder = {
 
 const FOUNDERS: Founder[] = [
   {
-    id: "amit",
-    name: "-- --",
-    role: "Co-Founder, CEO & CTO",
-    bio: "He is the visionary behind Back&Bone's technological innovations and strategic direction. With a strong background in AI and software development, he leads the team in creating cutting-edge fitness solutions.",
-    tags: ["AI & ML", "Software Architecture", "Product Strategy"],
-    photo: amitFounderImg,
-    accent: "#4f46e5",
-  },
-  {
     id: "om",
     name: "Om M. Dashasahastra",
     role: "Co-Founder, COO & CFO",
@@ -43,12 +34,63 @@ const FOUNDERS: Founder[] = [
     photo: omFounderImg,
     accent: "#ec4899",
   },
+  {
+    id: "-- --",
+    name: "-- --",
+    role: "Co-Founder, CEO & CTO",
+    bio: "He is the visionary behind Back&Bone's technological innovations and strategic direction. With a strong background in AI and software development, he leads the team in creating cutting-edge fitness solutions.",
+    tags: ["AI & ML", "Software Architecture", "Product Strategy"],
+    photo: amitFounderImg,
+    accent: "#4f46e5",
+  },
 ];
+
+/**
+ * ✅ ensures reveal animation runs EVERY time you land on Home page
+ */
+function useRevealOnScroll(deps: any[] = []) {
+  useEffect(() => {
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-bb-reveal]")
+    );
+
+    // Reset to hidden
+    for (const el of els) {
+      el.classList.add("opacity-0", "translate-y-3");
+      el.classList.remove("opacity-100", "translate-y-0");
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target as HTMLElement;
+          el.classList.remove("opacity-0", "translate-y-3");
+          el.classList.add("opacity-100", "translate-y-0");
+          io.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}
 
 export default function HomePage() {
   const featureIntroRef = useRef<HTMLDivElement | null>(null);
   const [isBetaOpen, setIsBetaOpen] = useState(false);
-  const navigate = useNavigate();
+
+  // page mount fade-in
+  const [pageReady, setPageReady] = useState(false);
+  useEffect(() => {
+    setPageReady(false);
+    const t = requestAnimationFrame(() => setPageReady(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
+  useRevealOnScroll([pageReady]);
 
   const scrollToFeatures = () => {
     featureIntroRef.current?.scrollIntoView({
@@ -57,56 +99,57 @@ export default function HomePage() {
     });
   };
 
-  const goToDownloadPage = () => {
-    navigate("/app-download");
-  };
-
   return (
-    <div className="bb-page bb-home" style={{ overflowX: "hidden" }}>
+    <div
+      className={[
+        "bb-page bb-home overflow-x-hidden",
+        pageReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
+        "transition-all duration-500",
+      ].join(" ")}
+    >
       {/* ===== HERO SECTION ===== */}
-      <section
-        className="bb-hero-strip"
-        style={{
-          width: "100%",
-          marginTop: 0,
-          background:
-            "radial-gradient(circle at 0% 0%, #8b5cf6 0, #4c1d95 40%, #2e1065 100%)",
-        }}
-      >
-        <div className="bb-hero-shell">
-          <div className="bb-hero-text">
-            <p className="bb-hero-kicker">YOUR AI FITNESS PARTNER,</p>
-            <h1>
-              Every Step of the <span>Way.</span>
+      <section className="relative w-full overflow-visible bg-[radial-gradient(circle_at_0%_0%,#8b5cf6_0,#4c1d95_40%,#2e1065_100%)]">
+        {/* ambient blobs */}
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <span className="absolute -left-44 -top-56 h-[520px] w-[520px] rounded-full blur-[28px] bg-[radial-gradient(circle_at_30%_30%,rgba(236,72,153,0.35),transparent_60%)] animate-[bbBlobA_12s_ease-in-out_infinite]" />
+          <span className="absolute -right-60 -top-40 h-[520px] w-[520px] rounded-full blur-[28px] bg-[radial-gradient(circle_at_35%_35%,rgba(34,211,238,0.22),transparent_62%)] animate-[bbBlobB_14s_ease-in-out_infinite]" />
+          <span className="absolute left-[35%] -bottom-80 h-[520px] w-[520px] rounded-full blur-[28px] bg-[radial-gradient(circle_at_40%_40%,rgba(255,255,255,0.10),transparent_65%)] animate-[bbBlobC_16s_ease-in-out_infinite]" />
+        </div>
+
+        {/* ✅ reduced top padding on mobile only */}
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 pb-8 pt-14 sm:pt-16 sm:pb-10 md:grid-cols-2 md:gap-12 md:pb-14 md:pt-24">
+          {/* left */}
+          <div
+            data-bb-reveal
+            className="opacity-0 translate-y-3 transition-all duration-700 text-center md:text-left"
+          >
+            <p className="mb-3 text-xs font-extrabold tracking-[0.16em] text-white/80">
+              YOUR AI FITNESS PARTNER,
+            </p>
+
+            <h1 className="text-4xl sm:text-5xl font-black leading-[1.12] pb-1 overflow-visible text-white">
+              Every Step of the{" "}
+              <span className="inline-block overflow-visible leading-[1.12] bg-gradient-to-r from-white via-cyan-200 to-pink-200 bg-clip-text text-transparent animate-[bbTextShine_3.8s_ease-in-out_infinite]">
+                Way.
+              </span>
             </h1>
-            <p className="bb-hero-body">
-              Back&Bone helps you stay consistent, track progress, and
+
+            <p className="mx-auto mt-4 max-w-xl text-base leading-8 text-white/80 md:mx-0">
+              Back&amp;Bone helps you stay consistent, track progress, and
               overcome every hurdle on your way to achieving your dream fitness
               goals.
             </p>
 
-            <div className="bb-hero-actions" style={{ gap: 14 }}>
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
               <button
-                className="bb-btn bb-btn-animated"
-                style={{
-                  padding: "14px 36px",
-                  borderRadius: 999,
-                  border: "none",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  color: "#fff",
-                  background:
-                    "linear-gradient(135deg, #ec4899 0%, #f97316 50%, #f97316 100%)",
-                  boxShadow: "0 18px 40px rgba(248,113,113,0.45)",
-                  cursor: "pointer",
-                }}
+                className="rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-orange-500 px-9 py-3.5 text-base font-bold text-white shadow-[0_18px_40px_rgba(248,113,113,0.45)] transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
                 onClick={() => setIsBetaOpen(true)}
               >
                 Signup for Beta
               </button>
 
               <button
-                className="bb-btn bb-btn-ghost bb-btn-animated"
+                className="rounded-full border border-white/25 bg-white/10 px-9 py-3.5 text-base font-bold text-white/90 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-md transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/15 active:translate-y-0"
                 onClick={scrollToFeatures}
               >
                 Learn More
@@ -114,33 +157,42 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bb-hero-media">
-            <div className="bb-hero-image-shell bb-card-hover">
-              <img
-                src={heroImg}
-                alt="Athlete training"
-                className="bb-hero-image"
-              />
+          {/* right */}
+          <div
+            data-bb-reveal
+            style={{ transitionDelay: "120ms" }}
+            className="opacity-0 translate-y-3 transition-all duration-700 flex justify-center md:justify-end"
+          >
+            <div className="relative w-full max-w-md rounded-2xl bg-white/10 p-2 shadow-[0_22px_60px_rgba(0,0,0,0.18)] backdrop-blur-md animate-[bbFloat_6.5s_ease-in-out_infinite]">
+              <div className="relative overflow-hidden rounded-xl">
+                <img
+                  src={heroImg}
+                  alt="Athlete training"
+                  className="h-auto w-full object-cover"
+                />
+                <span className="pointer-events-none absolute -inset-1 rounded-xl bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.12)_35%,transparent_70%)] translate-x-[-60%] animate-[bbShimmer_3.6s_ease-in-out_infinite] mix-blend-screen" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ===== FEATURE INTRO ===== */}
-      <section className="bb-section" ref={featureIntroRef}>
-        <div className="bb-section-shell">
-          <h2 className="bb-section-title" style={{ textAlign: "center" }}>
+      <section id="features" className="py-10 sm:py-12" ref={featureIntroRef}>
+        <div className="mx-auto max-w-6xl px-5">
+          <h2
+            data-bb-reveal
+            className="opacity-0 translate-y-3 text-center text-3xl font-extrabold tracking-tight text-slate-900 transition-all duration-700"
+          >
             Designed to Help You Grow Stronger
           </h2>
+
           <p
-            className="bb-section-subtitle"
-            style={{
-              textAlign: "center",
-              maxWidth: "720px",
-              margin: "14px auto 0",
-            }}
+            data-bb-reveal
+            style={{ transitionDelay: "110ms" }}
+            className="opacity-0 translate-y-3 mx-auto mt-4 max-w-[720px] text-center text-[1.02rem] leading-7 text-slate-600 transition-all duration-700"
           >
-            Every Back&Bone module focuses on a different part of your
+            Every Back&amp;Bone module focuses on a different part of your
             journey – learning exercises, finding gyms, getting coaching, and
             tracking data.
           </p>
@@ -148,15 +200,14 @@ export default function HomePage() {
       </section>
 
       {/* ===== FEATURES ===== */}
-      <section className="bb-section">
-        <div className="bb-section-shell">
+      <section className="py-8 sm:py-10">
+        <div className="mx-auto max-w-6xl space-y-6 px-5">
           <FeatureRow
             title="Spotter"
             subtitle="Master Every Move"
             description="Learn and perform exercises with confidence. Access thousands of guided workout videos with step-by-step instructions and proper form demonstrations."
             img={spotterImg}
             imgAlt="Spotter feature"
-            reversed={false}
           />
 
           <FeatureRow
@@ -165,7 +216,7 @@ export default function HomePage() {
             description="Never miss a workout. Discover nearby gyms and fitness centers with real-time ratings, amenities, and directions so you can train wherever you are."
             img={locatorImg}
             imgAlt="Locator feature"
-            reversed={true}
+            reversed
           />
 
           <FeatureRow
@@ -174,7 +225,6 @@ export default function HomePage() {
             description="Get personalized plans and advice tailored to your goals, pace, and lifestyle, making fitness simple and effective – without overthinking your routine."
             img={repbotImg}
             imgAlt="RepBot feature"
-            reversed={false}
           />
 
           <FeatureRow
@@ -183,22 +233,31 @@ export default function HomePage() {
             description="See your progress at a glance. Track key metrics, monitor improvements, and integrate data from your favorite wearables in one unified dashboard."
             img={dashboardImg}
             imgAlt="Dashboard feature"
-            reversed={true}
+            reversed
           />
         </div>
       </section>
 
       {/* ===== HOW IT WORKS ===== */}
-      <section className="bb-section bb-section-alt">
-        <div className="bb-section-shell bb-how-shell">
-          <h2 className="bb-section-title bb-how-title">How it Works</h2>
+      <section className="bg-[linear-gradient(180deg,rgba(99,102,241,0.06),rgba(255,255,255,0))] py-12 sm:py-14">
+        <div className="mx-auto max-w-6xl px-5">
+          <h2
+            data-bb-reveal
+            className="opacity-0 translate-y-3 text-center text-3xl font-extrabold tracking-tight text-slate-900 transition-all duration-700"
+          >
+            How it Works
+          </h2>
 
-          <p className="bb-section-subtitle bb-how-subtitle">
-            Back&Bone keeps things simple: a clear journey from sign-up to
+          <p
+            data-bb-reveal
+            style={{ transitionDelay: "110ms" }}
+            className="opacity-0 translate-y-3 mx-auto mt-3 max-w-[760px] text-center text-[1.02rem] leading-7 text-slate-600 transition-all duration-700"
+          >
+            Back&amp;Bone keeps things simple: a clear journey from sign-up to
             long-term progress — with your data always under your control.
           </p>
 
-          <div className="bb-how-grid">
+          <div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-5">
             {[
               {
                 title: "1. Create Your Account",
@@ -221,381 +280,180 @@ export default function HomePage() {
                 body: "Manage permissions, update preferences, and stay in charge of your privacy anytime.",
               },
             ].map((item, i) => (
-              <article key={i} className="bb-how-item bb-card-hover">
-                <h4 className="bb-how-item-title">{item.title}</h4>
-                <p className="bb-how-item-body">{item.body}</p>
+              <article
+                key={i}
+                data-bb-reveal
+                style={{ transitionDelay: `${i * 70}ms` }}
+                className="opacity-0 translate-y-3 rounded-2xl bg-white p-5 shadow-[0_8px_22px_rgba(16,24,40,0.06)] ring-1 ring-slate-200/60 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(16,24,40,0.10)]"
+              >
+                <h4 className="text-[1.02rem] font-extrabold leading-6 text-slate-900">
+                  {item.title}
+                </h4>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {item.body}
+                </p>
               </article>
             ))}
           </div>
         </div>
-
-        <style>
-          {`
-            .bb-how-shell{ max-width: 1200px; margin: 0 auto; }
-            .bb-how-title{ text-align:center; font-size: 2.25rem; line-height: 1.12; margin-bottom: 8px; }
-            .bb-how-subtitle{ text-align:center; max-width: 760px; margin: 0 auto 28px; font-size: 1.05rem; color: var(--bb-muted, #6b7280); line-height: 1.6; }
-            .bb-how-grid{ display:grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-            .bb-how-item{ background: var(--bb-surface, #fff); border-radius: 14px; padding: 20px 22px; box-shadow: 0 8px 22px rgba(16,24,40,0.06); min-height: 190px; display:flex; flex-direction:column; justify-content:flex-start; transition: transform .28s ease, box-shadow .28s ease; }
-            .bb-how-item-title{ margin: 0 0 10px 0; font-size: 1.02rem; font-weight: 800; color: var(--bb-heading, #111827); line-height: 1.25; }
-            .bb-how-item-body{ margin: 0; color: var(--bb-muted, #6b7280); font-size: 0.95rem; line-height: 1.65; }
-
-            @media (max-width: 1200px){ .bb-how-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-            @media (max-width: 800px){ .bb-how-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-            @media (max-width: 520px){
-              .bb-how-grid{ grid-template-columns: 1fr; }
-              .bb-how-title{ font-size: 1.85rem; }
-              .bb-how-subtitle{ font-size: 0.98rem; margin-bottom: 18px; }
-              .bb-how-item{ min-height: auto; }
-            }
-          `}
-        </style>
       </section>
 
       {/* ===== DATA / PRIVACY ===== */}
-      <section className="bb-section">
-        <div className="bb-section-shell">
-          <h2 className="bb-section-title" style={{ textAlign: "center" }}>
+      <section className="py-12 sm:py-14">
+        <div className="mx-auto max-w-6xl px-5">
+          <h2
+            data-bb-reveal
+            className="opacity-0 translate-y-3 text-center text-3xl font-extrabold tracking-tight text-slate-900 transition-all duration-700"
+          >
             Your Data, Your Control
           </h2>
 
-          <div
-            className="bb-data-row"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 20,
-              marginTop: 24,
-            }}
-          >
-            <div className="bb-data-card bb-card-hover">
-              <h4>Private by Design</h4>
-              <p>Everything is built with your privacy in mind, from day one.</p>
-            </div>
-            <div className="bb-data-card bb-card-hover">
-              <h4>Fully Encrypted</h4>
-              <p>Your health data is locked and protected with end-to-end encryption.</p>
-            </div>
-            <div className="bb-data-card bb-card-hover">
-              <h4>Decentralized and Secure</h4>
-              <p>No single point of risk – your information stays safely yours.</p>
-            </div>
-            <div className="bb-data-card bb-card-hover">
-              <h4>You're in Charge</h4>
-              <p>Decide what to share, when, and with whom. Total control.</p>
-            </div>
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                t: "Private by Design",
+                b: "Everything is built with your privacy in mind, from day one.",
+              },
+              {
+                t: "Fully Encrypted",
+                b: "Your health data is locked and protected with end-to-end encryption.",
+              },
+              {
+                t: "Decentralized and Secure",
+                b: "No single point of risk – your information stays safely yours.",
+              },
+              { t: "You're in Charge", b: "Decide what to share, when, and with whom. Total control." },
+            ].map((x, i) => (
+              <div
+                key={x.t}
+                data-bb-reveal
+                style={{ transitionDelay: `${i * 70}ms` }}
+                className="opacity-0 translate-y-3 rounded-2xl bg-white p-5 shadow-[0_10px_26px_rgba(148,163,184,0.28)] ring-1 ring-slate-200/60 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(148,163,184,0.35)]"
+              >
+                <h4 className="text-base font-extrabold text-slate-900">{x.t}</h4>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{x.b}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ===== FOUNDERS ===== */}
-      <section className="bb-section bb-section-alt">
-        <div className="bb-section-shell">
-          <h2 className="bb-section-title" style={{ textAlign: "center" }}>
+      <section className="bg-[linear-gradient(180deg,rgba(99,102,241,0.06),rgba(255,255,255,0))] py-14 sm:py-16">
+        <div className="mx-auto max-w-6xl px-5">
+          <h2
+            data-bb-reveal
+            className="opacity-0 translate-y-3 text-center text-3xl font-extrabold tracking-tight text-slate-900 transition-all duration-700"
+          >
             Meet The Innovators
           </h2>
-          <p className="bb-section-subtitle" style={{ textAlign: "center", marginTop: 8 }}>
+
+          <p
+            data-bb-reveal
+            style={{ transitionDelay: "110ms" }}
+            className="opacity-0 translate-y-3 mx-auto mt-2 max-w-[720px] text-center text-[1.02rem] leading-7 text-slate-600 transition-all duration-700"
+          >
             The passionate minds revolutionizing fitness technology.
           </p>
 
-          <div className="bb-founders-grid">
-            {FOUNDERS.map((founder) => (
+          <div className="mt-20 grid grid-cols-1 place-items-center gap-x-8 gap-y-16 md:grid-cols-2">
+            {FOUNDERS.map((founder, i) => (
               <article
                 key={founder.id}
-                className="bb-founder-card-v2"
+                data-bb-reveal
+                style={{
+                  transitionDelay: `${i * 80}ms`,
+                  ["--accent" as any]: founder.accent,
+                }}
+                className={[
+                  "opacity-0 translate-y-3 group relative",
+                  "max-w-[520px] w-full",
+                  "rounded-[28px] bg-white px-7 pb-7",
+                  "pt-10 md:pt-[132px]",
+                  "shadow-[0_26px_60px_rgba(148,163,184,0.35)]",
+                  "ring-1 ring-slate-200/60",
+                  "transition-all duration-700",
+                  "hover:-translate-y-2 hover:shadow-[0_32px_80px_rgba(148,163,184,0.55)]",
+                  "outline-none",
+                ].join(" ")}
                 tabIndex={0}
-                style={{ ["--accent" as any]: founder.accent }}
               >
-                <div className="bb-founder-bg" />
-                <span className="bb-dot bb-dot-tr" />
-                <span className="bb-dot bb-dot-bl" />
+                <div className="pointer-events-none absolute -inset-4 -z-10 rounded-[36px] bg-[radial-gradient(circle_at_0_0,color-mix(in_srgb,var(--accent)_12%,transparent)_0,transparent_55%),radial-gradient(circle_at_100%_100%,color-mix(in_srgb,var(--accent)_10%,transparent)_0,transparent_55%)]" />
 
-                <div className="bb-founder-avatar-v2">
-                  <div className="bb-founder-avatar-inner">
+                <span className="pointer-events-none absolute right-6 top-6 h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-[0_0_16px_var(--accent)] opacity-90" />
+                <span className="pointer-events-none absolute bottom-6 left-6 h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-[0_0_16px_var(--accent)] opacity-90" />
+
+                <div className="absolute inset-x-0 -top-10 hidden md:flex justify-center">
+                  <div className="h-[156px] w-[156px] rounded-full bg-[linear-gradient(135deg,var(--accent),#a855f7)] p-[5px] shadow-[0_20px_55px_rgba(0,0,0,0.22)] animate-[bbFloat_6.5s_ease-in-out_infinite]">
+                    <div className="h-full w-full overflow-hidden rounded-full border-4 border-slate-50 bg-slate-50">
+                      <img
+                        src={founder.photo}
+                        alt={founder.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mx-auto mb-4 flex h-[128px] w-[128px] items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--accent),#a855f7)] p-[5px] shadow-[0_20px_55px_rgba(0,0,0,0.18)] md:hidden">
+                  <div className="h-full w-full overflow-hidden rounded-full border-4 border-slate-50 bg-slate-50">
                     <img
                       src={founder.photo}
                       alt={founder.name}
-                      className="bb-founder-avatar-img"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 </div>
 
-                <h3 className="bb-founder-name">{founder.name}</h3>
-                <p className="bb-founder-role">{founder.role}</p>
+                <h3 className="text-center text-2xl font-extrabold text-slate-900">
+                  {founder.name}
+                </h3>
 
-                <div className="bb-founder-tags">
+                <p className="mt-1 text-center text-sm text-slate-500">
+                  {founder.role}
+                </p>
+
+                <div className="mt-4 flex flex-wrap justify-center gap-3">
                   {founder.tags.map((tag) => (
-                    <span key={tag} className="bb-founder-chip-v2">
+                    <span
+                      key={tag}
+                      className="rounded-full border border-violet-300/40 bg-violet-500/5 px-4 py-2 text-sm font-medium text-violet-900 shadow-[0_8px_20px_rgba(148,163,184,0.20)]"
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <p className="bb-founder-bio-v2">{founder.bio}</p>
+                <p className="mt-4 max-h-64 overflow-hidden text-sm leading-7 text-slate-600 opacity-100 transition-all duration-300 md:mt-0 md:max-h-0 md:opacity-0 md:group-hover:mt-4 md:group-hover:max-h-64 md:group-hover:opacity-100 md:group-focus-within:mt-4 md:group-focus-within:max-h-64 md:group-focus-within:opacity-100">
+                  {founder.bio}
+                </p>
               </article>
             ))}
           </div>
         </div>
-
-        <style>
-          {`
-            .bb-founders-grid{
-              display:grid;
-              grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-              column-gap: 32px;
-              row-gap: 64px;
-              margin-top: 40px;
-            }
-
-            .bb-founder-card-v2{
-              position: relative;
-              border-radius: 28px;
-              padding: 84px 32px 28px;
-              background: #ffffff;
-              box-shadow: 0 26px 60px rgba(148,163,184,0.35), 0 0 0 1px rgba(148,163,184,0.25);
-              color: #111827;
-              outline: none;
-              transition: transform 220ms ease, box-shadow 220ms ease;
-              overflow: visible;
-              isolation: isolate;
-            }
-
-            .bb-founder-card-v2:hover,
-            .bb-founder-card-v2:focus-within{
-              transform: translateY(-8px);
-              box-shadow: 0 32px 80px rgba(148,163,184,0.55);
-            }
-
-            .bb-founder-bg{
-              position:absolute;
-              inset:-16px;
-              border-radius:36px;
-              background:
-                radial-gradient(circle at 0 0, var(--accent)1f 0, transparent 55%),
-                radial-gradient(circle at 100% 100%, var(--accent)17 0, transparent 55%);
-              z-index:-1;
-            }
-
-            .bb-dot{
-              position:absolute;
-              width:10px;
-              height:10px;
-              border-radius:999px;
-              background: var(--accent);
-              box-shadow: 0 0 16px var(--accent);
-              opacity: 0.95;
-              z-index: -1;
-              pointer-events:none;
-            }
-            .bb-dot-tr{ top:22px; right:26px; }
-            .bb-dot-bl{ bottom:22px; left:26px; }
-
-            .bb-founder-avatar-v2{
-              position:absolute;
-              left:50%;
-              top:0;
-              transform: translate(-50%, -50%);
-              width:156px;
-              height:156px;
-              border-radius:999px;
-              padding:5px;
-              background: linear-gradient(135deg, var(--accent), #a855f7);
-              box-shadow: 0 20px 55px var(--accent)50;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-            }
-
-            .bb-founder-avatar-inner{
-              width:100%;
-              height:100%;
-              border-radius:999px;
-              overflow:hidden;
-              background:#f9fafb;
-              border:4px solid #f9fafb;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-            }
-
-            .bb-founder-avatar-img{
-              width:100%;
-              height:100%;
-              object-fit:cover;
-            }
-
-            .bb-founder-name{
-              text-align:center;
-              margin: 32px 0 4px;
-              font-size: 1.6rem;
-              font-weight: 800;
-              color:#111827;
-            }
-
-            .bb-founder-role{
-              text-align:center;
-              margin: 0 0 18px 0;
-              font-size: 0.98rem;
-              color:#6b7280;
-            }
-
-            .bb-founder-tags{
-              display:flex;
-              justify-content:center;
-              flex-wrap:wrap;
-              gap:12px;
-              margin-bottom: 0;
-            }
-
-            .bb-founder-chip-v2{
-              display:inline-flex;
-              align-items:center;
-              justify-content:center;
-              padding: 8px 16px;
-              border-radius:999px;
-              border: 1px solid rgba(139,92,246,0.28);
-              background: rgba(139,92,246,0.05);
-              color: var(--bb-accent, #5b21b6);
-              font-size: 0.9rem;
-              font-weight: 500;
-              box-shadow: 0 8px 20px rgba(148,163,184,0.25);
-            }
-
-            .bb-founder-bio-v2{
-              margin: 0;
-              margin-top: 0;
-              color:#4b5563;
-              font-size:0.95rem;
-              line-height:1.7;
-              max-height:0;
-              opacity:0;
-              overflow:hidden;
-              transition: max-height 360ms ease, opacity 220ms ease, margin-top 220ms ease;
-            }
-
-            .bb-founder-card-v2:hover .bb-founder-bio-v2,
-            .bb-founder-card-v2:focus-within .bb-founder-bio-v2{
-              max-height: 260px;
-              opacity: 1;
-              margin-top: 16px;
-            }
-
-            @media (hover: none){
-              .bb-founder-bio-v2{
-                max-height: 260px;
-                opacity: 1;
-                margin-top: 16px;
-              }
-            }
-
-            @media (max-width: 520px){
-              .bb-founders-grid{ row-gap: 28px; }
-              .bb-founder-card-v2{
-                overflow:hidden;
-                padding: 28px 22px 22px;
-              }
-              .bb-founder-avatar-v2{
-                position: relative;
-                left: auto;
-                top: auto;
-                transform: none;
-                margin: 6px auto 14px;
-                width: 128px;
-                height: 128px;
-              }
-              .bb-founder-name{ margin-top: 6px; font-size: 1.45rem; }
-            }
-          `}
-        </style>
       </section>
 
-      {/* ===== FINAL CTA (FIXED RESPONSIVE) ===== */}
-      <section className="bb-section bb-cta">
-        <div className="bb-section-shell">
-          <div className="bb-cta-panel bb-card-hover">
-            <h2 className="bb-cta-title">Start Your Fitness Journey Today</h2>
-            <p className="bb-cta-subtitle">
-              Join a growing community building consistency with Back&Bone.
-            </p>
+      <CTA />
 
-            <div className="bb-cta-actions-fixed">
-              <button
-                className="bb-btn bb-btn-primary bb-btn-animated"
-                onClick={goToDownloadPage}
-              >
-                Download the app
-              </button>
-
-              <button
-                className="bb-btn bb-btn-ghost bb-btn-animated"
-                onClick={scrollToFeatures}
-              >
-                Explore Features
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <style>
-          {`
-            .bb-cta-panel{
-              background: rgba(255,255,255,0.7);
-              border: 1px solid rgba(139,92,246,0.25);
-              border-radius: 22px;
-              padding: 34px 26px;
-              box-shadow: 0 18px 55px rgba(17,24,39,0.10);
-              text-align: center;
-              backdrop-filter: blur(10px);
-            }
-
-            .bb-cta-title{
-              margin: 0;
-              font-size: clamp(1.4rem, 3.2vw, 2rem);
-              font-weight: 900;
-              line-height: 1.12;
-              color: #111827;
-            }
-
-            .bb-cta-subtitle{
-              margin: 12px auto 0;
-              max-width: 620px;
-              color: #6b7280;
-              font-size: 1rem;
-              line-height: 1.6;
-            }
-
-            .bb-cta-actions-fixed{
-              margin-top: 22px;
-              display: flex;
-              gap: 14px;
-              justify-content: center;
-              align-items: center;
-              flex-wrap: wrap;
-            }
-
-            /* ✅ Mobile: stack buttons full width */
-            @media (max-width: 520px){
-              .bb-cta-panel{ padding: 26px 18px; }
-              .bb-cta-actions-fixed{
-                flex-direction: column;
-                gap: 12px;
-              }
-              .bb-cta-actions-fixed .bb-btn{
-                width: 100%;
-                max-width: 320px;
-                justify-content: center;
-              }
-            }
-          `}
-        </style>
-      </section>
-
-      {/* ===== BETA SIGNUP POPUP ===== */}
       {isBetaOpen && <BetaSignupPopup onClose={() => setIsBetaOpen(false)} />}
+
+      <style>{`
+        @keyframes bbBlobA { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(50px,30px) scale(1.05)} 100%{transform:translate(0,0) scale(1)} }
+        @keyframes bbBlobB { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-40px,40px) scale(1.06)} 100%{transform:translate(0,0) scale(1)} }
+        @keyframes bbBlobC { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.06)} 100%{transform:translate(0,0) scale(1)} }
+        @keyframes bbFloat { 0%{transform:translate3d(0,0,0)} 50%{transform:translate3d(0,-10px,0)} 100%{transform:translate3d(0,0,0)} }
+        @keyframes bbShimmer { 0%{transform:translateX(-60%); opacity:.35} 50%{transform:translateX(60%); opacity:.55} 100%{transform:translateX(60%); opacity:0} }
+        @keyframes bbTextShine { 0%{filter:drop-shadow(0 0 0 rgba(34,211,238,0))} 50%{filter:drop-shadow(0 10px 22px rgba(34,211,238,0.22))} 100%{filter:drop-shadow(0 0 0 rgba(34,211,238,0))} }
+
+        @media (prefers-reduced-motion: reduce){
+          *{ animation: none !important; transition: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
 
-/* === Helper for alternating feature rows === */
+/* === FeatureRow === */
 type FeatureRowProps = {
   title: string;
   subtitle: string;
@@ -615,23 +473,30 @@ function FeatureRow({
 }: FeatureRowProps) {
   return (
     <div
-      className="bb-feature-row-alt bb-card-hover"
-      style={{
-        flexDirection: reversed ? "row-reverse" : "row",
-      }}
+      data-bb-reveal
+      className={[
+        "opacity-0 translate-y-3 rounded-3xl border border-slate-200/60 bg-white/90 shadow-[0_18px_54px_rgba(2,6,23,0.07)]",
+        "p-6 sm:p-7 md:p-8 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(2,6,23,0.10)]",
+        "flex flex-col gap-6 md:items-center md:gap-10",
+        reversed ? "md:flex-row-reverse" : "md:flex-row",
+      ].join(" ")}
     >
-      <div className="bb-feature-copy-alt">
-        <h3 style={{ marginBottom: 8 }}>{title}</h3>
-        <p className="bb-feature-subtitle" style={{ marginBottom: 10 }}>
-          {subtitle}
-        </p>
-        <p style={{ color: "var(--bb-muted, #555)", lineHeight: 1.6 }}>
+      <div className="w-full md:w-[52%]">
+        <h3 className="text-2xl font-extrabold text-slate-900">{title}</h3>
+        <p className="mt-2 text-sm font-semibold text-violet-700">{subtitle}</p>
+        <p className="mt-3 text-[0.98rem] leading-7 text-slate-600">
           {description}
         </p>
       </div>
 
-      <div className="bb-feature-image-shell">
-        <img src={img} alt={imgAlt} className="bb-feature-image" />
+      <div className="w-full md:w-[48%]">
+        <div className="overflow-hidden rounded-2xl bg-slate-100 shadow-[0_16px_44px_rgba(2,6,23,0.10)]">
+          <img
+            src={img}
+            alt={imgAlt}
+            className="h-auto w-full object-cover transition-transform duration-300 md:hover:scale-[1.02]"
+          />
+        </div>
       </div>
     </div>
   );

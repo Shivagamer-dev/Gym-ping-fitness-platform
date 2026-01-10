@@ -1,6 +1,8 @@
 // src/Home/HelpCenterPage.tsx
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "../App.css";
+import Contact from "../components/contact";
 
 type FaqItem = {
   question: string;
@@ -11,6 +13,8 @@ export default function HelpCenterPage(): JSX.Element {
   const [faqs, setFaqs] = useState<FaqItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const location = useLocation();
 
   const faqJsonUrl =
     "https://raw.githubusercontent.com/BUTDRILL1/backnbone-data/main/faq.json";
@@ -25,9 +29,9 @@ export default function HelpCenterPage(): JSX.Element {
         const res = await fetch(faqJsonUrl, { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to fetch faq.json (${res.status})`);
         const data = (await res.json()) as FaqItem[];
-        if (!cancelled) setFaqs(data);
+        if (!cancelled) setFaqs(Array.isArray(data) ? data : []);
       } catch (err: any) {
-        if (!cancelled) setError(err.message || "Failed to load FAQs");
+        if (!cancelled) setError(err?.message || "Failed to load FAQs");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -39,310 +43,192 @@ export default function HelpCenterPage(): JSX.Element {
     };
   }, []);
 
+  // ✅ Scroll to #faqs when arriving from anywhere (e.g., /terms -> click Read More)
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const id = location.hash.replace("#", "");
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // wait a tick so layout is ready
+    const t = window.setTimeout(() => {
+      const headerOffset = 84; // adjust if your fixed navbar height differs
+      const rect = el.getBoundingClientRect();
+      const y = rect.top + window.scrollY - headerOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }, 80);
+
+    return () => window.clearTimeout(t);
+  }, [location.hash, loading]);
+
   return (
-    <div className="bb-page" style={{ paddingTop: "104px", overflowX: "hidden" }}>
+    <div
+      className="min-h-screen overflow-x-hidden pt-[76px] sm:pt-[48px]"
+      style={{
+        background:
+          "radial-gradient(circle at 0% 0%, #ede9fe 0, #fdf4ff 40%, #f5f3ff 100%)",
+      }}
+    >
       {/* HERO */}
-      <section className="bb-section" style={{ paddingTop: 16, paddingBottom: 24 }}>
-        <div className="bb-section-shell bb-anim-fade-up">
-          <div className="bb-hc-hero-card">
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div className="bb-hc-hero-icon">
-                💬
+      <section className="px-4 pb-6 pt-4 sm:px-5">
+        <div className="mx-auto max-w-[1120px]">
+          <div className="animate-fadeUp">
+            <div className="relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/85 px-5 py-8 text-center shadow-[0_16px_40px_rgba(15,23,42,0.10)] sm:rounded-[32px] sm:px-7 sm:py-10">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-28 -top-28 h-[320px] w-[320px] rounded-full blur-3xl opacity-60"
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 30%, rgba(168,85,247,0.35), transparent 60%)",
+                }}
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-28 -bottom-28 h-[320px] w-[320px] rounded-full blur-3xl opacity-60"
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 30%, rgba(99,102,241,0.35), transparent 60%)",
+                }}
+              />
+
+              <div className="relative z-[1]">
+                <div
+                  className="mx-auto mb-3 grid h-[54px] w-[54px] place-items-center rounded-[18px] text-[26px] text-white shadow-[0_12px_30px_rgba(79,70,229,0.55)] animate-floatSlow"
+                  style={{
+                    background: "radial-gradient(circle at 0 0, #a855f7, #6366f1)",
+                  }}
+                >
+                  💬
+                </div>
+
+                <h1 className="text-[2.35rem] font-extrabold leading-[1.02] text-slate-900 sm:text-[3rem]">
+                  Help Center
+                </h1>
+
+                <p className="mx-auto mt-2 max-w-[860px] text-[1rem] leading-relaxed text-slate-600">
+                  We’re here to help you get the best out of Back&amp;Bone.
+                  Explore quick answers, helpful tips, and expert support in one
+                  place.
+                </p>
               </div>
-
-              <h1 className="bb-page-title bb-hc-hero-title">
-                Help Center
-              </h1>
-
-              <p className="bb-section-subtitle bb-hc-hero-subtitle">
-                We’re here to help you get the best out of Back&Bone. Explore
-                quick answers, helpful tips, and expert support in one place.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ CONTENT */}
-      <section
-        className="bb-section bb-section-alt"
-        style={{ paddingTop: 12, paddingBottom: 40 }}
-      >
-        <div className="bb-section-shell">
-          <div className="bb-hc-card bb-anim-fade-up">
-            <header className="bb-hc-header">
-              <span className="bb-hc-pill">FAQ</span>
-              <div>
-                <h2 className="bb-hc-heading">Frequently Asked Questions</h2>
-                <p className="bb-hc-subheading">
-                  Find quick answers to common questions about Back&Bone.  
-                  Start here before reaching out to support.
-                </p>
-              </div>
-            </header>
+      <section className="px-4 pb-12 pt-2 sm:px-5">
+        <div className="mx-auto max-w-[1120px]">
+          <div className="animate-fadeUp [animation-delay:120ms] [animation-fill-mode:both]">
+            {/* ✅ Add id="faqs" here so hash scroll lands exactly on this card */}
+            <div
+              id="faqs"
+              className="mx-auto max-w-[980px] rounded-[22px] border border-slate-200/70 bg-white/80 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.14)] sm:rounded-[28px] sm:p-6"
+            >
+              {/* FAQ header */}
+              <header className="flex items-start gap-3">
+                <span
+                  className="mt-1 inline-flex h-6 items-center justify-center rounded-full px-3 text-[0.72rem] font-extrabold uppercase tracking-[0.10em] text-white shadow-[0_10px_24px_rgba(236,72,153,0.35)]"
+                  style={{
+                    background: "linear-gradient(135deg,#8b5cf6,#ec4899)",
+                  }}
+                >
+                  FAQ
+                </span>
 
-            {/* status */}
-            {loading && (
-              <div className="bb-hc-status">
-                Loading FAQs…
-              </div>
-            )}
+                <div>
+                  <h2 className="text-[1.25rem] font-bold text-slate-900 sm:text-[1.4rem]">
+                    Frequently Asked Questions
+                  </h2>
+                  <p className="mt-1 max-w-[680px] text-[0.95rem] leading-relaxed text-slate-600">
+                    Find quick answers to common questions about Back&amp;Bone.
+                    Start here before reaching out to support.
+                  </p>
+                </div>
+              </header>
 
-            {error && (
-              <div className="bb-hc-error">
-                Error loading FAQs: {error}
-              </div>
-            )}
-
-            {/* FAQ list */}
-            <div className="bb-hc-faq-list">
-              {faqs &&
-                faqs.map((item, idx) => (
-                  <article key={idx} className="bb-hc-faq bb-card-hover">
-                    <div className="bb-hc-faq-badge">
-                      {String(idx + 1).padStart(2, "0")}
-                    </div>
-                    <div className="bb-hc-faq-body">
-                      <h3 className="bb-hc-faq-question">{item.question}</h3>
-                      <p className="bb-hc-faq-answer">{item.answer}</p>
-                    </div>
-                  </article>
-                ))}
-
-              {!loading && faqs && faqs.length === 0 && !error && (
-                <div className="bb-hc-status">
-                  No FAQs available yet. Check back soon.
+              {/* status */}
+              {loading && (
+                <div className="mt-5 rounded-2xl border border-violet-200/60 bg-violet-50/70 p-4 text-center text-[0.95rem] font-semibold text-violet-700">
+                  Loading FAQs…
                 </div>
               )}
+
+              {error && (
+                <div className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-[0.92rem] font-medium text-rose-800">
+                  Error loading FAQs: {error}
+                </div>
+              )}
+
+              {/* FAQ list */}
+              <div className="mt-5 flex flex-col gap-3">
+                {faqs &&
+                  faqs.map((item, idx) => (
+                    <article
+                      key={idx}
+                      className="group flex gap-4 rounded-[18px] border border-slate-200/70 bg-white p-4 shadow-[0_10px_26px_rgba(148,163,184,0.20)] transition duration-200 hover:-translate-y-[2px] hover:shadow-[0_18px_44px_rgba(129,140,248,0.28)]"
+                    >
+                      <div
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[0.8rem] font-extrabold text-white shadow-[0_10px_22px_rgba(236,72,153,0.25)]"
+                        style={{
+                          background: "linear-gradient(135deg,#8b5cf6,#ec4899)",
+                        }}
+                      >
+                        {String(idx + 1).padStart(2, "0")}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-[1.02rem] font-bold text-slate-900">
+                          {item.question}
+                        </h3>
+                        <p className="mt-1 text-[0.95rem] leading-relaxed text-slate-600">
+                          {item.answer}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+
+                {!loading && faqs && faqs.length === 0 && !error && (
+                  <div className="rounded-2xl border border-slate-200/70 bg-white p-4 text-center text-[0.95rem] text-slate-600">
+                    No FAQs available yet. Check back soon.
+                  </div>
+                )}
+              </div>
+
+              {/* Contact section */}
+              <div className="mt-6 border-t border-slate-200/70 pt-6">
+                <Contact />
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Scoped styles for Help Center */}
-        <style>
-          {`
-            .bb-hc-hero-card {
-              border-radius: 32px;
-              padding: 30px 28px 34px;
-              background: var(--bb-bg, #ffffff);
-              box-shadow:
-                0 16px 40px rgba(15,23,42,0.10),
-                0 0 0 1px rgba(148,163,184,0.25);
-              text-align: center;
-              position: relative;
-              overflow: hidden;
-              margin-top: -60px;
-            }
-
-            .bb-hc-hero-icon {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 54px;
-              height: 54px;
-              border-radius: 18px;
-              background: radial-gradient(circle at 0 0, #a855f7, #6366f1);
-              color: #fff;
-              margin-bottom: 14px;
-              box-shadow: 0 12px 30px rgba(79,70,229,0.55);
-              font-size: 26px;
-            }
-
-            .bb-hc-hero-title {
-              font-size: 3rem;
-              font-weight: 800;
-              margin-bottom: 8px;
-              line-height: 1.02;
-              color: #0f172a;
-            }
-
-            .bb-hc-hero-subtitle {
-              max-width: 820px;
-              margin: 0 auto;
-              font-size: 1rem;
-              color: var(--bb-muted);
-            }
-
-            .bb-hc-card {
-              max-width: 980px;
-              margin: 0 auto;
-              border-radius: 28px;
-              padding: 26px 24px 28px;
-              background: linear-gradient(135deg,#f9f5ff,#faf5ff);
-              box-shadow:
-                0 24px 60px rgba(15,23,42,0.16),
-                0 0 0 1px rgba(148,163,184,0.35);
-            }
-
-            .bb-hc-header {
-              display: flex;
-              align-items: flex-start;
-              gap: 12px;
-              margin-bottom: 16px;
-            }
-
-            .bb-hc-pill {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              min-width: 40px;
-              height: 24px;
-              padding: 0 12px;
-              border-radius: 999px;
-              background: linear-gradient(135deg,#8b5cf6,#ec4899);
-              color: #f9fafb;
-              font-size: 0.72rem;
-              font-weight: 700;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-            }
-
-            .bb-hc-heading {
-              margin: 0;
-              font-size: 1.4rem;
-              font-weight: 700;
-              color: #111827;
-            }
-
-            .bb-hc-subheading {
-              margin: 4px 0 0;
-              font-size: 0.95rem;
-              color: #6b7280;
-              max-width: 640px;
-            }
-
-            .bb-hc-status {
-              padding: 20px;
-              text-align: center;
-              color: var(--bb-muted);
-              font-size: 0.95rem;
-            }
-
-            .bb-hc-error {
-              padding: 18px 20px;
-              border-radius: 14px;
-              background: #fef2f2;
-              color: #7f1d1d;
-              margin-bottom: 16px;
-              font-size: 0.92rem;
-            }
-
-            .bb-hc-faq-list {
-              display: flex;
-              flex-direction: column;
-              gap: 12px;
-            }
-
-            .bb-hc-faq {
-              display: flex;
-              gap: 14px;
-              padding: 16px 18px;
-              border-radius: 18px;
-              background: #ffffff;
-              box-shadow:
-                0 10px 26px rgba(148,163,184,0.28),
-                0 0 0 1px rgba(209,213,219,0.6);
-            }
-
-            .bb-hc-faq-badge {
-              flex-shrink: 0;
-              width: 32px;
-              height: 32px;
-              border-radius: 999px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 0.8rem;
-              font-weight: 700;
-              color: #f9fafb;
-              background: linear-gradient(135deg,#8b5cf6,#ec4899);
-              box-shadow: 0 8px 18px rgba(236,72,153,0.55);
-            }
-
-            .bb-hc-faq-body {
-              flex: 1;
-            }
-
-            .bb-hc-faq-question {
-              margin: 0 0 4px;
-              font-size: 1.02rem;
-              font-weight: 700;
-              color: #111827;
-            }
-
-            .bb-hc-faq-answer {
-              margin: 0;
-              font-size: 0.95rem;
-              line-height: 1.65;
-              color: #4b5563;
-            }
-
-            @media (max-width: 768px) {
-              .bb-hc-hero-card {
-                padding: 24px 18px 26px;
-                border-radius: 24px;
-                margin-top: -48px;
-              }
-
-              .bb-hc-hero-title {
-                font-size: 2.4rem;
-              }
-
-              .bb-hc-card {
-                padding: 22px 18px 24px;
-                border-radius: 22px;
-              }
-
-              .bb-hc-header {
-                flex-direction: row;
-                align-items: center;
-              }
-
-              .bb-hc-heading {
-                font-size: 1.25rem;
-              }
-            }
-          `}
-        </style>
       </section>
 
-      {/* STILL NEED HELP CTA */}
-      <section className="bb-section bb-cta" style={{ paddingBottom: 40 }}>
-        <div className="bb-section-shell bb-anim-fade-up" style={{ textAlign: "center" }}>
-          <h3
-            className="bb-section-title"
-            style={{ marginBottom: 8, fontSize: "1.8rem" }}
-          >
-            Still Need Help?
-          </h3>
+      {/* animations */}
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeUp {
+          animation: fadeUp 520ms ease both;
+        }
 
-          <p
-            className="bb-section-subtitle"
-            style={{ marginBottom: 18, color: "var(--bb-muted)" }}
-          >
-            Get detailed help by emailing our support team.
-          </p>
+        @keyframes floatSlow {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+          100% { transform: translateY(0); }
+        }
+        .animate-floatSlow {
+          animation: floatSlow 3.4s ease-in-out infinite;
+        }
 
-          <button
-            className="bb-btn bb-btn-primary bb-btn-animated"
-            style={{
-              padding: "14px 36px",
-              fontSize: "1.02rem",
-              borderRadius: 999,
-            }}
-            onClick={() =>
-              (window.location.href = "mailto:support@backandbone.com")
-            }
-            aria-label="Email Back&Bone support"
-          >
-            support@backandbone.com
-          </button>
-
-          <p className="bb-cta-note" style={{ marginTop: 10 }}>
-            We aim to reply within 24 hours.
-          </p>
-        </div>
-      </section>
+        @media (prefers-reduced-motion: reduce) {
+          .animate-fadeUp, .animate-floatSlow { animation: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
