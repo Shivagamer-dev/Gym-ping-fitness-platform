@@ -3,7 +3,16 @@
 ### Your Personal Fitness Companion — Discover. Train. Improve.
 
 <p align="center">
-  <strong>A modern fitness platform built to make workouts smarter, more accessible, and engaging.</strong>
+  <strong>A modern fitness platform designed to make workouts smarter, more accessible, and engaging.</strong>
+</p>
+
+<p align="center">
+  <a href="https://gym-ping-fitness-platform.vercel.app/">
+    <img src="https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_Gym_Ping-00C853?style=for-the-badge" alt="Live Demo"/>
+  </a>
+  <a href="https://github.com/Shivagamer-dev/Gym-ping-fitness-platform">
+    <img src="https://img.shields.io/badge/💻_SOURCE_CODE-GitHub-181717?style=for-the-badge&logo=github" alt="Source Code"/>
+  </a>
 </p>
 
 <p align="center">
@@ -11,25 +20,38 @@
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
-</p>
-
-<p align="center">
-  <a href="#-features">Features</a> •
-  <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-getting-started">Getting Started</a> •
-  <a href="#-project-structure">Project Structure</a> •
-  <a href="#-roadmap">Roadmap</a>
+  <img src="https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel" alt="Vercel"/>
 </p>
 
 ---
 
-## 🚀 About The Project
+## 🌐 Live Demo
 
-**Gym Ping** is a modern fitness platform designed to bring multiple aspects of a user's fitness journey together in one place.
+### 🚀 [Visit Gym Ping →](https://gym-ping-fitness-platform.vercel.app/)
 
-The project focuses on creating a **clean, responsive, and engaging user experience** while providing useful tools for discovering workouts, finding gyms, learning exercises, and getting fitness-related assistance.
+**Gym Ping is live and available to explore directly in your browser.**
 
-Rather than being just another gym website, Gym Ping is designed around the idea of creating a **digital fitness companion** that can grow with the user's training journey.
+<p align="center">
+  <a href="https://gym-ping-fitness-platform.vercel.app/">
+    <img src="https://img.shields.io/badge/OPEN_LIVE_WEBSITE-🚀_GYM_PING-111111?style=for-the-badge" alt="Open Live Website"/>
+  </a>
+</p>
+
+🔗 **Live Website:**
+https://gym-ping-fitness-platform.vercel.app/
+
+🔗 **GitHub Repository:**
+https://github.com/Shivagamer-dev/Gym-ping-fitness-platform
+
+---
+
+## 📖 About The Project
+
+**Gym Ping** is a personal fitness platform built to bring different aspects of the fitness journey together in one modern web experience.
+
+The platform focuses on providing users with an engaging and responsive interface for discovering exercises, exploring workout resources, finding gyms, and accessing fitness-related assistance.
+
+Gym Ping is designed with scalability in mind, allowing the platform to evolve into a more complete fitness ecosystem with personalized workouts, progress tracking, AI-powered recommendations, and additional fitness tools.
 
 > **Train smarter. Stay consistent. Keep progressing.**
 
@@ -39,50 +61,64 @@ Rather than being just another gym website, Gym Ping is designed around the idea
 
 ### 🏋️ Exercise & Workout Discovery
 
-Explore exercises and workout resources with an intuitive interface designed to make discovering new movements simple.
+Explore exercises and workout resources through a clean and intuitive interface.
 
-* Exercise-focused content
-* Instructional workout resources
-* Easy navigation
-* Responsive workout experience
+**Highlights:**
+
+* 🏋️ Exercise-focused content
+* 🎥 Instructional workout resources
+* 🔎 Easy exercise discovery
+* 📚 Workout-related information
+* 📱 Responsive user experience
+
+---
 
 ### 📍 Gym Locator
 
-Find gyms and fitness facilities based on useful information such as:
+Discover gyms and fitness facilities using useful information to help users find a suitable place to train.
 
-* 📍 Location
-* ⭐ Ratings
-* 💰 Pricing
-* 🏋️ Available equipment
+**Highlights:**
 
-The goal is to make finding the right gym easier and more convenient.
+* 📍 Location-based gym discovery
+* ⭐ Gym ratings
+* 💰 Pricing information
+* 🏋️ Equipment availability
+* 🔎 Filtering and discovery experience
 
-### 🤖 RepBot
+---
 
-An AI-powered fitness assistant designed to help users with:
+### 🤖 RepBot — AI Fitness Assistant
 
-* 💪 Workout-related questions
-* 🥗 Diet and nutrition guidance
-* 🏋️ Exercise-related assistance
+**RepBot** is designed as an interactive fitness assistant that can help users with fitness-related questions.
+
+Potential assistance includes:
+
+* 💪 Workout guidance
+* 🥗 Diet and nutrition assistance
+* 🏋️ Exercise-related questions
 * 💡 General fitness suggestions
 
-RepBot is designed to make fitness information more interactive and accessible.
+The goal is to make fitness information more accessible through an interactive conversational experience.
+
+---
 
 ### 📊 Fitness Dashboard
 
-A dedicated space for monitoring a user's fitness journey and presenting progress in a more visual and meaningful way.
+Gym Ping includes a foundation for bringing a user's fitness information into a centralized dashboard.
 
-The dashboard architecture is designed to support future expansion into areas such as:
+The platform can be extended to support:
 
-* Workout history
-* Progress tracking
-* Fitness statistics
-* Personal goals
-* Performance insights
+* 📈 Progress tracking
+* 🏋️ Workout history
+* 🎯 Personal fitness goals
+* 📊 Fitness statistics
+* 🔥 Performance insights
+
+---
 
 ### 📱 Responsive Design
 
-Gym Ping is designed to provide a consistent experience across different screen sizes.
+The interface is designed to provide a consistent experience across different screen sizes.
 
 * 💻 Desktop
 * 📱 Mobile
@@ -92,19 +128,19 @@ Gym Ping is designed to provide a consistent experience across different screen 
 
 ## 🎨 Design Philosophy
 
-Gym Ping focuses on three core principles:
+Gym Ping is built around three core principles.
 
 ### ⚡ Simplicity
 
-Fitness tools should be easy to understand and use.
+Fitness tools should be easy to understand, navigate, and use.
 
 ### 🎯 Accessibility
 
-Important information and functionality should remain easy to discover.
+Important information and functionality should remain easy to discover for users.
 
 ### 🔥 Engagement
 
-The interface should encourage users to stay consistent with their fitness journey.
+The experience should encourage users to remain consistent and motivated throughout their fitness journey.
 
 ---
 
@@ -112,32 +148,66 @@ The interface should encourage users to stay consistent with their fitness journ
 
 ### Frontend
 
-| Technology       | Purpose                                 |
-| ---------------- | --------------------------------------- |
-| **React**        | User interface development              |
-| **TypeScript**   | Type-safe application development       |
-| **Vite**         | Fast development and production tooling |
-| **Tailwind CSS** | Responsive and modern UI styling        |
-| **React Router** | Application navigation                  |
+| Technology          | Purpose                                  |
+| ------------------- | ---------------------------------------- |
+| ⚛️ **React**        | User interface development               |
+| 🔷 **TypeScript**   | Type-safe application development        |
+| ⚡ **Vite**          | Development and production build tooling |
+| 🎨 **Tailwind CSS** | Responsive UI styling                    |
+| 🧭 **React Router** | Client-side navigation                   |
+
+### Deployment
+
+| Technology    | Purpose                               |
+| ------------- | ------------------------------------- |
+| ▲ **Vercel**  | Frontend hosting and deployment       |
+| 🐙 **GitHub** | Source control and repository hosting |
 
 ### APIs & Services
 
-* Exercise data and workout resources
-* Location/gym-related services
-* AI-powered fitness assistance
+The platform is designed to integrate with services for:
 
-> The exact API integrations may vary depending on the deployment environment.
+* 🏋️ Exercise and workout data
+* 📍 Gym and location information
+* 🤖 AI-powered fitness assistance
+
+---
+
+## 🏗️ Application Architecture
+
+The current application is structured around a modern React-based frontend.
+
+```text
+                         🏋️ GYM PING
+                              │
+             ┌────────────────┼────────────────┐
+             │                │                │
+             ▼                ▼                ▼
+        🏋️ Exercises     📍 Gym Locator    🤖 RepBot
+             │                │                │
+             └────────────────┼────────────────┘
+                              │
+                              ▼
+                     📊 Fitness Journey
+                              │
+                              ▼
+                    🚀 React + TypeScript
+                              │
+                              ▼
+                         ▲ Vercel
+```
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-Gym-Ping/
+Gym-ping-fitness-platform/
 │
 ├── public/
 │
 ├── src/
+│   │
 │   ├── Home/
 │   │   ├── HomePage.tsx
 │   │   ├── Features.tsx
@@ -172,7 +242,7 @@ Gym-Ping/
 
 Make sure you have the following installed:
 
-* **Node.js** 18+
+* **Node.js 18+**
 * **npm**
 * **Git**
 
@@ -196,13 +266,15 @@ npm install
 
 ### 4. Configure Environment Variables
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root if your local configuration requires environment variables.
+
+Example:
 
 ```env
 VITE_API_URL=your_api_url
 ```
 
-> Never commit your `.env` file or expose API keys and private credentials publicly.
+> ⚠️ Never commit `.env` files, API keys, database credentials, or other private secrets to GitHub.
 
 ### 5. Start the Development Server
 
@@ -230,27 +302,37 @@ npm run preview
 
 ---
 
-## 🌐 Deployment
-
-Gym Ping is designed to be deployable as a modern web application.
+## 🚀 Deployment
 
 ### Frontend
 
-The Vite-powered frontend can be deployed using platforms such as:
+The Gym Ping frontend is currently deployed and publicly accessible through **Vercel**.
 
-* Vercel
-* Netlify
-* Cloudflare Pages
+**Production URL:**
 
-### Backend
+```text
+https://gym-ping-fitness-platform.vercel.app/
+```
 
-If backend services are included, they can be deployed separately using platforms such as:
+The deployment is connected to the project's GitHub repository, allowing future changes to be built and deployed through the repository workflow.
 
-* Render
-* Railway
-* Fly.io
+### Deployment Flow
 
-The frontend communicates with backend services through environment-configured API endpoints.
+```text
+Local Development
+       │
+       ▼
+   Git Commit
+       │
+       ▼
+     GitHub
+       │
+       ▼
+     Vercel
+       │
+       ▼
+🌐 Live Website
+```
 
 ---
 
@@ -258,7 +340,7 @@ The frontend communicates with backend services through environment-configured A
 
 Environment variables should **never be committed to GitHub**.
 
-Example:
+For local development:
 
 ```env
 VITE_API_URL=http://localhost:5000
@@ -280,13 +362,15 @@ node_modules/
 dist/
 ```
 
+> **Security Note:** Do not store database passwords, private API secrets, JWT secrets, or other sensitive credentials in frontend-exposed `VITE_*` variables.
+
 ---
 
 ## 🗺️ Roadmap
 
-Gym Ping is designed to evolve into a more complete fitness ecosystem.
+Gym Ping is continuously evolving toward a more complete fitness ecosystem.
 
-### Planned Improvements
+### 🚧 Planned Improvements
 
 * [ ] Complete fitness progress dashboard
 * [ ] Personalized workout plans
@@ -297,46 +381,108 @@ Gym Ping is designed to evolve into a more complete fitness ecosystem.
 * [ ] User authentication
 * [ ] Profile customization
 * [ ] Improved gym discovery
-* [ ] Backend optimization
-* [ ] Production deployment
+* [ ] Backend integration
+* [ ] Production API infrastructure
+* [ ] Enhanced AI fitness assistant
 * [ ] Mobile application
 
 ---
 
 ## 📸 Screenshots
 
-> Screenshots and a live demo will be added as the project moves into production deployment.
+Screenshots can be added here to showcase the application's interface and major features.
 
-Recommended screenshots to showcase here:
+### 🏠 Homepage
 
-```text
-Homepage
-│
-├── Hero Section
-├── Exercise Discovery
-├── Gym Locator
-├── RepBot
-└── Responsive Mobile View
-```
+*Add homepage screenshot here.*
+
+### 🏋️ Exercise Discovery
+
+*Add exercise section screenshot here.*
+
+### 📍 Gym Locator
+
+*Add gym locator screenshot here.*
+
+### 🤖 RepBot
+
+*Add RepBot screenshot here.*
+
+### 📱 Responsive Experience
+
+*Add mobile/tablet screenshot here.*
 
 ---
 
-## 📈 Project Goals
+## 🎯 Project Goals
 
-The long-term goal of Gym Ping is to create a unified platform where users can:
+Gym Ping aims to bring the essential parts of a fitness journey into one platform.
 
 ```text
-Discover Exercises
-       ↓
-Find Gyms
-       ↓
-Plan Workouts
-       ↓
-Get Fitness Assistance
-       ↓
-Track Progress
-       ↓
-Improve Consistency
+       🏋️ Discover Exercises
+                │
+                ▼
+          📍 Find Gyms
+                │
+                ▼
+        💪 Explore Workouts
+                │
+                ▼
+        🤖 Get Assistance
+                │
+                ▼
+         📊 Track Progress
+                │
+                ▼
+        🔥 Stay Consistent
+```
+
+The long-term vision is to create a platform that combines **fitness discovery, workout assistance, gym discovery, AI guidance, and personal progress tracking** into one unified experience.
+
+---
+
+## 💡 Why Gym Ping?
+
+Most fitness experiences require users to switch between multiple platforms for different tasks.
+
+Gym Ping aims to bring those experiences together:
+
+| Need                      | Gym Ping     |
+| ------------------------- | ------------ |
+| 🏋️ Discover exercises    | ✅            |
+| 📍 Find gyms              | ✅            |
+| 🤖 Fitness assistance     | ✅            |
+| 📚 Workout resources      | ✅            |
+| 📊 Track fitness progress | 🚧 Expanding |
+| 🎯 Personalized plans     | 🚧 Planned   |
+| 📱 Mobile experience      | 🚧 Planned   |
+
+---
+
+## 🔭 Future Vision
+
+The long-term vision for Gym Ping is to evolve beyond a simple fitness website into a complete digital fitness ecosystem.
+
+Future versions can include:
+
+```text
+                 🏋️ Gym Ping
+                      │
+       ┌──────────────┼──────────────┐
+       │              │              │
+       ▼              ▼              ▼
+   Workouts         AI Coach       Gym Finder
+       │              │              │
+       └──────────────┼──────────────┘
+                      │
+                      ▼
+               Personal Profile
+                      │
+                      ▼
+              Progress Analytics
+                      │
+                      ▼
+             Personalized Fitness
 ```
 
 ---
@@ -346,13 +492,29 @@ Improve Consistency
 ### Shiva Tyagi
 
 Computer Science & Technology Enthusiast
-Full-Stack Development • AI/ML • Software Engineering
+
+**Interests:**
+
+* 💻 Full-Stack Development
+* 🤖 Artificial Intelligence & Machine Learning
+* 🧠 Software Engineering
+* 🚀 Building practical applications
 
 <p align="left">
   <a href="https://github.com/Shivagamer-dev">
     <img src="https://img.shields.io/badge/GitHub-Shivagamer--dev-181717?style=for-the-badge&logo=github" alt="GitHub"/>
   </a>
 </p>
+
+---
+
+## 🤝 Contributions
+
+Gym Ping is currently maintained as a personal project.
+
+Suggestions, ideas, and constructive feedback are always welcome.
+
+If you find the project interesting, consider giving the repository a ⭐ on GitHub.
 
 ---
 
@@ -363,5 +525,15 @@ This project is licensed under the **MIT License**.
 ---
 
 <p align="center">
-  <strong>🏋️ Gym Ping — Train Smarter. Stay Consistent. Keep Progressing.</strong>
+
+### 🏋️ Gym Ping
+
+**Train Smarter • Stay Consistent • Keep Progressing**
+
+<br>
+
+<a href="https://gym-ping-fitness-platform.vercel.app/">
+  🚀 <strong>EXPLORE THE LIVE WEBSITE</strong>
+</a>
+
 </p>
